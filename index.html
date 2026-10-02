@@ -738,16 +738,206 @@ td.dv-green,td.dv-green input{color:#0A6B50;font-weight:700}
 .vas-none{border-color:var(--line);background:#F7FAFC;color:var(--ink2)}
 .vas-ctx{display:grid;gap:9px;margin-top:14px}
 @media(min-width:560px){.vas-ctx{grid-template-columns:1fr 1fr}}
+/* ===== Đăng nhập & lưu trực tuyến (Firebase) ===== */
+.gate{position:fixed;inset:0;z-index:200;background:linear-gradient(160deg,#EAF5FC 0%,#F7FBFD 55%,#FFFFFF 100%);
+  display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding:40px 16px 60px}
+.gate[hidden]{display:none}
+.gate-card{width:100%;max-width:420px;background:#fff;border:1.5px solid var(--line);border-radius:22px;
+  box-shadow:var(--shadow);padding:26px 22px 22px}
+.gate-logo{display:flex;align-items:center;gap:10px;font-family:"Nunito";font-weight:900;font-size:18px;margin-bottom:6px}
+.gate-logo i{width:34px;height:34px;border-radius:10px;background:var(--brand);color:#fff;display:grid;place-items:center;font-style:normal;font-size:16px}
+.gate-sub{font-size:13px;color:var(--ink2);margin:0 0 18px;line-height:1.5}
+.gate h2{font-family:"Nunito";font-size:19px;font-weight:900;margin:0 0 12px}
+.gate-pane[hidden]{display:none}
+.gate .gf{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.gate .gf label{font-size:12.5px;font-weight:700;color:var(--ink2)}
+.gate .gf input{font-family:inherit;font-size:15px;padding:11px 12px;border:1.5px solid var(--line);border-radius:11px;background:#fff;color:var(--ink)}
+.gate .gf input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-s)}
+.gate .gbtn{width:100%;font-family:"Nunito";font-weight:800;font-size:15px;padding:12px;border-radius:12px;border:0;
+  background:var(--brand);color:#fff;cursor:pointer;margin-top:4px}
+.gate .gbtn:disabled{opacity:.6;cursor:wait}
+.gate .gbtn.ghost{background:#fff;color:var(--brand-d);border:1.5px solid var(--line)}
+.gate .glinks{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:14px;font-size:13px}
+.gate .glinks button{background:none;border:0;color:var(--brand-d);font-weight:700;cursor:pointer;padding:0;font-family:inherit;font-size:13px}
+.gate .gmsg{font-size:13px;line-height:1.5;border-radius:10px;padding:9px 11px;margin:0 0 12px}
+.gate .gmsg.err{background:var(--rs);color:var(--rd);font-weight:600}
+.gate .gmsg.ok{background:var(--gs);color:#11643F}
+.gate .gmsg[hidden]{display:none}
+.gate .gnote{font-size:12px;color:var(--ink2);line-height:1.55;margin:14px 0 0}
+.gate .gem{font-weight:800;color:var(--ink);word-break:break-all}
+.gate .gstack{display:grid;gap:9px;margin-top:6px}
+
+.acct{background:#F3F9FD;border-top:1.5px solid var(--line)}
+@media(max-width:600px){.acct .who2 small{display:none}.acct-in{padding:6px 12px;gap:6px 8px}}
+.acct[hidden]{display:none}
+.acct-in{max-width:1000px;margin:0 auto;padding:7px 16px;display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;font-size:12.5px}
+.acct .who2{font-weight:800;color:var(--ink)}
+.acct .who2 small{font-weight:500;color:var(--ink2);margin-left:4px}
+.acct .role{font-size:11px;font-weight:800;padding:2px 8px;border-radius:99px;background:var(--brand-s);color:var(--brand-d)}
+.acct .role.admin{background:#FFF4DC;color:#8A5A00}
+.acct .sync{display:inline-flex;align-items:center;gap:6px;color:var(--ink2);font-weight:600}
+.acct .sync::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--g)}
+.acct .sync.wait::before{background:var(--a)}
+.acct .sync.off::before{background:var(--r)}
+.acct .grow{flex:1}
+.acct select,.acct button{font-family:inherit;font-size:12.5px;font-weight:700;border:1.5px solid var(--line);border-radius:9px;
+  background:#fff;color:var(--ink);padding:5px 10px;cursor:pointer}
+.acct button.out{color:var(--rd)}
+
+.impbar{max-width:1000px;margin:12px auto 0;padding:0 16px}
+.impbar[hidden]{display:none}
+.impbar .in{background:#FFF8E8;border:1.5px solid #F1D7A0;border-radius:14px;padding:12px 14px;font-size:13.5px;line-height:1.5;
+  display:flex;gap:10px 14px;align-items:center;flex-wrap:wrap}
+.impbar .in p{margin:0;flex:1;min-width:240px}
+.impbar button{font-family:"Nunito";font-weight:800;font-size:13px;border-radius:10px;padding:7px 12px;cursor:pointer;border:1.5px solid var(--line);background:#fff}
+.impbar button.pri{background:var(--brand);color:#fff;border-color:var(--brand)}
+
+.mdl{position:fixed;inset:0;z-index:150;background:rgba(18,35,52,.45);display:flex;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
+.mdl[hidden]{display:none}
+.mdl-card{width:100%;max-width:560px;background:#fff;border-radius:20px;padding:20px;box-shadow:0 20px 50px rgba(18,35,52,.3)}
+.mdl-card h2{font-family:"Nunito";font-size:18px;font-weight:900;margin:0 0 4px;display:flex;align-items:center}
+.mdl-card h2 button{margin-left:auto;background:none;border:0;font-size:22px;cursor:pointer;color:var(--ink2)}
+.mdl-card .sub{font-size:12.5px;color:var(--ink2);margin:0 0 14px;line-height:1.5}
+.mem-add{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.mem-add input{flex:1;min-width:150px;font-family:inherit;font-size:14px;padding:9px 10px;border:1.5px solid var(--line);border-radius:10px}
+.mem-add button{font-family:"Nunito";font-weight:800;font-size:14px;border:0;border-radius:10px;padding:9px 14px;background:var(--brand);color:#fff;cursor:pointer}
+.mem-list{display:grid;gap:6px;max-height:50vh;overflow-y:auto}
+.mem-row{display:flex;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:11px;padding:8px 10px;font-size:13.5px}
+.mem-row .e{flex:1;min-width:0}
+.mem-row .e b{display:block;word-break:break-all}
+.mem-row .e small{color:var(--ink2)}
+.mem-row button{font-size:12px;font-weight:700;border:1.5px solid var(--line);background:#fff;color:var(--rd);border-radius:8px;padding:4px 9px;cursor:pointer}
+.mem-msg{font-size:12.5px;margin:6px 0 0;color:var(--ink2)}
+.mem-msg.err{color:var(--rd);font-weight:700}
+.rec .own{font-size:11px;color:var(--ink2);font-weight:600}
+@media print{.acct,.impbar,.gate,.mdl{display:none!important}}
 </style>
+<script>
+/* ===== CẤU HÌNH MÁY CHỦ (Firebase) =====
+   Dán firebaseConfig của dự án vào đây. Đoạn này được phép công khai — bảo mật
+   dữ liệu nằm ở Security Rules của Firestore, không nằm ở các khóa này. */
+window.HSTC_FIREBASE_CONFIG = {
+  apiKey: "AIzaSyC76DQWvsFoXJV8yV-kWB_FoZO0inckXss",
+  authDomain: "icusuite.firebaseapp.com",
+  projectId: "icusuite",
+  storageBucket: "icusuite.firebasestorage.app",
+  messagingSenderId: "464431949903",
+  appId: "1:464431949903:web:44d744769be63d9f76223a"
+};
+/* Email người quản trị: thấy toàn bộ bản ghi, duyệt thành viên.
+   Phải trùng với email ghi trong Security Rules. */
+window.HSTC_ADMINS = ["tntan.bv@ctump.edu.vn"];
+</script>
 </head>
 <body>
+<!-- ===== Đăng nhập (Firebase) ===== -->
+<div class="gate" id="authGate">
+  <div class="gate-card">
+    <div class="gate-logo"><i>⊕</i> Công cụ số HSTC</div>
+    <p class="gate-sub">Bộ công cụ số hỗ trợ chuẩn hóa đánh giá điều dưỡng, cảnh báo sớm và an toàn dùng thuốc — Điều dưỡng ĐHYD Cần Thơ.</p>
+    <p class="gmsg" id="gMsg" hidden></p>
+
+    <div class="gate-pane" id="gLoading"><h2>Đang kết nối…</h2><p class="gnote">Đang kiểm tra tài khoản. Nếu chờ quá lâu, kiểm tra kết nối mạng rồi tải lại trang.</p></div>
+
+    <div class="gate-pane" id="gNoConfig" hidden>
+      <h2>Chưa cấu hình máy chủ</h2>
+      <p class="gnote">Trang này chưa được gắn dự án Firebase. Người quản trị cần dán <b>firebaseConfig</b> vào đầu tệp index.html.</p>
+    </div>
+
+    <form class="gate-pane" id="gLogin" hidden autocomplete="on">
+      <h2>Đăng nhập</h2>
+      <div class="gf"><label for="gEmail">Email</label><input id="gEmail" type="email" autocomplete="username" required></div>
+      <div class="gf"><label for="gPass">Mật khẩu</label><input id="gPass" type="password" autocomplete="current-password" required></div>
+      <button class="gbtn" type="submit">Đăng nhập</button>
+      <div class="glinks"><button type="button" data-go="gSignup">Tạo tài khoản mới</button><button type="button" data-go="gReset">Quên mật khẩu?</button></div>
+      <p class="gnote">Chỉ những email đã được người quản trị duyệt mới vào được công cụ. Chưa có tài khoản: bấm “Tạo tài khoản mới”, rồi báo người quản trị thêm email của bạn.</p>
+    </form>
+
+    <form class="gate-pane" id="gSignup" hidden autocomplete="on">
+      <h2>Tạo tài khoản</h2>
+      <div class="gf"><label for="sName">Họ tên điều dưỡng</label><input id="sName" autocomplete="name" placeholder="ĐD. Trần Thị B" required maxlength="60"></div>
+      <div class="gf"><label for="sEmail">Email</label><input id="sEmail" type="email" autocomplete="username" required></div>
+      <div class="gf"><label for="sPass">Mật khẩu (ít nhất 8 ký tự)</label><input id="sPass" type="password" autocomplete="new-password" minlength="8" required></div>
+      <div class="gf"><label for="sPass2">Nhập lại mật khẩu</label><input id="sPass2" type="password" autocomplete="new-password" minlength="8" required></div>
+      <button class="gbtn" type="submit">Tạo tài khoản</button>
+      <div class="glinks"><button type="button" data-go="gLogin">← Đã có tài khoản, đăng nhập</button></div>
+    </form>
+
+    <form class="gate-pane" id="gReset" hidden>
+      <h2>Đặt lại mật khẩu</h2>
+      <div class="gf"><label for="rEmail">Email đã đăng ký</label><input id="rEmail" type="email" autocomplete="username" required></div>
+      <button class="gbtn" type="submit">Gửi email đặt lại mật khẩu</button>
+      <div class="glinks"><button type="button" data-go="gLogin">← Quay lại đăng nhập</button></div>
+    </form>
+
+    <div class="gate-pane" id="gVerify" hidden>
+      <h2>Xác nhận email</h2>
+      <p class="gnote" style="margin-top:0">Một email xác nhận đã được gửi tới <span class="gem" id="vEmail"></span>. Mở email, bấm vào đường link xác nhận, rồi quay lại đây bấm nút bên dưới. Không thấy email thì xem trong mục Thư rác (Spam).</p>
+      <div class="gstack">
+        <button class="gbtn" type="button" id="vDone">Tôi đã xác nhận email</button>
+        <button class="gbtn ghost" type="button" id="vResend">Gửi lại email xác nhận</button>
+        <button class="gbtn ghost" type="button" data-signout>Đăng xuất</button>
+      </div>
+    </div>
+
+    <div class="gate-pane" id="gPending" hidden>
+      <h2>Đang chờ duyệt</h2>
+      <p class="gnote" style="margin-top:0">Tài khoản <span class="gem" id="pEmail"></span> đã tạo xong nhưng <b>chưa được người quản trị cho phép</b> dùng công cụ. Báo người quản trị (Tăng Ngọc Tân) thêm email này vào danh sách thành viên, rồi bấm “Kiểm tra lại”.</p>
+      <div class="gstack">
+        <button class="gbtn" type="button" id="pRetry">Kiểm tra lại</button>
+        <button class="gbtn ghost" type="button" data-signout>Đăng xuất</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Thanh tài khoản ===== -->
+<div class="acct" id="acctBar" hidden>
+  <div class="acct-in">
+    <span class="who2" id="acctWho"></span>
+    <span class="role" id="acctRole"></span>
+    <span class="sync" id="acctSync">Đã đồng bộ</span>
+    <span class="grow"></span>
+    <select id="acctScope" hidden aria-label="Phạm vi hiển thị">
+      <option value="all">Hiển thị: cả khoa</option>
+      <option value="mine">Hiển thị: của tôi</option>
+    </select>
+    <button type="button" id="acctMembers" hidden>Thành viên</button>
+    <button type="button" class="out" data-signout>Đăng xuất</button>
+  </div>
+</div>
+
+<div class="impbar" id="impBar" hidden>
+  <div class="in">
+    <p id="impText"></p>
+    <button type="button" class="pri" id="impGo">Đưa lên tài khoản</button>
+    <button type="button" id="impSkip">Để sau</button>
+  </div>
+</div>
+
+<!-- ===== Quản lý thành viên (admin) ===== -->
+<div class="mdl" id="memModal" hidden>
+  <div class="mdl-card">
+    <h2>Thành viên được phép dùng <button type="button" id="memClose" aria-label="Đóng">×</button></h2>
+    <p class="sub">Thêm email của điều dưỡng để họ đăng nhập được. Điều dưỡng chỉ thấy bản ghi do chính mình nhập; người quản trị thấy toàn bộ. Gỡ email thì người đó không vào được nữa, nhưng bản ghi họ đã nhập vẫn được giữ.</p>
+    <form class="mem-add" id="memForm">
+      <input id="memEmail" type="email" placeholder="email@vidu.com" required>
+      <input id="memName" placeholder="Họ tên (ghi chú)" maxlength="60">
+      <button type="submit">Thêm</button>
+    </form>
+    <p class="mem-msg" id="memMsg"></p>
+    <div class="mem-list" id="memList"></div>
+  </div>
+</div>
+
 
 <div class="topbar">
   <div class="topbar-in">
     <div class="logo" id="logo"><i>⊕</i> Công cụ số HSTC</div>
-    <div class="who" id="whoBox">Chưa nhập họ tên<small>Nhập ở trang chủ</small></div>
+    <div class="who" id="whoBox">Chưa nhập tên viết tắt<small>Nhập ở trang chủ</small></div>
   </div>
 </div>
+<div id="acctSlot"></div>
 
 <div id="viewHome">
   <header class="hero wrap">
@@ -755,29 +945,29 @@ td.dv-green,td.dv-green input{color:#0A6B50;font-weight:700}
     <div class="badge"><b id="cnt">0</b> thang điểm sẵn có · thêm được không giới hạn</div>
     <h1><span>Bộ công cụ số hỗ trợ chuẩn hóa đánh giá điều dưỡng, cảnh báo sớm và an toàn dùng thuốc</span></h1>
     <p class="byline"><span class="author">Chịu trách nhiệm bởi Tăng Ngọc Tân</span>
-      <span class="ver" id="verChip" style="cursor:pointer" title="Bấm để chạy tự kiểm tra">Phiên bản 2026.09.08</span></p>
-    <p class="lede">Nhập họ tên người bệnh, chọn thang điểm cần dùng, chấm điểm và nhận ngay kết luận kèm can thiệp đề xuất. Sau khi lưu các thang điểm đã chấm, dùng nút in ở cuối trang để xuất một phiếu lượng giá tổng hợp.</p>
+      <span class="ver" id="verChip" style="cursor:pointer" title="Bấm để chạy tự kiểm tra">Phiên bản 2026.10.02</span></p>
+    <p class="lede">Nhập tên viết tắt và năm sinh người bệnh, chọn thang điểm cần dùng, chấm điểm và nhận ngay kết luận kèm can thiệp đề xuất. Sau khi lưu các thang điểm đã chấm, dùng nút in ở cuối trang để xuất một phiếu lượng giá tổng hợp.</p>
 
     <div class="legal">
       <div class="ttl">Đây là công cụ hỗ trợ tính toán — không phải hồ sơ bệnh án</div>
       <p>Kết quả chấm điểm <b>bắt buộc phải được chép vào hồ sơ bệnh án chính thức</b> của cơ sở. Bản ghi trong công cụ này không có chữ ký số, không có nhật ký kiểm toán và <b>không có giá trị pháp lý thay thế bệnh án</b>. Dùng nút “Sao chép bản ghi” để chép nguyên văn sang bệnh án.</p>
       <p>Công cụ hỗ trợ ra quyết định, <b>không thay thế đánh giá lâm sàng trực tiếp</b> và không thay thế y lệnh của bác sĩ hay phác đồ của cơ sở điều trị.</p>
-      <p><b>Bản ghi trong công cụ này có chứa họ tên và năm sinh người bệnh, nên là dữ liệu cá nhân nhạy cảm</b> theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15. Chỉ nhập trên máy thuộc quản lý của đơn vị, không dùng máy cá nhân hay máy dùng chung ngoài khoa. Không nhập số điện thoại, địa chỉ, số căn cước hay bất kỳ thông tin định danh nào khác ngoài hai trường trên. Khóa màn hình khi rời máy, và xóa bản ghi khi không còn cần dùng.</p>
+      <p><b>Bản ghi được lưu trực tuyến theo tài khoản và chỉ nhận diện người bệnh bằng tên viết tắt + năm sinh</b> (ví dụ NVA – 1958), không lưu họ tên đầy đủ. Đây vẫn là dữ liệu sức khỏe cần được bảo vệ theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15: không nhập số điện thoại, địa chỉ, số căn cước hay thông tin định danh nào khác; không chia sẻ mật khẩu; đăng xuất khi dùng máy chung.</p>
     </div>
 
     <div class="ptcard">
       <h2>Thông tin lượt đánh giá</h2>
       <div class="fields">
-        <div class="field"><label for="ptName">Họ tên người bệnh</label><input id="ptName" placeholder="Nguyễn Văn A" autocomplete="off" maxlength="60"></div>
+        <div class="field"><label for="ptName">Tên viết tắt người bệnh</label><input id="ptName" placeholder="NVA" autocomplete="off" maxlength="60" title="Gõ họ tên đầy đủ cũng được — công cụ tự đổi sang chữ cái đầu (Nguyễn Văn A → NVA)"></div>
         <div class="field"><label for="ptBirth">Năm sinh</label><input id="ptBirth" type="number" inputmode="numeric" min="1900" max="2100" placeholder="1958"></div>
         <div class="field"><label for="ptWhen">Ngày giờ đánh giá</label><input id="ptWhen" type="datetime-local"></div>
         <div class="field"><label for="ptBy">Người đánh giá</label><input id="ptBy" placeholder="ĐD. Trần B" autocomplete="off"></div>
       </div>
       <div class="ptbar">
         <button class="sm" id="newPtBtn" type="button">Bắt đầu người bệnh mới</button>
-        <span class="warn" id="ptWarn" hidden>Chưa nhập họ tên người bệnh</span>
+        <span class="warn" id="ptWarn" hidden>Chưa nhập tên viết tắt người bệnh</span>
       </div>
-      <p class="privnote" id="ageHint">Nhập đúng họ tên như trong hồ sơ bệnh án để bản ghi khớp được với người bệnh. Ghi năm sinh, không ghi ngày tháng sinh đầy đủ. Chỉ nhập trên máy của đơn vị, không dùng máy cá nhân.</p>
+      <p class="privnote" id="ageHint">Ghi chữ cái đầu của họ tên (Nguyễn Văn A → <b>NVA</b>) và năm sinh. Gõ họ tên đầy đủ thì công cụ tự rút gọn, họ tên đầy đủ không được lưu. Dùng cùng một tên viết tắt cho cùng người bệnh để lịch sử và xu hướng nối liền nhau.</p>
     </div>
 
     <div class="findbar">
@@ -810,12 +1000,12 @@ td.dv-green,td.dv-green input{color:#0A6B50;font-weight:700}
       <button class="sm" id="pbToggle" style="margin-top:8px">Xuất Excel theo người bệnh</button>
       <div class="xlsx-panel" id="pbPanel" hidden>
         <div class="xlsx-row">
-          <div class="xlsx-f" style="flex:1;min-width:220px"><label for="pbName">Họ và tên người bệnh</label>
-            <input list="pbList" id="pbName" placeholder="Nguyễn Văn A" autocomplete="off">
+          <div class="xlsx-f" style="flex:1;min-width:220px"><label for="pbName">Tên viết tắt người bệnh</label>
+            <input list="pbList" id="pbName" placeholder="NVA" autocomplete="off">
             <datalist id="pbList"></datalist></div>
           <button class="btn chinh" id="pbGo">Tải file Excel</button>
         </div>
-        <p class="xlsx-note" id="pbNote">Gộp toàn bộ lượt chấm của người bệnh này qua mọi ngày đang lưu trong máy, xếp theo từng thang điểm để xem biến thiên theo thời gian — không giới hạn theo ngày/tháng đang chọn ở trên. Gõ đúng họ tên đã dùng khi chấm điểm, hoặc chọn từ danh sách gợi ý.</p>
+        <p class="xlsx-note" id="pbNote">Gộp toàn bộ lượt chấm của người bệnh này qua mọi ngày đang lưu, xếp theo từng thang điểm để xem biến thiên theo thời gian — không giới hạn theo ngày/tháng đang chọn ở trên. Gõ đúng tên viết tắt đã dùng khi chấm điểm, hoặc chọn từ danh sách gợi ý.</p>
       </div>
       <p class="empty" id="logEmpty">Chưa có bản ghi nào. Chấm xong một thang điểm rồi bấm “Lưu vào phiếu tổng hợp”.</p>
       <div id="logList"></div>
@@ -846,7 +1036,7 @@ td.dv-green,td.dv-green input{color:#0A6B50;font-weight:700}
     </div>
 
     <footer>
-      <b>Bộ công cụ số hỗ trợ chuẩn hóa đánh giá điều dưỡng, cảnh báo sớm và an toàn dùng thuốc — chịu trách nhiệm bởi Tăng Ngọc Tân. Phiên bản 2026.09.08.</b><br><br>Các thang điểm và gói can thiệp được xây dựng theo bản gốc quốc tế: Glasgow Coma Scale (Teasdale &amp; Jennett 1974, cập nhật 2014), Morse Fall Scale cải tiến (Morse 1989), Braden Scale (Braden &amp; Bergstrom 1988), CPOT (Gélinas 2006), ICDSC (Bergeron 2001), CAM-ICU (Ely 2001) kèm thang RASS (Sessler 2002), AVPU và bản mở rộng ACVPU (RCP 2017), FOUR score (Wijdicks 2005), SAS (Riker 1999), ABCDEF Bundle / ICU Liberation (Devlin PADIS 2018; Pun 2019; Barnes-Daly 2017), VIP Score (Jackson 1998), VAP Bundle (IHI/CDC/SHEA-IDSA), Central Line Bundle phòng ngừa CLABSI (CDC/HICPAC, IHI), CAUTI Bundle (CDC/HICPAC, SHEA/IDSA), Sepsis Bundle giờ đầu tiên (Surviving Sepsis Campaign — SCCM/ESICM), Geneva cải tiến (Le Gal 2006), Wells cải tiến (Wells 2000–2001), NEWS2 (RCP 2017), SOFA (Vincent 1996) và SOFA-2 (Ranzani 2025), KDIGO 2012 cho tổn thương thận cấp, thang điểm đau trực quan VAS/NRS. Danh mục thuốc cao nguy cơ theo ISMP List of High-Alert Medications in Acute Care Settings; khoảng liều thuốc truyền tham khảo Surviving Sepsis Campaign 2021 và PADIS 2018; phân tầng thuốc kéo dài QT theo CredibleMeds (AZCERT) và thang nguy cơ Tisdale 2013; cài đặt máy thở ban đầu theo ARDS Network, ATS 2024, ESICM 2023, GOLD 2026, GINA, Brain Trauma Foundation và đồng thuận ESICM 2020. Can thiệp tham chiếu hướng dẫn EPUAP/NPIAP/PPPIA, NICE, AHRQ, INS, PADIS 2018, ESC 2019 và SSC 2021. Công cụ hỗ trợ ra quyết định, không thay thế đánh giá lâm sàng trực tiếp, y lệnh của bác sĩ hay phác đồ của cơ sở điều trị. Kết quả phải được chép vào hồ sơ bệnh án chính thức; bản ghi tại đây không phải hồ sơ bệnh án và không có giá trị pháp lý thay thế. Dữ liệu chỉ lưu trên chính máy đang dùng, không gửi đi bất kỳ đâu. Bản ghi có chứa họ tên và năm sinh người bệnh nên thuộc dữ liệu cá nhân nhạy cảm theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15: chỉ dùng trên máy thuộc quản lý của đơn vị, khóa màn hình khi rời máy, và xóa bản ghi khi không còn cần dùng.
+      <b>Bộ công cụ số hỗ trợ chuẩn hóa đánh giá điều dưỡng, cảnh báo sớm và an toàn dùng thuốc — chịu trách nhiệm bởi Tăng Ngọc Tân. Phiên bản 2026.10.02.</b><br><br>Các thang điểm và gói can thiệp được xây dựng theo bản gốc quốc tế: Glasgow Coma Scale (Teasdale &amp; Jennett 1974, cập nhật 2014), Morse Fall Scale cải tiến (Morse 1989), Braden Scale (Braden &amp; Bergstrom 1988), CPOT (Gélinas 2006), ICDSC (Bergeron 2001), CAM-ICU (Ely 2001) kèm thang RASS (Sessler 2002), AVPU và bản mở rộng ACVPU (RCP 2017), FOUR score (Wijdicks 2005), SAS (Riker 1999), ABCDEF Bundle / ICU Liberation (Devlin PADIS 2018; Pun 2019; Barnes-Daly 2017), VIP Score (Jackson 1998), VAP Bundle (IHI/CDC/SHEA-IDSA), Central Line Bundle phòng ngừa CLABSI (CDC/HICPAC, IHI), CAUTI Bundle (CDC/HICPAC, SHEA/IDSA), Sepsis Bundle giờ đầu tiên (Surviving Sepsis Campaign — SCCM/ESICM), Geneva cải tiến (Le Gal 2006), Wells cải tiến (Wells 2000–2001), NEWS2 (RCP 2017), SOFA (Vincent 1996) và SOFA-2 (Ranzani 2025), KDIGO 2012 cho tổn thương thận cấp, thang điểm đau trực quan VAS/NRS. Danh mục thuốc cao nguy cơ theo ISMP List of High-Alert Medications in Acute Care Settings; khoảng liều thuốc truyền tham khảo Surviving Sepsis Campaign 2021 và PADIS 2018; phân tầng thuốc kéo dài QT theo CredibleMeds (AZCERT) và thang nguy cơ Tisdale 2013; cài đặt máy thở ban đầu theo ARDS Network, ATS 2024, ESICM 2023, GOLD 2026, GINA, Brain Trauma Foundation và đồng thuận ESICM 2020. Can thiệp tham chiếu hướng dẫn EPUAP/NPIAP/PPPIA, NICE, AHRQ, INS, PADIS 2018, ESC 2019 và SSC 2021. Công cụ hỗ trợ ra quyết định, không thay thế đánh giá lâm sàng trực tiếp, y lệnh của bác sĩ hay phác đồ của cơ sở điều trị. Kết quả phải được chép vào hồ sơ bệnh án chính thức; bản ghi tại đây không phải hồ sơ bệnh án và không có giá trị pháp lý thay thế. Dữ liệu chỉ lưu trên chính máy đang dùng, không gửi đi bất kỳ đâu. Bản ghi có chứa họ tên và năm sinh người bệnh nên thuộc dữ liệu cá nhân nhạy cảm theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15: chỉ dùng trên máy thuộc quản lý của đơn vị, khóa màn hình khi rời máy, và xóa bản ghi khi không còn cần dùng.
     </footer>
   </div>
 </div>
@@ -2983,7 +3173,7 @@ const KEYWORDS={
  dosecalc:"tính liều quy đổi tốc độ bơm tiêm ml giờ mcg kg phút vận mạch an thần norepinephrine adrenaline dopamine dobutamine propofol fentanyl insulin heparin pha thuốc"
 };
 
-const APP_VERSION="2026.09.08";
+const APP_VERSION="2026.10.02";
 const APP_AUTHOR="Tăng Ngọc Tân";
 const WC={0:"#11A177",1:"#E08A00",2:"#D62F1E"};
 const BANDBG={"r-good":["#E3F7F0","#0A6B50"],"r-mid":["#FFF4DC","#8A5600"],"r-bad":["#FFEAE6","#B5210F"],"r-crit":["#FFEAE6","#9B1B0F"]};
@@ -3038,7 +3228,13 @@ function writeStore(){
   if(back!==str) throw new Error("Trình duyệt không lưu được dữ liệu");
   storeBytes=str.length;
 }
+/* Truy cập mảng bản ghi từ lớp lưu trực tuyến (script module) */
+function getLog(){ return log; }
+function setLog(a){ log=a; }
+/* Bản ghi do chính người đang đăng nhập nhập — các thao tác xóa hàng loạt chỉ áp vào đây */
+function cloudMine(r){ return !window.CLOUD_ON || !r.owner || r.owner===window.CLOUD_UID; }
 function saveStore(){
+  if(window.CLOUD_ON && window.cloudSave){ window.cloudSave(); paintStoreNote(); return; }
   try{
     if(JSON.stringify(log).length>SOFT_LIMIT) pruneOld();
     writeStore(); storeOK=true;
@@ -3078,6 +3274,12 @@ function loadStore(){
 function fmtSize(b){ return b<1024?b+" B":b<1048576?(b/1024).toFixed(0)+" KB":(b/1048576).toFixed(1)+" MB"; }
 function paintStoreNote(){
   const n=el("storeNote"); if(!n) return;
+  if(window.CLOUD_ON){
+    const scopeTxt = window.CLOUD_ADMIN ? (el("acctScope")&&el("acctScope").value==="mine" ? "của bạn" : "của cả khoa (60 ngày gần nhất)") : "của bạn";
+    n.innerHTML=`Đang hiển thị ${log.length} bản ghi ${scopeTxt}, lưu trực tuyến theo tài khoản — mở trên máy nào cũng thấy. `+
+      `Bản ghi được giữ lâu dài, không tự xóa sau ${KEEP_DAYS} ngày. Xuất Excel lấy dữ liệu trực tiếp từ máy chủ theo khoảng ngày đã chọn.`;
+    return;
+  }
   if(!storeOK){
     n.innerHTML="<b>Trình duyệt đang chặn lưu trữ</b> — bản ghi chỉ tồn tại tới khi tải lại trang. Xuất sổ Excel trước khi đóng.";
     return;
@@ -3104,8 +3306,21 @@ function whenText(){
   const d=new Date(v);
   return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} lúc ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
+/* Rút gọn họ tên thành chữ cái đầu, bỏ dấu: "Nguyễn Văn A" → "NVA".
+   Gõ sẵn chữ in hoa (NVA, TTMH) thì giữ nguyên. Họ tên đầy đủ không bao giờ được lưu. */
+function abbrevName(raw){
+  const s=String(raw||"").trim();
+  if(!s) return "";
+  const words=s.split(/\s+/).filter(Boolean);
+  let out;
+  if(words.length>1) out=words.map(w=>w[0]).join("");
+  else if(s===s.toUpperCase() || s.length<=3) out=s;
+  else out=s[0];
+  return out.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[đĐ]/g,"D")
+            .toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,8);
+}
 function ptInfo(){
-  const n=el("ptName")?el("ptName").value.trim():"";
+  const n=el("ptName")?abbrevName(el("ptName").value):"";
   const y=el("ptBirth")?el("ptBirth").value.trim():"";
   const by=el("ptBy")?el("ptBy").value.trim():"";
   const birth = y!=="" && +y>=1900 && +y<=2100 ? +y : null;
@@ -3134,13 +3349,13 @@ function ptBirthText(p){
 }
 function refreshPt(){
   const p=ptInfo();
-  const line = p.name || "Chưa nhập họ tên";
+  const line = p.name || "Chưa nhập tên viết tắt";
   const sub = [ptBirthText(p), p.when!=="—"?p.when:""].filter(Boolean).join(" · ");
   el("whoBox").innerHTML = `${esc(line)}<small>${esc(sub||"Nhập ở trang chủ")}</small>`;
   const chip=el("ptChip");
   chip.textContent = p.name
     ? [p.name, ptBirthText(p), p.when!=="—"?p.when:""].filter(Boolean).join(" · ")
-    : "⚠ Chưa nhập họ tên người bệnh";
+    : "⚠ Chưa nhập tên viết tắt người bệnh";
   chip.classList.toggle("warn", !p.name);
 }
 
@@ -3264,7 +3479,8 @@ function renderLog(){
     const d=document.createElement("div");
     d.className="rec";
     const meta=[(r.patient&&r.patient.code)?r.patient.code:"", r.when,
-                (r.patient&&r.patient.by)?"ĐG: "+r.patient.by:""].filter(Boolean).join(" · ");
+                (r.patient&&r.patient.by)?"ĐG: "+r.patient.by:"",
+                (window.CLOUD_ADMIN && r.owner && r.owner!==window.CLOUD_UID)?"TK: "+(r.ownerName||r.ownerEmail):""].filter(Boolean).join(" · ");
     d.innerHTML=`<span class="sc" style="background:${r.dot}">${esc(r.tag)}</span>
       <span class="nm">${esc(r.scale)}<small>${esc(meta)}</small></span>
       <span class="bd" style="background:${bg};color:${fg}">${esc(r.band)}</span>
@@ -3275,7 +3491,8 @@ function renderLog(){
   list.querySelectorAll(".del").forEach(b=>b.onclick=()=>{
     const i=+b.dataset.i, r=log[i];
     if(!r) return;
-    if(!confirm(`Xóa bản ghi ${r.scale} — ${r.tag} của người bệnh ${ptLabel(r.patient)||"(không rõ)"}?`)) return;
+    const other = window.CLOUD_ON && !cloudMine(r) ? `\n\nBản ghi này do ${r.ownerName||r.ownerEmail||"người khác"} nhập.` : "";
+    if(!confirm(`Xóa bản ghi ${r.scale} — ${r.tag} của người bệnh ${ptLabel(r.patient)||"(không rõ)"}?${other}`)) return;
     log.splice(i,1);saveStore();renderHome();
     reportDelete(1,"("+r.scale+")");
   });
@@ -3320,7 +3537,7 @@ function renderPatients(){
   const groups=new Map();
   today.forEach(r=>{
     const p=r.patient||{};
-    const key=ptLabel(p)||"(chưa nhập họ tên)";
+    const key=ptLabel(p)||"(chưa nhập tên)";
     if(!groups.has(key))groups.set(key,{code:key,name:ptLabel(p)||key,birth:p.birth,age:p.age,recs:[]});
     groups.get(key).recs.push(r);
   });
@@ -3380,8 +3597,8 @@ function wirePatientDelete(){
     b.onclick=()=>{
       const code=b.getAttribute("data-code");
       const d=activeDay();
-      const hit=log.filter(r=>dayKeyOf(r)===d &&
-        (ptLabel(r.patient)||"(chưa nhập họ tên)")===code);
+      const hit=log.filter(r=>dayKeyOf(r)===d && cloudMine(r) &&
+        (ptLabel(r.patient)||"(chưa nhập tên)")===code);
       if(!hit.length){toast("Không còn bản ghi nào của người bệnh này");return;}
       if(!confirm(`Xóa toàn bộ ${hit.length} bản ghi của người bệnh ${code} trong ngày ${dayLabel(d)}?`)) return;
       log=log.filter(r=>!hit.includes(r));
@@ -6165,7 +6382,7 @@ function xDaysInRange(fromDay,toDay){
 function xDateUTC(dayKey){ const [y,m,d]=dayKey.split("-").map(Number); return new Date(Date.UTC(y,m-1,d)); }
 
 function xPtDisplay(p){
-  const name=ptLabel(p)||"(chưa nhập họ tên)";
+  const name=ptLabel(p)||"(chưa nhập tên)";
   if(p&&p.birth!==null&&p.birth!==undefined) return name+" – "+p.birth;
   if(p&&p.age!==null&&p.age!==undefined) return name+" ("+p.age+" tuổi)";
   return name;
@@ -6174,10 +6391,12 @@ function xPtDisplay(p){
 /* Gom bản ghi theo ngày rồi theo người bệnh: trong một ngày, mọi lượt chấm của
    CÙNG một người bệnh nằm liền nhau (nhóm xuất hiện sớm nhất trong ngày đứng trước),
    các ngày không có bản ghi nào bị bỏ qua ở sheet Dữ liệu (nhưng vẫn tính ở Tổng hợp). */
+/* Nguồn dữ liệu cho xuất Excel: khi lưu trực tuyến, lấy thẳng từ máy chủ theo khoảng ngày */
+let XSRC=null;
 function xCollect(fromDay,toDay){
   const days=xDaysInRange(fromDay,toDay);
   return days.map(dk=>{
-    const recs=log.filter(r=>dayKeyOf(r)===dk);
+    const recs=(XSRC||log).filter(r=>dayKeyOf(r)===dk);
     if(!recs.length) return {dayKey:dk,groups:[]};
     const byPt=new Map();
     recs.forEach(r=>{
@@ -6249,7 +6468,7 @@ async function xBuildWorkbook(fromDay,toDay){
   hd.getCell("B"+r).font={name:THANG,size:12,bold:true,color:{argb:WARNTX}};
   hd.getCell("B"+r).fill=solid(WARNBG); hd.getCell("B"+r).border=B_ALL; r++;
   hd.mergeCells("B"+r+":C"+r);
-  hd.getCell("B"+r).value="File này chứa họ tên và năm sinh người bệnh nên là dữ liệu cá nhân nhạy cảm theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15. Chỉ lưu trên máy hoặc tài khoản thuộc quản lý của đơn vị, không chia sẻ công khai, và xóa khi hết thời hạn cần lưu.";
+  hd.getCell("B"+r).value="File này chứa tên viết tắt, năm sinh và dữ liệu sức khỏe của người bệnh nên là dữ liệu cá nhân nhạy cảm theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15. Chỉ lưu trên máy hoặc tài khoản thuộc quản lý của đơn vị, không chia sẻ công khai, và xóa khi hết thời hạn cần lưu.";
   hd.getCell("B"+r).font={name:THANG,size:10.5,color:{argb:WARNTX}};
   hd.getCell("B"+r).fill=solid(WARNBG); hd.getCell("B"+r).alignment={wrapText:true,vertical:"top"};
   hd.getCell("B"+r).border=B_ALL; hd.getRow(r).height=48;
@@ -6402,7 +6621,13 @@ async function xExportRun(){
   note.className="xlsx-note"; note.textContent="Đang chuẩn bị dữ liệu…";
   try{
     await loadExcelJS();
-    const {wb,dayCount}=await xBuildWorkbook(fromDay,toDay);
+    if(window.CLOUD_ON && window.cloudFetchRange){
+      note.textContent="Đang lấy dữ liệu từ máy chủ…";
+      XSRC=await window.cloudFetchRange(fromDay,toDay);
+    }
+    let built;
+    try{ built=await xBuildWorkbook(fromDay,toDay); } finally { XSRC=null; }
+    const {wb,dayCount}=built;
     if(dayCount===0){
       note.className="xlsx-note err";
       note.textContent="Không có bản ghi nào trong khoảng thời gian đã chọn.";
@@ -6493,7 +6718,7 @@ async function pbBuildWorkbook(nameKey){
   const B_HEAD={top:med,left:med,bottom:med,right:med};
 
   const p = data.patient||{};
-  const pname = ptLabel(p) || "(chưa nhập họ tên)";
+  const pname = ptLabel(p) || "(chưa nhập tên)";
   const pbirth = xPtDisplay(p);
   const dFirst = data.first ? xDayLabel(data.first.slice(0,10)) : "—";
   const dLast = data.last ? xDayLabel(data.last.slice(0,10)) : "—";
@@ -6517,7 +6742,7 @@ async function pbBuildWorkbook(nameKey){
   ws.getRow(2).height=20;
 
   ws.mergeCells(3,1,3,NC);
-  ws.getCell(3,1).value = "Đơn vị Hồi sức tích cực · Trường Đại học Y Dược Cần Thơ — dữ liệu chứa họ tên và năm sinh người bệnh, chỉ dùng trên máy thuộc quản lý của đơn vị.";
+  ws.getCell(3,1).value = "Đơn vị Hồi sức tích cực · Trường Đại học Y Dược Cần Thơ — dữ liệu chứa tên viết tắt, năm sinh và dữ liệu sức khỏe người bệnh, chỉ dùng trên máy thuộc quản lý của đơn vị.";
   ws.getCell(3,1).font={name:THANG,size:9.5,italic:true,color:{argb:WARNTX}};
   ws.getCell(3,1).fill=solid(WARNBG); ws.getCell(3,1).alignment={horizontal:"center",vertical:"middle"};
 
@@ -6612,8 +6837,8 @@ async function pbBuildWorkbook(nameKey){
 async function pbExportRun(){
   const btn=el("pbGo"), note=el("pbNote");
   const typed=(el("pbName").value||"").trim();
-  if(!typed){ note.className="xlsx-note err"; note.textContent="Nhập họ tên người bệnh cần xuất."; return; }
-  const key=typed.toLowerCase();
+  if(!typed){ note.className="xlsx-note err"; note.textContent="Nhập tên viết tắt người bệnh cần xuất."; return; }
+  const key=abbrevName(typed).toLowerCase();
   const cuBtn=btn.textContent;
   btn.textContent="Đang tạo file…"; btn.disabled=true;
   note.className="xlsx-note"; note.textContent="Đang chuẩn bị dữ liệu…";
@@ -6622,7 +6847,7 @@ async function pbExportRun(){
     const {wb,total}=await pbBuildWorkbook(key);
     if(!wb || total===0){
       note.className="xlsx-note err";
-      note.textContent="Không tìm thấy bản ghi nào của “"+typed+"”. Kiểm tra lại đúng họ tên đã dùng khi chấm điểm, hoặc chọn từ danh sách gợi ý.";
+      note.textContent="Không tìm thấy bản ghi nào của “"+typed+"”. Kiểm tra lại đúng tên viết tắt đã dùng khi chấm điểm, hoặc chọn từ danh sách gợi ý.";
     } else {
       const buf=await wb.xlsx.writeBuffer();
       const blob=new Blob([buf],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
@@ -8432,6 +8657,12 @@ document.addEventListener("change",e=>{
   if(t.id==="ptName"||t.id==="ptBirth"||t.id==="ptWhen"){refreshPt();homeBadges();return;}
   if(cur)update();
 });
+document.addEventListener("focusout",e=>{
+  if(e.target&&e.target.id==="ptName"){
+    const ab=abbrevName(e.target.value);
+    if(ab!==e.target.value){ e.target.value=ab; refreshPt(); homeBadges(); }
+  }
+});
 document.addEventListener("input",e=>{
   if(["ptName","ptBirth","ptWhen"].includes(e.target.id)){refreshPt();homeBadges();return;}
   if(cur)update();
@@ -8457,8 +8688,9 @@ el("saveBtn").onclick=()=>{
     stamp:stamp, dayKey:dayKeyFromWhen(stamp),
     score: NUMERIC_TYPES.includes(cur.type) && typeof r.total==="number" ? r.total : null,
     patient:{code:p.code,name:p.name,birth:p.birth,when:p.when,by:p.by}};
-  const i=log.findIndex(x=>recKey(x)===recKey(rec));
-  if(i>=0){log[i]=rec;toast("Đã cập nhật lần chấm này");}
+  const i=log.findIndex(x=>recKey(x)===recKey(rec) && cloudMine(x));
+  if(i>=0){["_id","owner","ownerEmail","ownerName"].forEach(k=>{ if(log[i][k]!==undefined) rec[k]=log[i][k]; });
+    log[i]=rec;toast("Đã cập nhật lần chấm này");}
   else{log.push(rec);toast("Đã lưu vào phiếu tổng hợp");}
   log.sort((a,b)=>String(a.stamp||"").localeCompare(String(b.stamp||"")));
   viewDay=dayKeyOf(rec);
@@ -8485,14 +8717,23 @@ function fallbackCopy(txt,done){
 
 el("clearBtn").onclick=()=>{
   const d=activeDay();
-  const n=log.filter(r=>dayKeyOf(r)===d).length;
-  if(!n){toast("Ngày này chưa có bản ghi");return;}
-  if(!confirm(`Xóa ${n} bản ghi của ngày ${dayLabel(d)}? Các ngày khác vẫn được giữ.`)) return;
-  log=log.filter(r=>dayKeyOf(r)!==d);
+  const n=log.filter(r=>dayKeyOf(r)===d && cloudMine(r)).length;
+  if(!n){toast(window.CLOUD_ON?"Ngày này chưa có bản ghi nào do bạn nhập":"Ngày này chưa có bản ghi");return;}
+  if(!confirm(`Xóa ${n} bản ghi${window.CLOUD_ON?" do bạn nhập":""} của ngày ${dayLabel(d)}? Các ngày khác vẫn được giữ.`)) return;
+  log=log.filter(r=>!(dayKeyOf(r)===d && cloudMine(r)));
   saveStore();renderHome();
   reportDelete(n, `của ngày ${dayLabel(d)}`);
 };
 el("clearAllBtn").onclick=()=>{
+  if(window.CLOUD_ON){
+    const mine=log.filter(cloudMine), n=mine.length;
+    if(!n){toast("Chưa có bản ghi nào do bạn nhập");return;}
+    if(!confirm(`Xóa TOÀN BỘ ${n} bản ghi do bạn nhập (đang hiển thị)?\n\nKhông thể hoàn tác. Bản ghi của người khác không bị ảnh hưởng. Nếu cần giữ lại, xuất sổ Excel trước khi xóa.`)) return;
+    log=log.filter(r=>!cloudMine(r));
+    saveStore();renderHome();
+    toast(`Đã xóa ${n} bản ghi`);
+    return;
+  }
   const n=log.length;
   if(!n){toast("Chưa có bản ghi nào");return;}
   const days=allDays().filter(d=>log.some(r=>dayKeyOf(r)===d));
@@ -8510,6 +8751,7 @@ el("clearAllBtn").onclick=()=>{
    Đây là chỗ người dùng hay tưởng nút xóa hỏng: xóa xong mở lại vẫn thấy dữ liệu
    cũ, vì trình duyệt nhận lệnh ghi nhưng không lưu. */
 function reportDelete(n, scope){
+  if(window.CLOUD_ON){ toast(`Đã xóa ${n} bản ghi ${scope}.`); return; }
   let persisted=true;
   try{
     const back=localStorage.getItem(LSKEY);
@@ -8547,7 +8789,7 @@ el("findClear").onclick=()=>{
 };
 el("newPtBtn").onclick=()=>{
   const cur=el("ptName").value.trim();
-  if(cur && !confirm(`Bắt đầu người bệnh mới?\n\nHọ tên "${cur}" sẽ được xóa khỏi ô nhập. Các bản ghi đã lưu của người bệnh này vẫn giữ nguyên trong phiếu tổng hợp.`)) return;
+  if(cur && !confirm(`Bắt đầu người bệnh mới?\n\nTên "${cur}" sẽ được xóa khỏi ô nhập. Các bản ghi đã lưu của người bệnh này vẫn giữ nguyên trong phiếu tổng hợp.`)) return;
   el("ptName").value=""; el("ptBirth").value=""; el("ptWhen").value=nowLocal();
   refreshPt(); renderHome();
   el("ptName").focus();
@@ -8560,7 +8802,7 @@ el("printBtn").onclick=()=>{
   ph.innerHTML=`<div style="font-weight:800;font-size:15px">PHIẾU LƯỢNG GIÁ ĐIỀU DƯỠNG — HỒI SỨC TÍCH CỰC</div>
     <div style="font-size:12px">Ngày ${dayLabel(d)}${codes.length?" · người bệnh: "+esc(codes.join(", ")):""}</div>
     <div style="font-size:11px;font-style:italic">Công cụ hỗ trợ tính toán — không phải hồ sơ bệnh án. Kết quả phải được chép vào hồ sơ bệnh án chính thức.</div>
-    <div style="font-size:10.5px">Chịu trách nhiệm: Tăng Ngọc Tân · Phiên bản 2026.09.08</div>`;
+    <div style="font-size:10.5px">Chịu trách nhiệm: Tăng Ngọc Tân · Phiên bản 2026.10.02</div>`;
   window.print();
 };
 el("xlsxToggle").onclick=()=>{
@@ -8584,6 +8826,340 @@ el("pbGo").onclick=pbExportRun;
 el("ptWhen").value=nowLocal();
 loadStore();
 refreshPt();renderHome();paintStoreNote();
+/* Thanh tài khoản nằm ngay dưới thanh tiêu đề */
+el("acctSlot").remove(); document.querySelector(".topbar").appendChild(el("acctBar"));
+</script>
+<script type="module">
+/* =========================================================
+   LƯU TRỰC TUYẾN + ĐĂNG NHẬP (Firebase Authentication + Firestore)
+   - Đăng nhập bằng email + mật khẩu, bắt buộc xác nhận email.
+   - Chỉ email có trong danh sách thành viên (members) do admin thêm mới dùng được.
+   - Điều dưỡng chỉ đọc/ghi bản ghi của chính mình; admin đọc được toàn bộ.
+   - Giao diện và logic chấm điểm giữ nguyên; lớp này chỉ thay chỗ lưu dữ liệu:
+     mảng `log` của công cụ được đồng bộ với bộ sưu tập "records" trên Firestore.
+   ========================================================= */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword,
+         sendEmailVerification, sendPasswordResetEmail, updateProfile, signOut }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, terminate, clearIndexedDbPersistence,
+         collection, doc, setDoc, deleteDoc, getDoc, getDocs, query, where, onSnapshot, serverTimestamp, writeBatch }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const $ = id => document.getElementById(id);
+const ADMINS = (window.HSTC_ADMINS || []).map(e => e.toLowerCase());
+const ADMIN_WINDOW_DAYS = 60;     /* admin: tải sẵn bản ghi cả khoa trong 60 ngày gần nhất; cũ hơn thì xuất Excel theo khoảng ngày */
+const META = ["_id", "owner", "ownerEmail", "ownerName"];
+
+const PANES = ["gLoading", "gNoConfig", "gLogin", "gSignup", "gReset", "gVerify", "gPending"];
+function pane(id) { PANES.forEach(p => $(p).hidden = p !== id); $("authGate").hidden = false; }
+function msg(text, kind) { const m = $("gMsg"); m.hidden = !text; m.textContent = text || ""; m.className = "gmsg " + (kind || "err"); }
+function busy(form, on) { form.querySelectorAll("button").forEach(b => b.disabled = on); }
+
+const ERR = {
+  "auth/invalid-credential": "Sai email hoặc mật khẩu.",
+  "auth/wrong-password": "Sai email hoặc mật khẩu.",
+  "auth/user-not-found": "Sai email hoặc mật khẩu.",
+  "auth/invalid-email": "Email không hợp lệ.",
+  "auth/email-already-in-use": "Email này đã có tài khoản. Quay lại đăng nhập, hoặc dùng “Quên mật khẩu”.",
+  "auth/weak-password": "Mật khẩu quá yếu — dùng ít nhất 8 ký tự.",
+  "auth/too-many-requests": "Thử quá nhiều lần. Chờ vài phút rồi thử lại.",
+  "auth/network-request-failed": "Không có kết nối mạng. Kiểm tra wifi/4G rồi thử lại.",
+  "auth/user-disabled": "Tài khoản này đã bị khóa.",
+  "permission-denied": "Không có quyền thực hiện thao tác này.",
+  "unavailable": "Không kết nối được máy chủ. Kiểm tra mạng rồi thử lại."
+};
+const errText = e => ERR[e && e.code] || ("Có lỗi: " + ((e && (e.code || e.message)) || "không rõ"));
+
+/* ---------- khởi tạo ---------- */
+const cfg = window.HSTC_FIREBASE_CONFIG;
+if (!cfg || !cfg.apiKey || String(cfg.apiKey).startsWith("DAN_")) {
+  pane("gNoConfig");
+  throw new Error("Chưa có firebaseConfig");
+}
+const app = initializeApp(cfg);
+const auth = getAuth(app);
+auth.languageCode = "vi";
+const db = initializeFirestore(app, { localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }) });
+const REC = collection(db, "records");
+
+/* ---------- trạng thái phiên ---------- */
+let user = null, isAdmin = false, scope = "all", unsub = null;
+let allDocs = new Map();     /* _id -> bản ghi từ máy chủ */
+let shown = new Map();       /* _id -> chuỗi JSON của bản ghi đang nằm trong `log` lúc vẽ gần nhất */
+let pendingWrites = false, fromCache = false, online = navigator.onLine;
+
+const serial = r => { const o = {}; Object.keys(r).forEach(k => { if (!META.includes(k)) o[k] = r[k]; }); return JSON.stringify(o); };
+const clone = r => JSON.parse(JSON.stringify(r));
+function parseDoc(d) {
+  const x = d.data();
+  try {
+    const r = JSON.parse(x.data);
+    r._id = d.id; r.owner = x.owner; r.ownerEmail = x.ownerEmail || ""; r.ownerName = x.ownerName || "";
+    return r;
+  } catch (e) { return null; }
+}
+
+/* ---------- đồng bộ: gọi thay cho ghi localStorage mỗi khi công cụ đổi `log` ---------- */
+window.cloudSave = function () {
+  if (!user) return;
+  const cur = getLog(), now = new Map();
+  cur.forEach(r => {
+    if (!r._id) r._id = doc(REC).id;
+    if (!r.owner) { r.owner = user.uid; r.ownerEmail = user.email.toLowerCase(); r.ownerName = user.displayName || ""; }
+    now.set(r._id, r);
+  });
+  for (const [id, r] of now) {
+    const s = serial(r);
+    if (shown.get(id) === s) continue;
+    if (r.owner !== user.uid) continue;                 /* không sửa bản ghi của người khác */
+    setDoc(doc(REC, id), {
+      owner: user.uid, ownerEmail: user.email.toLowerCase(), ownerName: user.displayName || "",
+      dayKey: dayKeyOf(r), stamp: r.stamp || "", scaleId: r.id || "", patient: ptLabel(r.patient) || "",
+      data: s, updatedAt: serverTimestamp()
+    }).catch(onWriteErr);
+    shown.set(id, s);
+  }
+  for (const id of [...shown.keys()]) {
+    if (now.has(id)) continue;
+    deleteDoc(doc(REC, id)).catch(onWriteErr);
+    shown.delete(id);
+  }
+  paintSync();
+};
+function onWriteErr(e) {
+  console.error(e);
+  toast(e && e.code === "permission-denied" ? "Máy chủ từ chối lưu — tài khoản có thể đã bị gỡ khỏi danh sách thành viên" : "Không lưu được lên máy chủ: " + errText(e));
+}
+
+/* ---------- nhận dữ liệu từ máy chủ ---------- */
+function refreshView() {
+  const arr = [...allDocs.values()]
+    .filter(r => !isAdmin || scope === "all" || r.owner === user.uid)
+    .map(clone)
+    .sort((a, b) => String(a.stamp || "").localeCompare(String(b.stamp || "")));
+  shown = new Map(arr.map(r => [r._id, serial(r)]));
+  setLog(arr);
+  renderHome(); paintStoreNote(); paintSync();
+}
+function listen() {
+  if (unsub) unsub();
+  const q = isAdmin ? query(REC, where("dayKey", ">=", daysAgo(ADMIN_WINDOW_DAYS)))
+                    : query(REC, where("owner", "==", user.uid));
+  unsub = onSnapshot(q, { includeMetadataChanges: true }, snap => {
+    pendingWrites = snap.metadata.hasPendingWrites; fromCache = snap.metadata.fromCache;
+    const next = new Map();
+    snap.forEach(d => { const r = parseDoc(d); if (r) next.set(d.id, r); });
+    const changed = next.size !== allDocs.size || [...next].some(([id, r]) => serial(r) !== (allDocs.has(id) ? serial(allDocs.get(id)) : null));
+    allDocs = next;
+    if (changed) refreshView(); else paintSync();
+  }, e => { console.error(e); toast("Mất kết nối dữ liệu: " + errText(e)); paintSync(); });
+}
+function daysAgo(n) { const d = new Date(); d.setDate(d.getDate() - n); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
+
+/* Lấy bản ghi theo khoảng ngày trực tiếp từ máy chủ — dùng cho xuất Excel, kể cả ngày cũ hơn phần đang hiển thị */
+window.cloudFetchRange = async function (fromDay, toDay) {
+  const q = (isAdmin && scope === "all")
+    ? query(REC, where("dayKey", ">=", fromDay), where("dayKey", "<=", toDay))
+    : query(REC, where("owner", "==", user.uid));
+  const snap = await getDocs(q);
+  const out = [];
+  snap.forEach(d => { const r = parseDoc(d); if (r && dayKeyOf(r) >= fromDay && dayKeyOf(r) <= toDay) out.push(r); });
+  return out.sort((a, b) => String(a.stamp || "").localeCompare(String(b.stamp || "")));
+};
+
+/* ---------- thanh tài khoản ---------- */
+function paintSync() {
+  const s = $("acctSync"); if (!s) return;
+  if (!online) { s.className = "sync off"; s.textContent = pendingWrites ? "Mất mạng — thay đổi sẽ gửi khi có mạng" : "Mất mạng — đang dùng dữ liệu đã lưu trên máy"; }
+  else if (pendingWrites) { s.className = "sync wait"; s.textContent = "Đang gửi lên máy chủ…"; }
+  else if (fromCache) { s.className = "sync wait"; s.textContent = "Đang kết nối máy chủ…"; }
+  else { s.className = "sync"; s.textContent = "Đã đồng bộ"; }
+}
+addEventListener("online", () => { online = true; paintSync(); });
+addEventListener("offline", () => { online = false; paintSync(); });
+addEventListener("beforeunload", e => { if (pendingWrites && !online) { e.preventDefault(); e.returnValue = ""; } });
+
+function showApp() {
+  $("authGate").hidden = true; msg("");
+  $("acctBar").hidden = false;
+  $("acctWho").innerHTML = `${esc(user.displayName || user.email)}<small>${esc(user.displayName ? user.email : "")}</small>`;
+  $("acctRole").textContent = isAdmin ? "Quản trị" : "Điều dưỡng";
+  $("acctRole").className = "role" + (isAdmin ? " admin" : "");
+  $("acctScope").hidden = !isAdmin;
+  $("acctMembers").hidden = !isAdmin;
+  const by = $("ptBy");
+  if (by && !by.value.trim() && user.displayName) { by.value = user.displayName; }
+  window.scrollTo(0, 0);   /* thanh tài khoản vừa hiện làm trình duyệt tự cuộn lệch — đưa về đầu trang */
+}
+$("acctScope").onchange = e => { scope = e.target.value; refreshView(); };
+
+/* ---------- vào phiên làm việc ---------- */
+async function startSession(u, admin) {
+  user = u; isAdmin = admin; scope = "all";
+  window.CLOUD_ON = true; window.CLOUD_UID = u.uid; window.CLOUD_ADMIN = admin;
+  setLog([]); shown = new Map(); allDocs = new Map();
+  showApp();
+  renderHome(); paintStoreNote();
+  listen();
+  offerImport();
+}
+
+async function checkMember(u) {
+  const em = u.email.toLowerCase();
+  if (ADMINS.includes(em)) return "admin";
+  const s = await getDoc(doc(db, "members", em));
+  return s.exists() ? "nurse" : null;
+}
+
+async function route(u) {
+  if (!u) { window.CLOUD_ON = false; pane("gLogin"); return; }
+  if (!u.emailVerified) { $("vEmail").textContent = u.email; pane("gVerify"); return; }
+  pane("gLoading");
+  try {
+    const t = await u.getIdTokenResult();
+    if (!t.claims.email_verified) await u.getIdToken(true);  /* mã thông báo cũ chưa ghi nhận đã xác nhận email */
+    const role = await checkMember(u);
+    if (!role) { $("pEmail").textContent = u.email; pane("gPending"); return; }
+    await startSession(u, role === "admin");
+  } catch (e) {
+    console.error(e);
+    if (e.code === "permission-denied") { $("pEmail").textContent = u.email; pane("gPending"); return; }
+    pane("gLogin"); msg(errText(e));
+  }
+}
+onAuthStateChanged(auth, u => { msg(""); route(u); });
+
+/* ---------- các biểu mẫu ---------- */
+document.querySelectorAll("#authGate [data-go]").forEach(b => b.onclick = () => { msg(""); pane(b.dataset.go); });
+document.querySelectorAll("[data-signout]").forEach(b => b.onclick = doSignOut);
+
+$("gLogin").onsubmit = async e => {
+  e.preventDefault(); const f = e.target; busy(f, true); msg("");
+  try { await signInWithEmailAndPassword(auth, $("gEmail").value.trim(), $("gPass").value); $("gPass").value = ""; }
+  catch (err) { msg(errText(err)); }
+  busy(f, false);
+};
+
+$("gSignup").onsubmit = async e => {
+  e.preventDefault(); const f = e.target; msg("");
+  const name = $("sName").value.trim(), em = $("sEmail").value.trim(), p1 = $("sPass").value, p2 = $("sPass2").value;
+  if (p1 !== p2) { msg("Hai lần nhập mật khẩu không khớp."); return; }
+  if (p1.length < 8) { msg("Mật khẩu cần ít nhất 8 ký tự."); return; }
+  busy(f, true);
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, em, p1);
+    await updateProfile(cred.user, { displayName: name });
+    await sendEmailVerification(cred.user);
+    $("sPass").value = $("sPass2").value = "";
+    $("vEmail").textContent = em; pane("gVerify");
+    msg("Đã tạo tài khoản. Kiểm tra hộp thư để xác nhận email.", "ok");
+  } catch (err) { msg(errText(err)); }
+  busy(f, false);
+};
+
+$("gReset").onsubmit = async e => {
+  e.preventDefault(); const f = e.target; busy(f, true); msg("");
+  try { await sendPasswordResetEmail(auth, $("rEmail").value.trim()); msg("Nếu email này đã đăng ký, một đường link đặt lại mật khẩu đã được gửi. Xem cả mục Thư rác.", "ok"); }
+  catch (err) { msg(errText(err)); }
+  busy(f, false);
+};
+
+$("vDone").onclick = async () => {
+  const u = auth.currentUser; if (!u) return pane("gLogin");
+  $("vDone").disabled = true; msg("");
+  try {
+    await u.reload();
+    if (!auth.currentUser.emailVerified) msg("Email chưa được xác nhận. Mở email và bấm vào đường link trước.");
+    else { await auth.currentUser.getIdToken(true); await route(auth.currentUser); }
+  } catch (err) { msg(errText(err)); }
+  $("vDone").disabled = false;
+};
+$("vResend").onclick = async () => {
+  const u = auth.currentUser; if (!u) return;
+  try { await sendEmailVerification(u); msg("Đã gửi lại email xác nhận.", "ok"); } catch (err) { msg(errText(err)); }
+};
+$("pRetry").onclick = () => { msg(""); route(auth.currentUser); };
+
+async function doSignOut() {
+  if (pendingWrites && !confirm("Còn thay đổi chưa gửi lên máy chủ (đang mất mạng). Đăng xuất bây giờ sẽ mất các thay đổi đó. Vẫn đăng xuất?")) return;
+  try { if (unsub) unsub(); await signOut(auth); } catch (e) { }
+  /* Xóa bản sao dữ liệu lưu tạm trên máy — quan trọng với máy dùng chung trong khoa */
+  try { await terminate(db); await clearIndexedDbPersistence(db); } catch (e) { }
+  location.reload();
+}
+
+/* ---------- chuyển bản ghi cũ (lưu trên máy) lên tài khoản ---------- */
+function legacyRecords() {
+  try { const v = localStorage.getItem(LSKEY); const a = v ? JSON.parse(v) : []; return Array.isArray(a) ? a : []; }
+  catch (e) { return []; }
+}
+function offerImport() {
+  const old = legacyRecords();
+  const flag = "hstc.import.done." + user.uid;
+  let skipped = false; try { skipped = !!sessionStorage.getItem(flag) || !!localStorage.getItem(flag); } catch (e) { }
+  if (!old.length || skipped) { $("impBar").hidden = true; return; }
+  $("impText").innerHTML = `Máy này còn <b>${old.length} bản ghi</b> từ phiên bản cũ (lưu riêng trên máy). Đưa lên tài khoản của bạn để xem được trên mọi thiết bị? Họ tên người bệnh sẽ được tự đổi sang tên viết tắt.`;
+  $("impBar").hidden = false;
+  $("impSkip").onclick = () => { try { sessionStorage.setItem(flag, "1"); } catch (e) { } $("impBar").hidden = true; };
+  $("impGo").onclick = async () => {
+    $("impGo").disabled = true; $("impGo").textContent = "Đang gửi…";
+    try {
+      for (let i = 0; i < old.length; i += 400) {
+        const b = writeBatch(db);
+        old.slice(i, i + 400).forEach(r0 => {
+          const r = clone(r0); META.forEach(k => delete r[k]);
+          if (r.patient) { const ab = abbrevName(ptLabel(r.patient)); r.patient.name = ab; r.patient.code = ab; }
+          b.set(doc(REC), {
+            owner: user.uid, ownerEmail: user.email.toLowerCase(), ownerName: user.displayName || "",
+            dayKey: dayKeyOf(r), stamp: r.stamp || "", scaleId: r.id || "", patient: ptLabel(r.patient) || "",
+            data: JSON.stringify(r), updatedAt: serverTimestamp()
+          });
+        });
+        await b.commit();
+      }
+      try { localStorage.setItem(flag, "1"); } catch (e) { }
+      $("impBar").hidden = true;
+      if (confirm(`Đã đưa ${old.length} bản ghi lên tài khoản.\n\nXóa bản sao cũ còn nằm trên máy này? (Nên xóa — dữ liệu cũ có họ tên đầy đủ của người bệnh.)`)) {
+        try { localStorage.removeItem(LSKEY); } catch (e) { }
+      }
+      toast("Đã chuyển xong bản ghi cũ");
+    } catch (e) { toast("Chưa chuyển được: " + errText(e)); }
+    $("impGo").disabled = false; $("impGo").textContent = "Đưa lên tài khoản";
+  };
+}
+
+/* ---------- quản lý thành viên (admin) ---------- */
+const memMsg = (t, err) => { $("memMsg").textContent = t || ""; $("memMsg").className = "mem-msg" + (err ? " err" : ""); };
+async function loadMembers() {
+  memMsg("Đang tải…");
+  try {
+    const snap = await getDocs(collection(db, "members"));
+    const rows = []; snap.forEach(d => rows.push({ email: d.id, ...d.data() }));
+    rows.sort((a, b) => a.email.localeCompare(b.email));
+    $("memList").innerHTML = rows.length ? rows.map(r => `<div class="mem-row"><span class="e"><b>${esc(r.email)}</b><small>${esc(r.name || "")}</small></span><button type="button" data-rm="${esc(r.email)}">Gỡ</button></div>`).join("")
+      : `<p class="mem-msg">Chưa có thành viên nào. Thêm email điều dưỡng ở ô bên trên.</p>`;
+    $("memList").querySelectorAll("[data-rm]").forEach(b => b.onclick = async () => {
+      const em = b.dataset.rm;
+      if (!confirm(`Gỡ ${em} khỏi danh sách? Người này sẽ không vào được công cụ nữa (bản ghi đã nhập vẫn được giữ).`)) return;
+      try { await deleteDoc(doc(db, "members", em)); loadMembers(); } catch (e) { memMsg(errText(e), true); }
+    });
+    memMsg(`${rows.length} thành viên. Người quản trị (${ADMINS.join(", ")}) luôn có quyền, không cần thêm.`);
+  } catch (e) { memMsg(errText(e), true); }
+}
+$("acctMembers").onclick = () => { $("memModal").hidden = false; loadMembers(); };
+$("memClose").onclick = () => { $("memModal").hidden = true; };
+$("memModal").onclick = e => { if (e.target.id === "memModal") $("memModal").hidden = true; };
+$("memForm").onsubmit = async e => {
+  e.preventDefault();
+  const em = $("memEmail").value.trim().toLowerCase(), name = $("memName").value.trim();
+  if (!em) return;
+  try {
+    await setDoc(doc(db, "members", em), { name, addedBy: user.email.toLowerCase(), addedAt: serverTimestamp() });
+    $("memEmail").value = ""; $("memName").value = "";
+    loadMembers();
+  } catch (err) { memMsg(errText(err), true); }
+};
 </script>
 </body>
 </html>
