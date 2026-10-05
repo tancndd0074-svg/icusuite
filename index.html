@@ -1078,9 +1078,9 @@ window.HSTC_ADMINS = ["tntan.bv@ctump.edu.vn"];
 <div class="mdl" id="lkModal" hidden>
   <div class="mdl-card lk-card" role="dialog" aria-modal="true" aria-labelledby="lkTtl">
     <h2 id="lkTtl">Tra cứu người bệnh <button type="button" id="lkClose" aria-label="Đóng">×</button></h2>
-    <p class="sub">Nhập đúng tên viết tắt, tuổi và số giường để xem các lần chấm của <b>mọi điều dưỡng</b> trên người bệnh này trong <b>7 ngày gần nhất</b>. Chỉ xem, không sửa được bản ghi của người khác.</p>
+    <p class="sub">Nhập đúng họ tên, tuổi và số giường (có dấu hay không dấu đều được) để xem các lần chấm của <b>mọi điều dưỡng</b> trên người bệnh này trong <b>7 ngày gần nhất</b>. Chỉ xem, không sửa được bản ghi của người khác.</p>
     <form class="lk-form" id="lkForm">
-      <label>Tên viết tắt<input id="lkName" autocomplete="off" placeholder="NVA" required></label>
+      <label>Họ tên người bệnh<input id="lkName" autocomplete="off" placeholder="Nguyễn Văn A" maxlength="60" required></label>
       <label>Tuổi<input id="lkAge" type="number" inputmode="numeric" min="0" max="120" placeholder="67" required></label>
       <label>Giường<input id="lkBed" autocomplete="off" placeholder="05" required></label>
       <button type="submit" class="lk-go">Tra cứu</button>
@@ -1124,8 +1124,8 @@ window.HSTC_ADMINS = ["tntan.bv@ctump.edu.vn"];
     <div class="badge"><b id="cnt">0</b> thang điểm sẵn có · thêm được không giới hạn</div>
     <h1><span>Bộ công cụ số hỗ trợ chuẩn hóa đánh giá điều dưỡng, cảnh báo sớm và an toàn dùng thuốc</span></h1>
     <p class="byline"><span class="author">Chịu trách nhiệm bởi Tăng Ngọc Tân</span>
-      <span class="ver" id="verChip" style="cursor:pointer" title="Bấm để chạy tự kiểm tra">Phiên bản 2026.10.04</span></p>
-    <p class="lede">Nhập tên viết tắt, tuổi và số giường của người bệnh, chọn thang điểm cần dùng, chấm điểm và nhận ngay kết luận kèm can thiệp đề xuất. Sau khi lưu các thang điểm đã chấm, dùng nút in ở cuối trang để xuất một phiếu lượng giá tổng hợp.</p>
+      <span class="ver" id="verChip" style="cursor:pointer" title="Bấm để chạy tự kiểm tra">Phiên bản 2026.10.05</span></p>
+    <p class="lede">Nhập họ tên, tuổi và số giường của người bệnh, chọn thang điểm cần dùng, chấm điểm và nhận ngay kết luận kèm can thiệp đề xuất. Sau khi lưu các thang điểm đã chấm, dùng nút in ở cuối trang để xuất một phiếu lượng giá tổng hợp.</p>
 
     <details class="legal-mini" id="legalMini">
       <summary><b>Công cụ hỗ trợ, không thay thế bệnh án</b><span class="more">Xem chi tiết</span></summary>
@@ -1133,14 +1133,14 @@ window.HSTC_ADMINS = ["tntan.bv@ctump.edu.vn"];
       <div class="ttl">Đây là công cụ hỗ trợ tính toán — không phải hồ sơ bệnh án</div>
       <p>Kết quả chấm điểm <b>bắt buộc phải được chép vào hồ sơ bệnh án chính thức</b> của cơ sở. Bản ghi trong công cụ này không có chữ ký số, không có nhật ký kiểm toán và <b>không có giá trị pháp lý thay thế bệnh án</b>. Dùng nút “Sao chép bản ghi” để chép nguyên văn sang bệnh án.</p>
       <p>Công cụ hỗ trợ ra quyết định, <b>không thay thế đánh giá lâm sàng trực tiếp</b> và không thay thế y lệnh của bác sĩ hay phác đồ của cơ sở điều trị.</p>
-      <p><b>Bản ghi được lưu trực tuyến theo tài khoản và chỉ nhận diện người bệnh bằng tên viết tắt, tuổi và số giường</b> (ví dụ NVA · 67 tuổi · Giường 5), không lưu họ tên đầy đủ. Đây vẫn là dữ liệu sức khỏe cần được bảo vệ theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15: không nhập số điện thoại, địa chỉ, số căn cước hay thông tin định danh nào khác; không chia sẻ mật khẩu; đăng xuất khi dùng máy chung.</p>
+      <p><b>Bản ghi được lưu trực tuyến theo tài khoản, có họ tên, tuổi và số giường của người bệnh kèm dữ liệu sức khỏe — là dữ liệu cá nhân nhạy cảm</b> theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15. Chỉ dùng cho mục đích chăm sóc người bệnh tại khoa; không nhập số điện thoại, địa chỉ, số căn cước hay thông tin định danh nào khác; không chia sẻ mật khẩu; đăng xuất khi dùng máy chung.</p>
       </div>
     </details>
 
     <div class="ptcard" id="ptCard">
       <h2>Thông tin lượt đánh giá</h2>
       <div class="fields">
-        <div class="field f-wide"><label for="ptName">Tên viết tắt người bệnh</label><input id="ptName" placeholder="NVA" autocomplete="off" maxlength="60" title="Gõ họ tên đầy đủ cũng được — công cụ tự đổi sang chữ cái đầu (Nguyễn Văn A → NVA)"></div>
+        <div class="field f-wide"><label for="ptName">Họ tên người bệnh</label><input id="ptName" placeholder="Nguyễn Văn A" autocomplete="off" maxlength="60"></div>
         <div class="field"><label for="ptBirth">Tuổi</label><input id="ptBirth" type="number" inputmode="numeric" min="0" max="120" placeholder="67"></div>
         <div class="field"><label for="ptBed">Giường</label><input id="ptBed" inputmode="text" autocomplete="off" maxlength="8" placeholder="05"></div>
         <div class="field f-wide"><label for="ptWhen">Ngày giờ đánh giá</label><input id="ptWhen" type="datetime-local"></div>
@@ -1149,9 +1149,9 @@ window.HSTC_ADMINS = ["tntan.bv@ctump.edu.vn"];
       <div class="ptbar">
         <button class="sm pri" id="ptDone" type="button">Xong — chọn công cụ</button>
         <button class="sm" id="newPtBtn" type="button">Bắt đầu người bệnh mới</button>
-        <span class="warn" id="ptWarn" hidden>Cần đủ tên viết tắt, tuổi và số giường</span>
+        <span class="warn" id="ptWarn" hidden>Cần đủ họ tên, tuổi và số giường</span>
       </div>
-      <p class="privnote" id="ageHint">Ghi chữ cái đầu của họ tên (Nguyễn Văn A → <b>NVA</b>), tuổi và số giường. Gõ họ tên đầy đủ thì công cụ tự rút gọn, họ tên đầy đủ không được lưu. Nhập đúng 3 thông tin này thì các điều dưỡng tua sau tra cứu được diễn tiến của người bệnh.</p>
+      <p class="privnote" id="ageHint">Ghi đúng họ tên như trong hồ sơ bệnh án, tuổi và số giường. Nhập đúng 3 thông tin này thì các điều dưỡng tua sau tra cứu được diễn tiến của người bệnh. Không nhập số điện thoại, địa chỉ hay số căn cước.</p>
     </div>
 
     <div class="findbar">
@@ -1187,7 +1187,7 @@ window.HSTC_ADMINS = ["tntan.bv@ctump.edu.vn"];
       <button class="sm" id="pbToggle" style="margin-top:8px">Tra cứu / xuất Excel theo người bệnh</button>
       <div class="xlsx-panel" id="pbPanel" hidden>
         <div class="xlsx-row">
-          <div class="xlsx-f" style="flex:1;min-width:220px"><label for="pbName">Tên viết tắt người bệnh</label>
+          <div class="xlsx-f" style="flex:1;min-width:220px"><label for="pbName">Họ tên người bệnh</label>
             <input list="pbList" id="pbName" placeholder="NVA" autocomplete="off">
             <datalist id="pbList"></datalist></div>
           <button class="btn chinh" id="pbGo">Tải file Excel</button>
@@ -1223,7 +1223,7 @@ window.HSTC_ADMINS = ["tntan.bv@ctump.edu.vn"];
     </div>
 
     <footer>
-      <b>Bộ công cụ số hỗ trợ chuẩn hóa đánh giá điều dưỡng, cảnh báo sớm và an toàn dùng thuốc — chịu trách nhiệm bởi Tăng Ngọc Tân. Phiên bản 2026.10.04.</b><br><br>Các thang điểm và gói can thiệp được xây dựng theo bản gốc quốc tế: Glasgow Coma Scale (Teasdale &amp; Jennett 1974, cập nhật 2014), Morse Fall Scale cải tiến (Morse 1989), Braden Scale (Braden &amp; Bergstrom 1988), CPOT (Gélinas 2006), ICDSC (Bergeron 2001), CAM-ICU (Ely 2001) kèm thang RASS (Sessler 2002), AVPU và bản mở rộng ACVPU (RCP 2017), FOUR score (Wijdicks 2005), SAS (Riker 1999), ABCDEF Bundle / ICU Liberation (Devlin PADIS 2018; Pun 2019; Barnes-Daly 2017), VIP Score (Jackson 1998), VAP Bundle (IHI/CDC/SHEA-IDSA), Central Line Bundle phòng ngừa CLABSI (CDC/HICPAC, IHI), CAUTI Bundle (CDC/HICPAC, SHEA/IDSA), Sepsis Bundle giờ đầu tiên (Surviving Sepsis Campaign — SCCM/ESICM), Geneva cải tiến (Le Gal 2006), Wells cải tiến (Wells 2000–2001), NEWS2 (RCP 2017), SOFA (Vincent 1996) và SOFA-2 (Ranzani 2025), KDIGO 2012 cho tổn thương thận cấp, thang điểm đau trực quan VAS/NRS. Danh mục thuốc cao nguy cơ theo ISMP List of High-Alert Medications in Acute Care Settings; khoảng liều thuốc truyền tham khảo Surviving Sepsis Campaign 2021 và PADIS 2018; phân tầng thuốc kéo dài QT theo CredibleMeds (AZCERT) và thang nguy cơ Tisdale 2013; cài đặt máy thở ban đầu theo ARDS Network, ATS 2024, ESICM 2023, GOLD 2026, GINA, Brain Trauma Foundation và đồng thuận ESICM 2020. Can thiệp tham chiếu hướng dẫn EPUAP/NPIAP/PPPIA, NICE, AHRQ, INS, PADIS 2018, ESC 2019 và SSC 2021. Công cụ hỗ trợ ra quyết định, không thay thế đánh giá lâm sàng trực tiếp, y lệnh của bác sĩ hay phác đồ của cơ sở điều trị. Kết quả phải được chép vào hồ sơ bệnh án chính thức; bản ghi tại đây không phải hồ sơ bệnh án và không có giá trị pháp lý thay thế. Dữ liệu chỉ lưu trên chính máy đang dùng, không gửi đi bất kỳ đâu. Bản ghi chỉ nhận diện người bệnh bằng tên viết tắt, tuổi và số giường nhưng vẫn thuộc dữ liệu cá nhân nhạy cảm theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15: chỉ dùng trên máy thuộc quản lý của đơn vị, khóa màn hình khi rời máy, và xóa bản ghi khi không còn cần dùng.
+      <b>Bộ công cụ số hỗ trợ chuẩn hóa đánh giá điều dưỡng, cảnh báo sớm và an toàn dùng thuốc — chịu trách nhiệm bởi Tăng Ngọc Tân. Phiên bản 2026.10.05.</b><br><br>Các thang điểm và gói can thiệp được xây dựng theo bản gốc quốc tế: Glasgow Coma Scale (Teasdale &amp; Jennett 1974, cập nhật 2014), Morse Fall Scale cải tiến (Morse 1989), Braden Scale (Braden &amp; Bergstrom 1988), CPOT (Gélinas 2006), ICDSC (Bergeron 2001), CAM-ICU (Ely 2001) kèm thang RASS (Sessler 2002), AVPU và bản mở rộng ACVPU (RCP 2017), FOUR score (Wijdicks 2005), SAS (Riker 1999), ABCDEF Bundle / ICU Liberation (Devlin PADIS 2018; Pun 2019; Barnes-Daly 2017), VIP Score (Jackson 1998), VAP Bundle (IHI/CDC/SHEA-IDSA), Central Line Bundle phòng ngừa CLABSI (CDC/HICPAC, IHI), CAUTI Bundle (CDC/HICPAC, SHEA/IDSA), Sepsis Bundle giờ đầu tiên (Surviving Sepsis Campaign — SCCM/ESICM), Geneva cải tiến (Le Gal 2006), Wells cải tiến (Wells 2000–2001), NEWS2 (RCP 2017), SOFA (Vincent 1996) và SOFA-2 (Ranzani 2025), KDIGO 2012 cho tổn thương thận cấp, thang điểm đau trực quan VAS/NRS. Danh mục thuốc cao nguy cơ theo ISMP List of High-Alert Medications in Acute Care Settings; khoảng liều thuốc truyền tham khảo Surviving Sepsis Campaign 2021 và PADIS 2018; phân tầng thuốc kéo dài QT theo CredibleMeds (AZCERT) và thang nguy cơ Tisdale 2013; cài đặt máy thở ban đầu theo ARDS Network, ATS 2024, ESICM 2023, GOLD 2026, GINA, Brain Trauma Foundation và đồng thuận ESICM 2020. Can thiệp tham chiếu hướng dẫn EPUAP/NPIAP/PPPIA, NICE, AHRQ, INS, PADIS 2018, ESC 2019 và SSC 2021. Công cụ hỗ trợ ra quyết định, không thay thế đánh giá lâm sàng trực tiếp, y lệnh của bác sĩ hay phác đồ của cơ sở điều trị. Kết quả phải được chép vào hồ sơ bệnh án chính thức; bản ghi tại đây không phải hồ sơ bệnh án và không có giá trị pháp lý thay thế. Dữ liệu chỉ lưu trên chính máy đang dùng, không gửi đi bất kỳ đâu. Bản ghi có họ tên, tuổi, số giường của người bệnh nên thuộc dữ liệu cá nhân nhạy cảm theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15: chỉ dùng trên máy thuộc quản lý của đơn vị, khóa màn hình khi rời máy, và xóa bản ghi khi không còn cần dùng.
     </footer>
   </div>
 </div>
@@ -3360,8 +3360,8 @@ const KEYWORDS={
  dosecalc:"tính liều quy đổi tốc độ bơm tiêm ml giờ mcg kg phút vận mạch an thần norepinephrine adrenaline dopamine dobutamine propofol fentanyl insulin heparin pha thuốc"
 };
 
-const APP_VERSION="2026.10.04";
-const APP_UPDATED="04/10/2026";   /* ngày cập nhật — hiện ở cuối màn hình đăng nhập */
+const APP_VERSION="2026.10.05";
+const APP_UPDATED="05/10/2026";   /* ngày cập nhật — hiện ở cuối màn hình đăng nhập */
 const APP_AUTHOR="Tăng Ngọc Tân";
 const WC={0:"#11A177",1:"#E08A00",2:"#D62F1E"};
 const BANDBG={"r-good":["#E3F7F0","#0A6B50"],"r-mid":["#FFF4DC","#8A5600"],"r-bad":["#FFEAE6","#B5210F"],"r-crit":["#FFEAE6","#9B1B0F"]};
@@ -3514,16 +3514,25 @@ function normBed(raw){
   b=b.replace(/^(GIUONG|G)(?=\d)/,"");
   return b.replace(/\d+/g,m=>String(+m)).slice(0,8);
 }
-/* Khóa tra cứu người bệnh: tên viết tắt | tuổi | giường */
+/* Họ tên người bệnh: bỏ khoảng trắng thừa, viết hoa chữ cái đầu mỗi từ ("nguyễn văn  an" → "Nguyễn Văn An") */
+function cleanName(raw){
+  return String(raw||"").replace(/\s+/g," ").trim().slice(0,60)
+    .split(" ").map(w=>w?w.charAt(0).toLocaleUpperCase("vi")+w.slice(1).toLocaleLowerCase("vi"):w).join(" ");
+}
+/* Dạng so khớp của họ tên: bỏ dấu, chữ thường — gõ có dấu hay không dấu đều tra cứu được */
+function nameKey(raw){
+  return String(raw||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[đĐ]/g,"d").toLowerCase().replace(/\s+/g," ").trim();
+}
+/* Khóa tra cứu người bệnh: họ tên (bỏ dấu) | tuổi | giường */
 function pkeyOf(p){
   if(!p) return "";
-  const n=(p.name||p.code||"").toLowerCase();
+  const n=nameKey(p.name||p.code||"");
   if(!n || p.bed===undefined) return "";
   return [n, p.age==null?"":p.age, normBed(p.bed).toLowerCase()].join("|");
 }
 function ptComplete(p){ return !!(p && p.name && p.age!=null && p.bed); }
 function ptInfo(){
-  const n=el("ptName")?abbrevName(el("ptName").value):"";
+  const n=el("ptName")?cleanName(el("ptName").value):"";
   const y=el("ptBirth")?el("ptBirth").value.trim():"";
   const by=el("ptBy")?el("ptBy").value.trim():"";
   const age = y!=="" && +y>=0 && +y<=120 ? Math.round(+y) : null;
@@ -3559,7 +3568,7 @@ function ptBirthText(p){
 }
 function refreshPt(){
   const p=ptInfo();
-  const line = p.name || "Chưa nhập tên viết tắt";
+  const line = p.name || "Chưa nhập họ tên";
   const sub = [ptBirthText(p), p.when!=="—"?p.when:""].filter(Boolean).join(" · ");
   /* Dòng ghim ở thanh tiêu đề: luôn thấy đang chấm cho ai, bấm để đổi người bệnh */
   const wv=el("ptWhen").value; let wShort="";
@@ -3570,7 +3579,7 @@ function refreshPt(){
   const chip=el("ptChip");
   chip.textContent = p.name
     ? [ptLabel(p), p.when!=="—"?p.when:""].filter(Boolean).join(" · ")
-    : "⚠ Chưa nhập tên viết tắt người bệnh";
+    : "⚠ Chưa nhập họ tên người bệnh";
   chip.classList.toggle("warn", !p.name);
 }
 
@@ -3787,7 +3796,7 @@ function syncPtCard(){
 }
 function collapsePt(){
   const pi=ptInfo();
-  if(!ptComplete(pi)){ toast("Cần đủ tên viết tắt, tuổi và số giường"); el(!pi.name?"ptName":pi.age==null?"ptBirth":"ptBed").focus(); return; }
+  if(!ptComplete(pi)){ toast("Cần đủ họ tên, tuổi và số giường"); el(!pi.name?"ptName":pi.age==null?"ptBirth":"ptBed").focus(); return; }
   ptEditing=false; refreshPt(); renderHome();
   window.scrollTo({top:0,behavior:"auto"});
 }
@@ -6813,7 +6822,7 @@ async function xBuildWorkbook(fromDay,toDay){
   hd.getCell("B"+r).font={name:THANG,size:12,bold:true,color:{argb:WARNTX}};
   hd.getCell("B"+r).fill=solid(WARNBG); hd.getCell("B"+r).border=B_ALL; r++;
   hd.mergeCells("B"+r+":C"+r);
-  hd.getCell("B"+r).value="File này chứa tên viết tắt, năm sinh và dữ liệu sức khỏe của người bệnh nên là dữ liệu cá nhân nhạy cảm theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15. Chỉ lưu trên máy hoặc tài khoản thuộc quản lý của đơn vị, không chia sẻ công khai, và xóa khi hết thời hạn cần lưu.";
+  hd.getCell("B"+r).value="File này chứa họ tên, tuổi, số giường và dữ liệu sức khỏe của người bệnh nên là dữ liệu cá nhân nhạy cảm theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15. Chỉ lưu trên máy hoặc tài khoản thuộc quản lý của đơn vị, không chia sẻ công khai, và xóa khi hết thời hạn cần lưu.";
   hd.getCell("B"+r).font={name:THANG,size:10.5,color:{argb:WARNTX}};
   hd.getCell("B"+r).fill=solid(WARNBG); hd.getCell("B"+r).alignment={wrapText:true,vertical:"top"};
   hd.getCell("B"+r).border=B_ALL; hd.getRow(r).height=48;
@@ -7088,7 +7097,7 @@ async function pbBuildWorkbook(nameKey){
   ws.getRow(2).height=20;
 
   ws.mergeCells(3,1,3,NC);
-  ws.getCell(3,1).value = "Đơn vị Hồi sức tích cực · Trường Đại học Y Dược Cần Thơ — dữ liệu chứa tên viết tắt, năm sinh và dữ liệu sức khỏe người bệnh, chỉ dùng trên máy thuộc quản lý của đơn vị.";
+  ws.getCell(3,1).value = "Đơn vị Hồi sức tích cực · Trường Đại học Y Dược Cần Thơ — dữ liệu chứa họ tên, tuổi, số giường và dữ liệu sức khỏe người bệnh, chỉ dùng trên máy thuộc quản lý của đơn vị.";
   ws.getCell(3,1).font={name:THANG,size:9.5,italic:true,color:{argb:WARNTX}};
   ws.getCell(3,1).fill=solid(WARNBG); ws.getCell(3,1).alignment={horizontal:"center",vertical:"middle"};
 
@@ -9021,7 +9030,7 @@ document.addEventListener("change",e=>{
 });
 document.addEventListener("focusout",e=>{
   if(e.target&&e.target.id==="ptName"){
-    const ab=abbrevName(e.target.value);
+    const ab=cleanName(e.target.value);
     if(ab!==e.target.value){ e.target.value=ab; refreshPt(); homeBadges(); }
   }
   if(e.target&&e.target.id==="ptBed"){
@@ -9182,7 +9191,7 @@ el("printBtn").onclick=()=>{
   ph.innerHTML=`<div style="font-weight:800;font-size:15px">PHIẾU LƯỢNG GIÁ ĐIỀU DƯỠNG — HỒI SỨC TÍCH CỰC</div>
     <div style="font-size:12px">Ngày ${dayLabel(d)}${codes.length?" · người bệnh: "+esc(codes.join(", ")):""}</div>
     <div style="font-size:11px;font-style:italic">Công cụ hỗ trợ tính toán — không phải hồ sơ bệnh án. Kết quả phải được chép vào hồ sơ bệnh án chính thức.</div>
-    <div style="font-size:10.5px">Chịu trách nhiệm: Tăng Ngọc Tân · Phiên bản 2026.10.04</div>`;
+    <div style="font-size:10.5px">Chịu trách nhiệm: Tăng Ngọc Tân · Phiên bản 2026.10.05</div>`;
   window.print();
 };
 el("xlsxToggle").onclick=()=>{
@@ -9238,7 +9247,7 @@ refreshPt();renderHome();paintStoreNote();
 
 /* =========================================================
    TRA CỨU NGƯỜI BỆNH — các lần chấm của MỌI điều dưỡng trên cùng
-   người bệnh (tên viết tắt + tuổi + giường) trong 7 ngày gần nhất.
+   người bệnh (họ tên + tuổi + giường) trong 7 ngày gần nhất.
    Máy chủ chỉ cho điều dưỡng đọc bản ghi của người khác trong 7 ngày.
    ========================================================= */
 let lkLast={pk:"",label:"",recs:[]};
@@ -9251,7 +9260,7 @@ function lkOpen(){
   if(ptComplete(p)) lkRun(); else el(p.name?(p.age==null?"lkAge":"lkBed"):"lkName").focus();
 }
 function lkQuery(){
-  const name=abbrevName(el("lkName").value), y=el("lkAge").value.trim(), bed=normBed(el("lkBed").value);
+  const name=cleanName(el("lkName").value), y=el("lkAge").value.trim(), bed=normBed(el("lkBed").value);
   const age = y!=="" && +y>=0 && +y<=120 ? Math.round(+y) : null;
   el("lkName").value=name; el("lkBed").value=bed;
   const p={name, code:name, age, bed};
@@ -9259,7 +9268,7 @@ function lkQuery(){
 }
 async function lkRun(){
   const q=lkQuery(), msg=el("lkMsg");
-  if(!q.ok){ msg.className="mem-msg err"; msg.textContent="Nhập đủ tên viết tắt, tuổi và số giường."; return; }
+  if(!q.ok){ msg.className="mem-msg err"; msg.textContent="Nhập đủ họ tên, tuổi và số giường."; return; }
   msg.className="mem-msg"; msg.textContent="Đang tra cứu…"; el("lkOut").innerHTML=""; el("lkActions").hidden=true;
   let recs=[];
   try{
@@ -9267,8 +9276,11 @@ async function lkRun(){
     else { const from=(()=>{const d=new Date();d.setDate(d.getDate()-7);return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;})();
            recs=log.filter(r=>pkeyOf(r.patient)===q.pk && dayKeyOf(r)>=from); }
   }catch(e){ msg.className="mem-msg err"; msg.textContent="Không tra cứu được: "+(e&&(e.code||e.message)||"lỗi không rõ"); return; }
+  /* Gõ không dấu vẫn tìm được: lấy lại đúng họ tên có dấu từ bản ghi đã lưu để hiển thị và chấm tiếp */
+  const saved=recs.length && recs[recs.length-1].patient && recs[recs.length-1].patient.name;
+  if(saved && nameKey(saved)===nameKey(q.p.name)){ el("lkName").value=saved; q.p.name=saved; q.p.code=saved; q.label=ptLabel(q.p); }
   lkLast={pk:q.pk,label:q.label,recs};
-  if(!recs.length){ msg.textContent=`Chưa có lần chấm nào cho “${q.label}” trong 7 ngày gần nhất. Kiểm tra lại tên viết tắt, tuổi, số giường.`; el("lkActions").hidden=false; return; }
+  if(!recs.length){ msg.textContent=`Chưa có lần chấm nào cho “${q.label}” trong 7 ngày gần nhất. Kiểm tra lại họ tên, tuổi, số giường.`; el("lkActions").hidden=false; return; }
   msg.textContent="";
   const byTool=new Map();
   recs.forEach(r=>{ if(!byTool.has(r.id)) byTool.set(r.id,[]); byTool.get(r.id).push(r); });
@@ -9306,7 +9318,7 @@ el("lkUse").onclick=()=>{
 };
 el("lkXlsx").onclick=async()=>{
   const q=lkQuery(), msg=el("lkMsg");
-  if(!q.ok){ msg.className="mem-msg err"; msg.textContent="Nhập đủ tên viết tắt, tuổi và số giường."; return; }
+  if(!q.ok){ msg.className="mem-msg err"; msg.textContent="Nhập đủ họ tên, tuổi và số giường."; return; }
   const btn=el("lkXlsx"), cu=btn.textContent; btn.disabled=true; btn.textContent="Đang tạo file…";
   try{
     await loadExcelJS();
@@ -9392,8 +9404,8 @@ let pendingWrites = false, fromCache = false, online = navigator.onLine;
 const atOf = r => { const d = r && r.stamp ? new Date(r.stamp) : null; return Timestamp.fromDate(d && !isNaN(d) ? d : new Date()); };
 const docFields = (r, s) => ({
   owner: user.uid, ownerEmail: user.email.toLowerCase(), ownerName: user.displayName || "",
-  dayKey: dayKeyOf(r), stamp: r.stamp || "", scaleId: r.id || "", patient: (ptLabel(r.patient) || "").slice(0, 40),
-  pkey: pkeyOf(r.patient).slice(0, 60), at: atOf(r), data: s, updatedAt: serverTimestamp()
+  dayKey: dayKeyOf(r), stamp: r.stamp || "", scaleId: r.id || "", patient: (ptLabel(r.patient) || "").slice(0, 100),
+  pkey: pkeyOf(r.patient).slice(0, 120), at: atOf(r), data: s, updatedAt: serverTimestamp()
 });
 const serial = r => { const o = {}; Object.keys(r).forEach(k => { if (!META.includes(k)) o[k] = r[k]; }); return JSON.stringify(o); };
 const clone = r => JSON.parse(JSON.stringify(r));
@@ -9637,7 +9649,7 @@ function offerImport() {
   const flag = "hstc.import.done." + user.uid;
   let skipped = false; try { skipped = !!sessionStorage.getItem(flag) || !!localStorage.getItem(flag); } catch (e) { }
   if (!old.length || skipped) { $("impBar").hidden = true; return; }
-  $("impText").innerHTML = `Máy này còn <b>${old.length} bản ghi</b> từ phiên bản cũ (lưu riêng trên máy). Đưa lên tài khoản của bạn để xem được trên mọi thiết bị? Họ tên người bệnh sẽ được tự đổi sang tên viết tắt.`;
+  $("impText").innerHTML = `Máy này còn <b>${old.length} bản ghi</b> từ phiên bản cũ (lưu riêng trên máy). Đưa lên tài khoản của bạn để xem được trên mọi thiết bị?`;
   $("impBar").hidden = false;
   $("impSkip").onclick = () => { try { sessionStorage.setItem(flag, "1"); } catch (e) { } $("impBar").hidden = true; };
   $("impGo").onclick = async () => {
@@ -9647,7 +9659,6 @@ function offerImport() {
         const b = writeBatch(db);
         old.slice(i, i + 400).forEach(r0 => {
           const r = clone(r0); META.forEach(k => delete r[k]);
-          if (r.patient) { const ab = abbrevName(ptLabel(r.patient)); r.patient.name = ab; r.patient.code = ab; }
           b.set(doc(REC), docFields(r, JSON.stringify(r)));
         });
         await b.commit();
