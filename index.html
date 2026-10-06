@@ -274,6 +274,9 @@ ul.acts{margin:0;padding:0;list-style:none}
 ul.acts li{position:relative;padding:9px 12px 9px 38px;margin-bottom:7px;font-size:14.5px;background:#F7FBFD;border-radius:12px}
 ul.acts li::before{content:"✓";position:absolute;left:11px;top:9px;width:18px;height:18px;border-radius:6px;background:var(--brand);color:#fff;font-size:11px;display:grid;place-items:center;font-weight:700}
 ul.acts li:last-child{margin-bottom:0}
+.act-disc{margin:-4px 0 10px;padding:7px 11px;font-size:13px;font-weight:600;color:#8A5A00;background:#FFF7E0;border:1px solid #F2D98A;border-radius:10px}
+.act-src{margin:10px 0 0;padding-top:9px;border-top:1px dashed var(--line,#D8E3EA);font-size:12.5px;line-height:1.55;color:var(--ink2,#4A5B66)}
+.act-src b{color:var(--ink,#16242E)}
 .flag{border:2px solid;border-radius:14px;padding:12px 14px;margin-bottom:9px}
 .flag:last-child{margin-bottom:0}
 .flag-red{background:var(--rs);border-color:var(--r)}
@@ -1124,7 +1127,7 @@ window.HSTC_ADMINS = ["tntan.bv@ctump.edu.vn"];
     <div class="badge"><b id="cnt">0</b> thang điểm sẵn có · thêm được không giới hạn</div>
     <h1><span>Bộ công cụ số hỗ trợ chuẩn hóa đánh giá điều dưỡng, cảnh báo sớm và an toàn dùng thuốc</span></h1>
     <p class="byline"><span class="author">Chịu trách nhiệm bởi Tăng Ngọc Tân</span>
-      <span class="ver" id="verChip" style="cursor:pointer" title="Bấm để chạy tự kiểm tra">Phiên bản 2026.10.05</span></p>
+      <span class="ver" id="verChip" style="cursor:pointer" title="Bấm để chạy tự kiểm tra">Phiên bản 2026.10.06</span></p>
     <p class="lede">Nhập họ tên, tuổi và số giường của người bệnh, chọn thang điểm cần dùng, chấm điểm và nhận ngay kết luận kèm can thiệp đề xuất. Sau khi lưu các thang điểm đã chấm, dùng nút in ở cuối trang để xuất một phiếu lượng giá tổng hợp.</p>
 
     <details class="legal-mini" id="legalMini">
@@ -1223,7 +1226,7 @@ window.HSTC_ADMINS = ["tntan.bv@ctump.edu.vn"];
     </div>
 
     <footer>
-      <b>Bộ công cụ số hỗ trợ chuẩn hóa đánh giá điều dưỡng, cảnh báo sớm và an toàn dùng thuốc — chịu trách nhiệm bởi Tăng Ngọc Tân. Phiên bản 2026.10.05.</b><br><br>Các thang điểm và gói can thiệp được xây dựng theo bản gốc quốc tế: Glasgow Coma Scale (Teasdale &amp; Jennett 1974, cập nhật 2014), Morse Fall Scale cải tiến (Morse 1989), Braden Scale (Braden &amp; Bergstrom 1988), CPOT (Gélinas 2006), ICDSC (Bergeron 2001), CAM-ICU (Ely 2001) kèm thang RASS (Sessler 2002), AVPU và bản mở rộng ACVPU (RCP 2017), FOUR score (Wijdicks 2005), SAS (Riker 1999), ABCDEF Bundle / ICU Liberation (Devlin PADIS 2018; Pun 2019; Barnes-Daly 2017), VIP Score (Jackson 1998), VAP Bundle (IHI/CDC/SHEA-IDSA), Central Line Bundle phòng ngừa CLABSI (CDC/HICPAC, IHI), CAUTI Bundle (CDC/HICPAC, SHEA/IDSA), Sepsis Bundle giờ đầu tiên (Surviving Sepsis Campaign — SCCM/ESICM), Geneva cải tiến (Le Gal 2006), Wells cải tiến (Wells 2000–2001), NEWS2 (RCP 2017), SOFA (Vincent 1996) và SOFA-2 (Ranzani 2025), KDIGO 2012 cho tổn thương thận cấp, thang điểm đau trực quan VAS/NRS. Danh mục thuốc cao nguy cơ theo ISMP List of High-Alert Medications in Acute Care Settings; khoảng liều thuốc truyền tham khảo Surviving Sepsis Campaign 2021 và PADIS 2018; phân tầng thuốc kéo dài QT theo CredibleMeds (AZCERT) và thang nguy cơ Tisdale 2013; cài đặt máy thở ban đầu theo ARDS Network, ATS 2024, ESICM 2023, GOLD 2026, GINA, Brain Trauma Foundation và đồng thuận ESICM 2020. Can thiệp tham chiếu hướng dẫn EPUAP/NPIAP/PPPIA, NICE, AHRQ, INS, PADIS 2018, ESC 2019 và SSC 2021. Công cụ hỗ trợ ra quyết định, không thay thế đánh giá lâm sàng trực tiếp, y lệnh của bác sĩ hay phác đồ của cơ sở điều trị. Kết quả phải được chép vào hồ sơ bệnh án chính thức; bản ghi tại đây không phải hồ sơ bệnh án và không có giá trị pháp lý thay thế. Dữ liệu chỉ lưu trên chính máy đang dùng, không gửi đi bất kỳ đâu. Bản ghi có họ tên, tuổi, số giường của người bệnh nên thuộc dữ liệu cá nhân nhạy cảm theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15: chỉ dùng trên máy thuộc quản lý của đơn vị, khóa màn hình khi rời máy, và xóa bản ghi khi không còn cần dùng.
+      <b>Bộ công cụ số hỗ trợ chuẩn hóa đánh giá điều dưỡng, cảnh báo sớm và an toàn dùng thuốc — chịu trách nhiệm bởi Tăng Ngọc Tân. Phiên bản 2026.10.06.</b><br><br>Các thang điểm và gói can thiệp được xây dựng theo bản gốc quốc tế: Glasgow Coma Scale (Teasdale &amp; Jennett 1974, cập nhật 2014), Morse Fall Scale cải tiến (Morse 1989), Braden Scale (Bergstrom, Braden và cs. 1987), CPOT (Gélinas 2006), ICDSC (Bergeron 2001), CAM-ICU (Ely 2001) kèm thang RASS (Sessler 2002), AVPU và bản mở rộng ACVPU (RCP 2017), FOUR score (Wijdicks 2005), SAS (Riker 1999), ABCDEF Bundle / ICU Liberation (Devlin PADIS 2018; Pun 2019; Barnes-Daly 2017), VIP Score (Jackson 1998), VAP Bundle (SHEA/IDSA/APIC 2022, IHI, CDC), Central Line Bundle phòng ngừa CLABSI (CDC/HICPAC, IHI), CAUTI Bundle (CDC/HICPAC, SHEA/IDSA), Sepsis Bundle giờ đầu tiên (Surviving Sepsis Campaign — SCCM/ESICM), Geneva cải tiến (Le Gal 2006), Wells cải tiến (Wells 2000–2001), NEWS2 (RCP 2017), SOFA (Vincent 1996) và SOFA-2 (Ranzani 2025), KDIGO 2012 cho tổn thương thận cấp, thang điểm đau trực quan VAS/NRS. Danh mục thuốc cao nguy cơ theo ISMP List of High-Alert Medications in Acute Care Settings; khoảng liều thuốc truyền tham khảo Surviving Sepsis Campaign 2021 và PADIS 2018; phân tầng thuốc kéo dài QT theo CredibleMeds (AZCERT) và thang nguy cơ Tisdale 2013; cài đặt máy thở ban đầu theo ARDS Network, ATS 2024, ESICM 2023, GOLD 2026, GINA, Brain Trauma Foundation và đồng thuận ESICM 2020. Can thiệp tham chiếu hướng dẫn EPUAP/NPIAP/PPPIA 2019, NICE NG232, AHRQ, INS 2024, PADIS 2018, ESC 2019, SSC 2021, SHEA/IDSA/APIC 2022 và KDIGO 2012; mỗi kết quả có dòng "Căn cứ" ghi nguồn. Can thiệp là gợi ý tham khảo — thực hiện theo y lệnh và phác đồ của bệnh viện. Công cụ hỗ trợ ra quyết định, không thay thế đánh giá lâm sàng trực tiếp, y lệnh của bác sĩ hay phác đồ của cơ sở điều trị. Kết quả phải được chép vào hồ sơ bệnh án chính thức; bản ghi tại đây không phải hồ sơ bệnh án và không có giá trị pháp lý thay thế. Bản ghi được lưu trực tuyến theo tài khoản đăng nhập (máy chủ Firebase của Google, khu vực Singapore); chỉ thành viên được quản trị viên duyệt mới truy cập được. Bản ghi có họ tên, tuổi, số giường của người bệnh nên thuộc dữ liệu cá nhân nhạy cảm theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15: chỉ dùng trên máy thuộc quản lý của đơn vị, khóa màn hình khi rời máy, và xóa bản ghi khi không còn cần dùng.
     </footer>
   </div>
 </div>
@@ -1280,7 +1283,9 @@ window.HSTC_ADMINS = ["tntan.bv@ctump.edu.vn"];
       <div id="richOut" class="hide"></div>
       <div class="block" id="actBlock" hidden>
         <h2>🩺 Can thiệp đề xuất</h2>
+        <p class="act-disc">Gợi ý tham khảo — thực hiện theo y lệnh và phác đồ của bệnh viện.</p>
         <ul class="acts" id="acts"></ul>
+        <p class="act-src" id="actSrc" hidden></p>
       </div>
     </section>
 
@@ -1381,7 +1386,7 @@ const AVPU_BANDS=[
  {min:1,max:1,cls:"r-bad",dot:"#D62F1E",name:"P — Chỉ đáp ứng với kích thích đau",
   note:"Tương đương GCS khoảng 8 — đúng ngưỡng cân nhắc kiểm soát đường thở.",
   acts:["Báo bác sĩ ngay và không rời người bệnh.",
-        "Bảo vệ đường thở: hút đờm, thở oxy duy trì SpO₂ ≥ 94%, chuẩn bị bộ đặt nội khí quản và bóng bóp tại giường.",
+        "Bảo vệ đường thở: hút đờm, thở oxy duy trì SpO₂ 94–98% (88–92% nếu có nguy cơ tăng CO₂ máu), chuẩn bị bộ đặt nội khí quản và bóng bóp tại giường.",
         "Chấm GCS đầy đủ hoặc FOUR score để có mốc theo dõi; kiểm tra đồng tử hai bên.",
         "Đo đường huyết mao mạch ngay; cân nhắc nguyên nhân hồi phục được: hạ đường huyết, ngộ độc opioid, thiếu oxy, hạ natri máu.",
         "Nằm đầu cao 30°, nghiêng an toàn nếu không nghi chấn thương cột sống cổ."]},
@@ -1392,7 +1397,7 @@ const AVPU_BANDS=[
         "Đo đường huyết mao mạch ngay lập tức.",
         "Chấm FOUR score thay vì GCS nếu người bệnh đã có nội khí quản.",
         "Kiểm tra đồng tử và phản xạ thân não; ghi lại thời điểm phát hiện.",
-        "Chăm sóc người bệnh hôn mê: xoay trở mỗi 2 giờ, chăm sóc mắt và miệng, dự phòng loét tỳ đè và huyết khối tĩnh mạch sâu."]}
+        "Chăm sóc người bệnh hôn mê: xoay trở theo lịch cá thể hóa (thường mỗi 2–4 giờ, tùy mặt đệm và tình trạng da), chăm sóc mắt và miệng, dự phòng loét tỳ đè; dự phòng huyết khối theo y lệnh."]}
 ];
 
 const RASS_BANDS=[
@@ -1421,14 +1426,14 @@ const RASS_BANDS=[
   acts:["Đối chiếu với đích an thần theo y lệnh — nếu đích là −2 đến 0 thì đây đã là sâu hơn mong muốn.",
         "Vẫn thực hiện CAM-ICU: RASS −3 là mức thấp nhất còn đánh giá được mê sảng.",
         "Cân nhắc đề xuất giảm liều an thần nếu không có chỉ định giữ sâu (tăng áp lực nội sọ, giãn cơ, thở máy khó đồng bộ).",
-        "Chăm sóc phòng ngừa: xoay trở mỗi 2 giờ, chăm sóc mắt và miệng, dự phòng loét tỳ đè và huyết khối."]},
+        "Chăm sóc phòng ngừa: xoay trở theo lịch cá thể hóa (thường mỗi 2–4 giờ), chăm sóc mắt và miệng, dự phòng loét tỳ đè; dự phòng huyết khối theo y lệnh."]},
  {min:-5,max:-4,cls:"r-crit",dot:"#D62F1E",name:"An thần sâu hoặc không đánh thức được",
   note:"RASS −4 đến −5. Sâu hơn đích thông thường, kéo dài thời gian thở máy và tăng nguy cơ mê sảng về sau. Không đánh giá được mê sảng ở mức này.",
   acts:["Ghi “không đánh giá được mê sảng” thay vì ghi CAM-ICU âm tính, và đánh giá lại khi người bệnh tỉnh hơn.",
         "Báo bác sĩ để xem lại chỉ định và liều thuốc an thần; cân nhắc thử ngưng an thần hằng ngày nếu không có chống chỉ định.",
         "Loại trừ nguyên nhân ngoài thuốc trước khi quy cho an thần: đột quỵ, phù não, động kinh không co giật, hạ đường huyết, rối loạn điện giải, suy gan thận làm chậm thải thuốc, hạ thân nhiệt.",
         "Chấm GCS hoặc FOUR score để có mốc thần kinh khách quan song song với RASS.",
-        "Chăm sóc toàn diện người bệnh không tự vận động: xoay trở mỗi 2 giờ, chăm sóc mắt và miệng, dự phòng loét tỳ đè và huyết khối tĩnh mạch sâu, vận động thụ động."]}
+        "Chăm sóc toàn diện người bệnh không tự vận động: xoay trở theo lịch cá thể hóa (thường mỗi 2–4 giờ), chăm sóc mắt và miệng, dự phòng loét tỳ đè, vận động thụ động; dự phòng huyết khối theo y lệnh."]}
 ];
 
 const SCALES=[
@@ -1467,29 +1472,29 @@ const SCALES=[
  ],
  bands:[
   {min:13,max:15,cls:"r-good",dot:"#11A177",name:"Rối loạn tri giác mức độ nhẹ",note:"GCS 13–15. Tri giác còn tốt, nhưng tổn thương vẫn có thể tiến triển.",
-   acts:["Theo dõi GCS mỗi 1 giờ trong 4 giờ đầu, sau đó mỗi 2 giờ nếu ổn định; ghi tách riêng E–V–M.",
+   acts:["Theo dõi GCS mỗi 30 phút cho tới khi đạt 15 điểm; khi đã đạt 15: mỗi 30 phút trong 2 giờ, mỗi 1 giờ trong 4 giờ tiếp theo, sau đó mỗi 2 giờ (NICE NG232, cho chấn thương đầu; bệnh cảnh khác theo y lệnh). Ghi tách riêng E–V–M.",
          "Theo dõi sinh hiệu, SpO₂, đường huyết mao mạch; kiểm tra đồng tử hai bên mỗi lần đánh giá.",
-         "Báo bác sĩ ngay nếu GCS giảm từ 2 điểm trở lên, đồng tử giãn không đều hoặc có dấu thần kinh khu trú.",
-         "Với chấn thương đầu: cân nhắc chụp CT sọ não, theo dõi tối thiểu 24 giờ nếu có nôn, đau đầu tăng, quên sự việc.",
+         "Báo bác sĩ ngay nếu: GCS giảm 1 điểm kéo dài trên 30 phút (nhất là điểm vận động), giảm từ 2 điểm trở lên, đồng tử giãn không đều, xuất hiện dấu thần kinh khu trú, kích động mới, đau đầu tăng hoặc nôn kéo dài (NICE NG232).",
+         "Với chấn thương đầu: báo bác sĩ xét chỉ định CT sọ não khi có tiêu chí nguy cơ theo NICE NG232 — ví dụ GCS < 15 sau 2 giờ, nôn từ 2 lần, co giật, dấu thần kinh khu trú, nghi vỡ xương sọ hoặc nền sọ, đang dùng thuốc chống đông.",
          "Hướng dẫn người nhà dấu hiệu cần báo ngay: nôn nhiều, đau đầu tăng, lơ mơ, co giật, yếu nửa người."]},
   {min:9,max:12,cls:"r-mid",dot:"#F0B429",name:"Rối loạn tri giác mức độ trung bình",note:"GCS 9–12. Nguy cơ diễn tiến xấu cao, cần giám sát chặt và sẵn sàng bảo vệ đường thở.",
-   acts:["Báo bác sĩ ngay; theo dõi GCS mỗi 30 phút cho tới khi ổn định, sau đó mỗi 1 giờ.",
-         "Bảo đảm đường thở: hút đờm khi cần, thở oxy duy trì SpO₂ ≥ 94%, nằm nghiêng an toàn nếu không chống chỉ định.",
+   acts:["Báo bác sĩ ngay; theo dõi GCS và đồng tử mỗi 30 phút cho tới khi đạt 15 điểm hoặc theo y lệnh (NICE NG232).",
+         "Bảo đảm đường thở: hút đờm khi cần, thở oxy duy trì SpO₂ 94–98% (88–92% nếu có nguy cơ tăng CO₂ máu), nằm nghiêng an toàn nếu không nghi chấn thương cột sống.",
          "Chuẩn bị sẵn bộ đặt nội khí quản và bóng bóp tại giường — GCS có thể tụt nhanh xuống dưới 9.",
          "Đặt đường truyền tĩnh mạch, xét nghiệm cơ bản, kiểm tra đường huyết ngay để loại trừ hạ đường huyết.",
-         "Nằm đầu cao 30°, giữ cổ thẳng trục; kiểm soát đau, sốt và co giật.",
-         "Chỉ định hình ảnh sọ não khẩn theo y lệnh; hội chẩn hồi sức hoặc ngoại thần kinh.",
+         "Khi nghi tăng áp lực nội sọ (chấn thương, xuất huyết, phù não): nằm đầu cao 30°, giữ cổ thẳng trục; kiểm soát đau, sốt và co giật.",
+         "Khi rối loạn tri giác mới xuất hiện hoặc nặng lên mà không giải thích được bằng thuốc an thần hay rối loạn chuyển hóa: báo bác sĩ xét chỉ định hình ảnh sọ não khẩn và hội chẩn thần kinh/ngoại thần kinh.",
          "Nhịn ăn uống đường miệng cho tới khi đánh giá lại khả năng nuốt; phòng ngừa té ngã và loét tỳ đè."]},
   {min:3,max:8,cls:"r-crit",dot:"#D62F1E",name:"Hôn mê — rối loạn tri giác mức độ nặng",note:"GCS ≤ 8. Người bệnh không tự bảo vệ được đường thở. Đây là tình huống cấp cứu.",
    acts:["Gọi hỗ trợ cấp cứu và báo bác sĩ ngay lập tức — không rời người bệnh.",
          "Bảo vệ đường thở là ưu tiên số một: GCS ≤ 8 là chỉ định cân nhắc đặt nội khí quản; chuẩn bị bộ đặt ống, máy hút, bóng bóp.",
-         "Thở oxy lưu lượng cao, duy trì SpO₂ ≥ 94%; theo dõi liên tục SpO₂, mạch, huyết áp, nhịp thở.",
+         "Thở oxy, đích SpO₂ 94–98% (88–92% nếu có nguy cơ tăng CO₂ máu); theo dõi liên tục SpO₂, mạch, huyết áp, nhịp thở.",
          "Kiểm tra đường huyết mao mạch ngay; cân nhắc nguyên nhân hồi phục được: hạ đường huyết, ngộ độc opioid, thiếu oxy, hạ natri máu.",
          "Nếu nghi chấn thương: cố định cột sống cổ, giữ thẳng trục khi di chuyển.",
-         "Nằm đầu cao 30°, tránh gập cổ; kiểm soát sốt, co giật, đau — các yếu tố làm tăng áp lực nội sọ.",
-         "Đánh giá GCS và đồng tử mỗi 15 phút cho tới khi ổn định, ghi rõ E–V–M từng lần.",
-         "Chụp CT sọ não khẩn, hội chẩn hồi sức tích cực/ngoại thần kinh, chuẩn bị chuyển đơn vị hồi sức.",
-         "Chăm sóc người bệnh hôn mê: xoay trở mỗi 2 giờ, chăm sóc mắt và miệng, dự phòng loét tỳ đè và huyết khối tĩnh mạch sâu."]}
+         "Khi nghi tăng áp lực nội sọ: nằm đầu cao 30°, tránh gập cổ; kiểm soát sốt, co giật, đau — các yếu tố làm tăng áp lực nội sọ.",
+         "Đánh giá GCS và đồng tử mỗi 15–30 phút cho tới khi ổn định hoặc theo y lệnh, ghi rõ E–V–M từng lần.",
+         "Báo bác sĩ xét chỉ định chụp CT sọ não khẩn (bắt buộc khi chấn thương đầu có GCS ≤ 12 — NICE NG232) và hội chẩn hồi sức/ngoại thần kinh.",
+         "Chăm sóc người bệnh hôn mê: xoay trở theo lịch cá thể hóa (thường mỗi 2–4 giờ, tùy mặt đệm và tình trạng da), chăm sóc mắt và miệng, dự phòng loét tỳ đè; dự phòng huyết khối theo y lệnh."]}
  ],
  detail:(s,t)=>[`E ${s.eye}`,`V ${s.verbal}${t.tube?"T":""}`,`M ${s.motor}`],
  flags:(s,total,t)=>{
@@ -1600,7 +1605,7 @@ const SCALES=[
  zones:[{f:9,c:"#D62F1E"},{f:4,c:"#F0B429"},{f:4,c:"#11A177"}],
  ticks:[[2,"0"],[50,"8"],[55,"9"],[79,"13"],[97,"16"]],
  legend:[["#D62F1E","0–8 hôn mê nặng"],["#F0B429","9–12 trung bình"],["#11A177","13–16 nhẹ"]],
- foot:"FOUR score — Full Outline of UnResponsiveness (Wijdicks và cộng sự, Annals of Neurology 2005). Ưu thế so với GCS ở người bệnh có nội khí quản và hôn mê sâu vì không phụ thuộc lời nói và có đánh giá thân não. Tổng 0 điểm gợi ý chết não nhưng không thay thế quy trình chẩn đoán chết não của cơ sở. Luôn loại trừ thuốc an thần, giãn cơ, hạ thân nhiệt và rối loạn chuyển hóa trước khi kết luận tiên lượng.",
+ foot:"FOUR score — Full Outline of UnResponsiveness (Wijdicks và cộng sự, Annals of Neurology 2005). Thang FOUR không có phân độ chính thức; các mức 13–16, 9–12, 1–8 và 0 trong công cụ chỉ để xếp thứ tự ưu tiên theo dõi. Ưu thế so với GCS ở người bệnh có nội khí quản và hôn mê sâu vì không phụ thuộc lời nói và có đánh giá thân não. Tổng 0 điểm gợi ý chết não nhưng không thay thế quy trình chẩn đoán chết não của cơ sở. Luôn loại trừ thuốc an thần, giãn cơ, hạ thân nhiệt và rối loạn chuyển hóa trước khi kết luận tiên lượng.",
  items:[
   {id:"fe",code:"E",acc:"#2E9BD6",accs:"#E4F3FB",title:"Đáp ứng mắt (E)",
    sub:"Tối đa 4 điểm — mở mắt và khả năng nhìn theo hoặc chớp mắt theo lệnh",
@@ -1646,7 +1651,7 @@ const SCALES=[
    note:"FOUR 9–12. Còn phản xạ thân não nhưng đáp ứng đã giảm rõ, nguy cơ diễn tiến xấu.",
    acts:["Báo bác sĩ; chấm lại FOUR mỗi 1 giờ cho tới khi ổn định.",
          "Kiểm tra đồng tử hai bên mỗi lần đánh giá; ghi rõ kích thước và phản xạ ánh sáng.",
-         "Nằm đầu cao 30°, giữ cổ thẳng trục; kiểm soát sốt, đau và co giật — các yếu tố làm tăng áp lực nội sọ.",
+         "Khi nghi tăng áp lực nội sọ: nằm đầu cao 30°, giữ cổ thẳng trục; kiểm soát sốt, đau và co giật — các yếu tố làm tăng áp lực nội sọ.",
          "Rà soát lại liều thuốc an thần và giãn cơ đang dùng trước khi quy điểm thấp cho tổn thương não.",
          "Đo đường huyết mao mạch, natri máu và thân nhiệt để loại trừ nguyên nhân chuyển hóa."]},
   {min:1,max:8,cls:"r-crit",dot:"#D62F1E",name:"Hôn mê nặng",
@@ -1656,7 +1661,7 @@ const SCALES=[
          "Chấm lại FOUR mỗi 30–60 phút; ghi rõ từng trục để phát hiện trục nào đang xấu đi.",
          "Loại trừ nguyên nhân hồi phục được trước khi kết luận tiên lượng: thuốc an thần và giãn cơ còn tác dụng, hạ thân nhiệt, hạ đường huyết, rối loạn điện giải, suy gan thận làm chậm thải thuốc.",
          "Chỉ định hình ảnh sọ não khẩn theo y lệnh.",
-         "Chăm sóc người bệnh hôn mê: xoay trở mỗi 2 giờ, chăm sóc mắt và miệng, dự phòng loét tỳ đè và huyết khối tĩnh mạch sâu."]},
+         "Chăm sóc người bệnh hôn mê: xoay trở theo lịch cá thể hóa (thường mỗi 2–4 giờ, tùy mặt đệm và tình trạng da), chăm sóc mắt và miệng, dự phòng loét tỳ đè; dự phòng huyết khối theo y lệnh."]},
   {min:0,max:0,cls:"r-crit",dot:"#9B1B0F",name:"FOUR 0 — mất toàn bộ phản xạ thân não và hô hấp",
    note:"Không đáp ứng mắt, không đáp ứng vận động, mất toàn bộ phản xạ thân não, không có nhịp tự thở. Bệnh cảnh gợi ý chết não.",
    acts:["Báo bác sĩ ngay — đây là bệnh cảnh cần quy trình đánh giá chuyên khoa, không kết luận tại giường bằng thang điểm.",
@@ -1786,14 +1791,14 @@ const SCALES=[
    acts:["Báo bác sĩ để xem lại chỉ định và liều thuốc an thần; cân nhắc thử ngưng an thần hằng ngày nếu không có chống chỉ định.",
          "Ghi “không đánh giá được mê sảng” thay vì ghi kết quả âm tính.",
          "Chấm GCS hoặc FOUR score để có mốc thần kinh khách quan song song.",
-         "Chăm sóc người bệnh không tự vận động: xoay trở mỗi 2 giờ, chăm sóc mắt và miệng, dự phòng loét tỳ đè và huyết khối tĩnh mạch sâu."]},
+         "Chăm sóc người bệnh không tự vận động: xoay trở theo lịch cá thể hóa (thường mỗi 2–4 giờ), chăm sóc mắt và miệng, dự phòng loét tỳ đè; dự phòng huyết khối theo y lệnh."]},
   {min:1,max:1,cls:"r-crit",dot:"#9B1B0F",name:"Không thể đánh thức",
    note:"SAS 1. Không đáp ứng hoặc đáp ứng rất ít với kích thích đau.",
    acts:["Báo bác sĩ ngay; đừng mặc nhiên quy cho thuốc an thần.",
          "Loại trừ nguyên nhân thần kinh và chuyển hóa: đột quỵ, phù não, động kinh không co giật, hạ đường huyết, rối loạn điện giải, suy gan thận làm chậm thải thuốc, hạ thân nhiệt.",
          "Chấm FOUR score — thang này đánh giá được cả phản xạ thân não và kiểu thở, phù hợp hơn ở mức đáp ứng thấp.",
          "Bảo đảm đường thở và theo dõi liên tục SpO₂, mạch, huyết áp.",
-         "Chăm sóc toàn diện: xoay trở mỗi 2 giờ, chăm sóc mắt và miệng, dự phòng loét tỳ đè và huyết khối tĩnh mạch sâu."]}
+         "Chăm sóc toàn diện: xoay trở theo lịch cá thể hóa (thường mỗi 2–4 giờ), chăm sóc mắt và miệng, dự phòng loét tỳ đè; dự phòng huyết khối theo y lệnh."]}
  ],
  detail:(sl)=>[`≈ RASS ${["","−5","−4","−2 đến −3","0 đến −1","+1","+2 đến +3","+4"][sl.sas]}`],
  flags:(sl)=>{
@@ -1831,7 +1836,7 @@ const SCALES=[
  zones:[{f:4,c:"#9B1B0F"},{f:3,c:"#D62F1E"},{f:2,c:"#F0B429"},{f:4,c:"#7CA92C"},{f:5,c:"#11A177"}],
  ticks:[[2,"6"],[23,"10"],[40,"13"],[51,"15"],[73,"19"],[98,"23"]],
  legend:[["#9B1B0F","≤9 rất cao"],["#D62F1E","10–12 cao"],["#F0B429","13–14 trung bình"],["#7CA92C","15–18 nhẹ"],["#11A177","19–23 không nguy cơ"]],
- foot:"Braden Scale for Predicting Pressure Sore Risk (Braden & Bergstrom, 1988). Can thiệp tham chiếu hướng dẫn EPUAP/NPIAP/PPPIA. Với người bệnh ≥ 75 tuổi hoặc đã có loét tỳ đè, xử trí ở mức nguy cơ cao hơn một bậc.",
+ foot:"Braden Scale for Predicting Pressure Sore Risk (Bergstrom, Braden và cộng sự, Nursing Research 1987). Can thiệp tham chiếu hướng dẫn EPUAP/NPIAP/PPPIA. Với người bệnh ≥ 75 tuổi hoặc đã có loét tỳ đè, xử trí ở mức nguy cơ cao hơn một bậc.",
  items:[
   {id:"sensory",icon:"eye",acc:"#0FA3A0",accs:"#E4F7F5",title:"1. Cảm giác nhận biết",sub:"Khả năng đáp ứng có ý nghĩa với cảm giác khó chịu do tỳ đè",
    opts:[{v:1,w:2,l:"Hoàn toàn hạn chế",d:"Không đáp ứng với kích thích đau do giảm ý thức hoặc an thần; HOẶC mất cảm giác đau trên hầu hết bề mặt cơ thể."},
@@ -1873,12 +1878,12 @@ const SCALES=[
   {min:15,max:18,cls:"r-mid",dot:"#7CA92C",name:"Nguy cơ nhẹ",note:"Tổng điểm 15–18. Bắt đầu chương trình dự phòng có cấu trúc.",
    acts:["Lịch xoay trở mỗi 2–4 giờ khi nằm; khi ngồi ghế đổi tư thế mỗi 1 giờ hoặc tự dịch chuyển trọng tâm mỗi 15 phút.",
          "Nằm nghiêng 30°, tránh nghiêng 90° đè trực tiếp lên mấu chuyển lớn.",
-         "Giữ đầu giường ≤ 30° khi không chống chỉ định để giảm lực trượt.",
+         "Giữ đầu giường ≤ 30° khi không chống chỉ định để giảm lực trượt — người bệnh thở máy vẫn giữ 30–45° theo gói dự phòng VAP, khi đó tăng cường chống trượt (nâng gối, kê chặn chân).",
          "Dùng đệm giảm áp, gối nâng gót khỏi mặt giường.",
          "Bảo vệ da: làm sạch nhẹ nhàng, dưỡng ẩm, dùng kem rào chắn nếu da ẩm.",
          "Đánh giá lại mỗi 24–48 giờ."]},
   {min:13,max:14,cls:"r-mid",dot:"#F0B429",name:"Nguy cơ trung bình",note:"Tổng điểm 13–14. Cần dự phòng tích cực, có ghi chép.",
-   acts:["Xoay trở mỗi 2 giờ theo lịch cố định, có bảng theo dõi tại giường; dùng tư thế nghiêng 30° luân phiên.",
+   acts:["Xoay trở theo lịch, thường mỗi 2 giờ (có thể giãn tới 3–4 giờ khi nằm đệm giảm áp phù hợp và da không đỏ), có bảng theo dõi tại giường; dùng tư thế nghiêng 30° luân phiên.",
          "Đệm giảm áp chuyên dụng: foam dày phù hợp hoặc đệm hơi áp lực luân phiên.",
          "Dán foam/phim dự phòng vùng cùng cụt và gót.",
          "Nâng gót hoàn toàn khỏi mặt giường; gối chêm giữa hai đầu gối.",
@@ -1890,7 +1895,7 @@ const SCALES=[
          "Mặt giường giảm áp chủ động: đệm hơi áp lực luân phiên hoặc áp lực thấp liên tục.",
          "Nâng gót hoàn toàn khỏi mặt giường; dán foam dự phòng vùng cùng cụt, gót, mấu chuyển.",
          "Dùng drap trượt hoặc dụng cụ nâng khi di chuyển; đầu giường ≤ 30°.",
-         "Hội chẩn dinh dưỡng trong 24 giờ: 30–35 kcal/kg/ngày, protein 1,25–1,5 g/kg/ngày.",
+         "Hội chẩn dinh dưỡng trong 24 giờ. Người bệnh có nguy cơ suy dinh dưỡng: 30–35 kcal/kg/ngày, protein 1,25–1,5 g/kg/ngày (NPIAP 2019); người bệnh hồi sức giai đoạn cấp theo mục tiêu của ESPEN hồi sức và y lệnh.",
          "Khám và ghi chép tình trạng da toàn thân mỗi ca trực.",
          "Mời chuyên khoa chăm sóc vết thương; đánh giá lại mỗi 12–24 giờ."]},
   {min:6,max:9,cls:"r-crit",dot:"#9B1B0F",name:"Nguy cơ rất cao",note:"Tổng điểm ≤ 9. Loét tỳ đè có thể xuất hiện trong vài giờ. Can thiệp tối đa ngay lập tức.",
@@ -1898,7 +1903,7 @@ const SCALES=[
          "Xoay trở mỗi 2 giờ hoặc thường xuyên hơn nếu dung nạp; ghi nhận tư thế và thời điểm.",
          "Chỉ định mặt giường chuyên dụng: đệm áp lực thấp liên tục hoặc giường low-air-loss.",
          "Nâng gót khỏi mặt giường bắt buộc; cân nhắc dụng cụ giảm tải gót chuyên dụng.",
-         "Dinh dưỡng tích cực: protein tới 1,5 g/kg/ngày, bổ sung arginine, kẽm, vitamin C.",
+         "Dinh dưỡng tích cực theo y lệnh: protein tới 1,5 g/kg/ngày. Công thức giàu arginine, kẽm, chất chống oxy hóa chỉ dùng khi ĐÃ CÓ loét tỳ đè độ 2 trở lên kèm suy dinh dưỡng (NPIAP 2019), không dùng thường quy để dự phòng.",
          "Khám da toàn thân mỗi ca trực và sau mỗi lần xoay trở; báo bác sĩ khi có ban đỏ không mất khi ấn.",
          "Hội chẩn chuyên khoa vết thương và phục hồi chức năng; đánh giá lại mỗi 12 giờ."]}
  ],
@@ -1923,7 +1928,7 @@ const SCALES=[
  zones:[{f:25,c:"#11A177"},{f:20,c:"#F0B429"},{f:80,c:"#D62F1E"}],
  ticks:[[2,"0"],[20,"25"],[36,"45"],[60,"75"],[97,"125"]],
  legend:[["#11A177","0–24 nguy cơ thấp"],["#F0B429","25–44 nguy cơ trung bình"],["#D62F1E","≥ 45 nguy cơ cao"]],
- foot:"Modified Morse Fall Scale (Morse, 1989). Phân tầng: 0–24 thấp, 25–44 trung bình, ≥ 45 cao. Can thiệp tham chiếu NICE CG161, AHRQ Fall Prevention Toolkit và Joint Commission. Đánh giá lại khi nhập viện, chuyển khoa, thay đổi tình trạng hoặc thuốc, sau mỗi lần ngã và tối thiểu mỗi 24–48 giờ.",
+ foot:"Modified Morse Fall Scale (Morse, 1989). Lưu ý: NICE khuyến cáo không dùng riêng công cụ dự đoán té ngã để xác định nguy cơ ở người bệnh nội trú từ 65 tuổi — coi nhóm này là có nguy cơ và đánh giá đa yếu tố; điểm Morse chỉ hỗ trợ, không thay thế đánh giá đa yếu tố. Phân tầng: 0–24 thấp, 25–44 trung bình, ≥ 45 cao. Can thiệp tham chiếu NICE CG161, AHRQ Fall Prevention Toolkit và Joint Commission. Đánh giá lại khi nhập viện, chuyển khoa, thay đổi tình trạng hoặc thuốc, sau mỗi lần ngã và tối thiểu mỗi 24–48 giờ.",
  items:[
   {id:"history",icon:"clock",acc:"#1B8FD1",accs:"#E5F3FB",title:"1. Tiền sử té ngã",sub:"Đã ngã trong vòng 3 tháng gần đây hoặc ngay trong lần nằm viện này",
    opts:[{v:0,w:0,l:"Không",d:"Không có tiền sử té ngã trong 3 tháng qua."},
@@ -1966,10 +1971,10 @@ const SCALES=[
          "Bố trí giường gần trạm điều dưỡng, trong tầm quan sát trực tiếp; hạ giường thấp nhất và khóa bánh xe.",
          "Đi buồng có cấu trúc mỗi 1 giờ ban ngày và mỗi 2 giờ ban đêm: kiểm tra đau, vệ sinh, tư thế, đồ dùng trong tầm với.",
          "Không để người bệnh ra khỏi giường một mình: hỗ trợ 1:1 khi đi vệ sinh, tắm rửa; cân nhắc ghế vệ sinh cạnh giường ban đêm.",
-         "Cân nhắc chuông báo rời giường, thảm chống trượt cạnh giường, đệm sàn.",
+         "Cân nhắc chuông báo rời giường, đệm sàn cạnh giường — bằng chứng hiệu quả còn hạn chế, chỉ dùng kèm các biện pháp khác.",
          "Mời phục hồi chức năng đánh giá dáng đi, thăng bằng và cơ lực trong 24 giờ.",
          "Bác sĩ rà soát toàn bộ đơn thuốc, đặc biệt thuốc hướng thần và hạ áp; đo huyết áp tư thế.",
-         "Đánh giá thị lực, sàng lọc mê sảng, tình trạng dinh dưỡng và vitamin D.",
+         "Đánh giá đa yếu tố: thị lực, mê sảng, tiểu tiện không tự chủ, hạ huyết áp tư thế, tình trạng dinh dưỡng (NICE).",
          "Hướng dẫn người nhà ở cùng, không tự ý cho người bệnh đi lại.",
          "Đánh giá lại mỗi 12–24 giờ và ngay sau bất kỳ thay đổi tình trạng nào."]}
  ],
@@ -2129,7 +2134,7 @@ const SCALES=[
    acts:["Làm D-dimer độ nhạy cao. Nếu âm tính, có thể loại trừ thuyên tắc phổi một cách an toàn mà không cần chẩn đoán hình ảnh.",
          "Áp dụng ngưỡng D-dimer hiệu chỉnh theo tuổi ở người trên 50 tuổi: tuổi × 10 µg/L FEU.",
          "Nếu D-dimer dương tính: chỉ định chụp cắt lớp vi tính động mạch phổi (CTPA).",
-         "Cân nhắc áp dụng tiêu chuẩn PERC ở người bệnh cấp cứu có xác suất rất thấp — nếu đủ cả 8 tiêu chí PERC âm tính, có thể không cần làm D-dimer.",
+         "Tiêu chuẩn PERC chỉ áp dụng ở khoa cấp cứu cho người bệnh có xác suất rất thấp theo đánh giá lâm sàng (đủ cả 8 tiêu chí âm tính thì có thể không cần D-dimer); không áp dụng cho người bệnh nội trú hay hồi sức.",
          "Trong khi chờ kết quả: theo dõi mạch, huyết áp, nhịp thở, SpO₂; thở oxy nếu SpO₂ dưới 90%.",
          "Tìm chẩn đoán phân biệt: viêm phổi, hội chứng vành cấp, tràn khí màng phổi, suy tim, cơn hen hoặc đợt cấp COPD, đau thành ngực.",
          "Ghi lại điểm Geneva và lý do quyết định vào hồ sơ."]},
@@ -2581,7 +2586,7 @@ const SCALES=[
  subtitle:"Gói 8 hành động cốt lõi dự phòng viêm phổi liên quan thở máy.",
  lede:"Áp dụng cho mọi người bệnh đang thở máy qua nội khí quản hoặc mở khí quản. Đánh giá lại mỗi ngày cho tới khi rút được nội khí quản.",
  tags:["8 hành động","IHI/CDC","SHEA-IDSA"], type:"vap",
- foot:"Gói can thiệp dự phòng VAP tổng hợp từ IHI Ventilator Bundle, hướng dẫn CDC/NHSN, SHEA/IDSA Compendium và AACN Practice Alert. Các hành động nên đánh giá lại mỗi ngày cho tới khi rút được nội khí quản. Công cụ hỗ trợ nhắc thực hành, không thay thế phác đồ kiểm soát nhiễm khuẩn của đơn vị."
+ foot:"Gói can thiệp dự phòng VAP tổng hợp từ SHEA/IDSA/APIC Compendium 2022 (Klompas và cộng sự, Infect Control Hosp Epidemiol 2022), IHI Ventilator Bundle, hướng dẫn CDC/NHSN và AACN Practice Alert. Các hành động nên đánh giá lại mỗi ngày cho tới khi rút được nội khí quản. Công cụ hỗ trợ nhắc thực hành, không thay thế phác đồ kiểm soát nhiễm khuẩn của đơn vị."
 },
 
 
@@ -2690,7 +2695,7 @@ const SCALES=[
    acts:["Làm D-dimer độ nhạy cao. Nếu âm tính, có thể loại trừ thuyên tắc phổi một cách an toàn mà không cần chẩn đoán hình ảnh.",
          "Áp dụng ngưỡng D-dimer hiệu chỉnh theo tuổi ở người trên 50 tuổi: tuổi × 10 µg/L FEU.",
          "Nếu D-dimer dương tính: chỉ định chụp cắt lớp vi tính động mạch phổi (CTPA).",
-         "Cân nhắc áp dụng tiêu chuẩn PERC ở người bệnh cấp cứu có xác suất rất thấp — nếu đủ cả 8 tiêu chí PERC âm tính, có thể không cần làm D-dimer.",
+         "Tiêu chuẩn PERC chỉ áp dụng ở khoa cấp cứu cho người bệnh có xác suất rất thấp theo đánh giá lâm sàng (đủ cả 8 tiêu chí âm tính thì có thể không cần D-dimer); không áp dụng cho người bệnh nội trú hay hồi sức.",
          "Trong khi chờ kết quả: theo dõi mạch, huyết áp, nhịp thở, SpO₂; thở oxy nếu SpO₂ dưới 90%.",
          "Tìm chẩn đoán phân biệt: viêm phổi, hội chứng vành cấp, tràn khí màng phổi, suy tim, cơn hen hoặc đợt cấp COPD, đau thành ngực.",
          "Ghi lại điểm Wells và lý do quyết định vào hồ sơ."]},
@@ -3169,7 +3174,7 @@ const SCALES=[
          "Tăng năng lượng và đạm từ từ trong những ngày đầu, không nuôi bù nhanh.",
          "Ghi lại lượng ăn thực tế mỗi ca; báo ngay nếu người bệnh không đạt được mục tiêu nuôi dưỡng.",
          "Đánh giá nguy cơ loét tì đè bằng thang Braden — suy dinh dưỡng và loét tì đè đi cùng nhau.",
-         "Theo dõi cân nặng, albumin, prealbumin theo y lệnh và diễn tiến lâm sàng."]}
+         "Theo dõi cân nặng, lượng ăn thực tế và diễn tiến lâm sàng; albumin và prealbumin phản ánh tình trạng viêm nhiều hơn dinh dưỡng, không dùng làm chỉ số chính để đánh giá dinh dưỡng."]}
  ],
  detail:(s,t,total)=>{
    const p=[];
@@ -3259,10 +3264,10 @@ const CAMBANDS={
 const SEPSIS_ITEMS=[
  {id:"lac",num:1,acc:"#2E9BD6",accs:"#E4F3FB",title:"Đo nồng độ lactate máu",
   sub:"Đo lại lần 2 nếu lactate ban đầu > 2 mmol/L",
-  how:"lactate là chỉ dấu gián tiếp cho giảm tưới máu mô; ≥ 4 mmol/L là tiêu chí xác định sốc nhiễm khuẩn và ngưỡng bắt buộc bù dịch nhanh. Đo lại lần 2 trong 2–4 giờ để đánh giá đáp ứng hồi sức.",
+  how:"lactate là chỉ dấu gián tiếp cho giảm tưới máu mô; ≥ 4 mmol/L là ngưỡng bù dịch nhanh 30 mL/kg trong gói giờ đầu. Lưu ý: theo Sepsis-3, sốc nhiễm khuẩn được xác định khi cần vận mạch để giữ HA trung bình ≥ 65 mmHg VÀ lactate > 2 mmol/L sau bù dịch đủ — lactate cao đơn thuần chưa đủ để chẩn đoán sốc. Đo lại lần 2 trong 2–4 giờ để đánh giá đáp ứng hồi sức.",
   opts:[{v:"normal",w:0,l:"Đã đo — lactate < 2 mmol/L",d:"Bình thường, không bắt buộc đo lại theo tiêu chí bundle."},
         {v:"mid",w:1,l:"Đã đo — lactate 2–3,9 mmol/L",d:"Tăng nhẹ đến trung bình — bắt buộc đo lại lần 2 trong 2–4 giờ."},
-        {v:"high",w:2,l:"Đã đo — lactate ≥ 4 mmol/L",d:"Đạt tiêu chí sốc nhiễm khuẩn về chuyển hóa — bắt buộc bù dịch nhanh và đo lại lactate."},
+        {v:"high",w:2,l:"Đã đo — lactate ≥ 4 mmol/L",d:"Ngưỡng bù dịch nhanh 30 mL/kg trong 3 giờ đầu và đo lại lactate (SSC 2021)."},
         {v:"none",w:2,l:"Chưa đo",d:"Cần lấy máu xét nghiệm lactate ngay, song song với cấy máu."}]},
  {id:"cx",num:2,acc:"#8B6FD6",accs:"#EFEAFB",title:"Cấy máu trước khi dùng kháng sinh",
   sub:"Lấy ít nhất 2 bộ cấy máu (hiếu khí + kỵ khí) từ 2 vị trí khác nhau",
@@ -3271,7 +3276,7 @@ const SEPSIS_ITEMS=[
         {v:"after",w:1,l:"Đã lấy cấy máu, nhưng sau khi đã dùng kháng sinh",d:"Vẫn nên gửi mẫu và ghi rõ trình tự vào hồ sơ."},
         {v:"none",w:2,l:"Chưa lấy cấy máu",d:"Lấy ngay nếu kháng sinh chưa dùng; nếu đã trót dùng, vẫn lấy càng sớm càng tốt."}]},
  {id:"abx",num:3,acc:"#C0501B",accs:"#FBE7DC",title:"Kháng sinh phổ rộng",
-  sub:"Bắt đầu càng sớm càng tốt, lý tưởng trong giờ đầu tiên",
+  sub:"Trong 1 giờ nếu có sốc hoặc khả năng nhiễm khuẩn huyết cao; nếu chưa chắc chắn và không sốc: đánh giá nhanh, dùng trong 3 giờ nếu vẫn nghi nhiễm khuẩn (SSC 2021)",
   how:"mỗi giờ trì hoãn kháng sinh thích hợp làm tăng tỷ lệ tử vong ở sốc nhiễm khuẩn. Dùng phổ rộng bao phủ tác nhân nghi ngờ, sau đó xuống thang khi có kết quả vi sinh.",
   opts:[{v:"on",w:0,l:"Đã dùng trong vòng giờ đầu tiên",d:"Đạt mục tiêu bundle."},
         {v:"late",w:1,l:"Đã dùng, nhưng trễ hơn 1 giờ",d:"Ghi rõ lý do trì hoãn vào hồ sơ để rà soát quy trình."},
@@ -3293,8 +3298,8 @@ const VAP_ITEMS=[
   opts:[{v:"done",w:0,l:"Đã thực hiện SAT và SBT hôm nay, đạt",d:"Đạt mục tiêu bundle."},
         {v:"fail",w:1,l:"Đã thử nhưng thất bại",d:"Vẫn đạt yêu cầu vì đã đánh giá; tiếp tục thử lại ngày mai."},
         {v:"none",w:2,l:"Chưa thực hiện đánh giá hôm nay",d:"Thực hiện ngay nếu không có chống chỉ định."}]},
- {id:"oral",num:3,acc:"#C0501B",accs:"#FBE7DC",title:"Vệ sinh răng miệng bằng chlorhexidine",sub:"Thường quy mỗi 6–12 giờ",
-  how:"mảng bám và dịch tiết miệng hầu là nơi vi khuẩn cư trú, có thể bị hít vào đường thở dưới quanh bóng chèn.",
+ {id:"oral",num:3,acc:"#C0501B",accs:"#FBE7DC",title:"Vệ sinh răng miệng — chải răng hằng ngày",sub:"Chải răng ít nhất 2 lần/ngày; không dùng chlorhexidine súc miệng thường quy",
+  how:"mảng bám và dịch tiết miệng hầu là nơi vi khuẩn cư trú, có thể bị hít vào đường thở dưới quanh bóng chèn. SHEA/IDSA/APIC 2022 khuyến cáo chải răng hằng ngày và KHÔNG dùng chlorhexidine súc miệng thường quy vì có thể làm tăng tử vong.",
   opts:[{v:"ok",w:0,l:"Đã thực hiện đủ theo lịch",d:"Đạt mục tiêu bundle."},
         {v:"partial",w:1,l:"Đã thực hiện nhưng chưa đủ số lần",d:"Bổ sung ngay và điều chỉnh lịch chăm sóc."},
         {v:"none",w:2,l:"Chưa thực hiện trong ca trực này",d:"Thực hiện ngay, kèm hút sạch dịch tiết đọng trên bóng chèn."}]},
@@ -3315,7 +3320,7 @@ const VAP_ITEMS=[
         {v:"limited",w:1,l:"Chỉ xoay trở tại giường",d:"Cân nhắc tăng mức độ vận động nếu huyết động ổn định."},
         {v:"none",w:2,l:"Chưa vận động, chưa xoay trở hôm nay",d:"Ít nhất xoay trở mỗi 2 giờ nếu chưa thể vận động tích cực."}]},
  {id:"proph",num:7,acc:"#C9A227",accs:"#FBF4DA",title:"Dự phòng loét do stress và huyết khối tĩnh mạch sâu",sub:"Hai dự phòng thường quy đi kèm",
-  how:"không trực tiếp ngăn VAP nhưng là thành phần kinh điển của gói chăm sóc người bệnh thở máy (IHI Ventilator Bundle).",
+  how:"không phải biện pháp phòng VAP (SHEA/IDSA/APIC 2022) — chỉ dùng khi có chỉ định riêng; giữ trong gói như lời nhắc chăm sóc người bệnh thở máy (IHI Ventilator Bundle).",
   opts:[{v:"both",w:0,l:"Đã có đủ cả hai (hoặc có chống chỉ định rõ, đã ghi nhận)",d:"Đạt mục tiêu bundle."},
         {v:"one",w:1,l:"Chỉ có một trong hai dự phòng",d:"Rà soát và bổ sung nếu không có chống chỉ định."},
         {v:"none",w:2,l:"Chưa có dự phòng nào",d:"Đánh giá chỉ định và bắt đầu dự phòng phù hợp."}]},
@@ -3360,8 +3365,11 @@ const KEYWORDS={
  dosecalc:"tính liều quy đổi tốc độ bơm tiêm ml giờ mcg kg phút vận mạch an thần norepinephrine adrenaline dopamine dobutamine propofol fentanyl insulin heparin pha thuốc"
 };
 
-const APP_VERSION="2026.10.05";
-const APP_UPDATED="05/10/2026";   /* ngày cập nhật — hiện ở cuối màn hình đăng nhập */
+/* Căn cứ của phần can thiệp, theo từng công cụ (bảng rà soát nguồn 06/10/2026) */
+const SRC={"gcs": "Teasdale & Jennett 1974; Teasdale và cs. 2014; NICE NG232 (2023) Chấn thương đầu; ATLS 10th ed. (2018); BTS 2017 Oxy liệu pháp; EPUAP/NPIAP/PPPIA 2019.","avpu": "Royal College of Physicians – NEWS2 (2017); SCCM PADIS 2018; Resuscitation Council UK – tiếp cận ABCDE; BTS 2017 Oxy liệu pháp.","four": "Wijdicks và cs., Ann Neurol 2005; thực hành hồi sức thần kinh. Các mức điểm do công cụ đặt để xếp ưu tiên — FOUR không có phân độ chính thức.","rass": "Sessler và cs., AJRCCM 2002; SCCM PADIS 2018 (Devlin và cs.); SCCM ICU Liberation Bundle (ABCDEF).","sas": "Riker và cs., Crit Care Med 1999; SCCM PADIS 2018; SCCM ICU Liberation Bundle (ABCDEF).","braden": "Bergstrom, Braden và cs., Nurs Res 1987; EPUAP/NPIAP/PPPIA 2019 – Hướng dẫn quốc tế phòng ngừa và điều trị loét tỳ đè.","morse": "Morse 1989; AHRQ Preventing Falls in Hospitals Toolkit (2013); NICE CG161 (2013) / NG249 (2025) về té ngã.","cpot": "Gélinas và cs., Am J Crit Care 2006; SCCM PADIS 2018.","geneva": "Le Gal và cs., Ann Intern Med 2006; ESC 2019 – Hướng dẫn thuyên tắc phổi cấp (Konstantinides và cs.).","wells": "Wells và cs., Thromb Haemost 2000 / Ann Intern Med 2001; ESC 2019 – Hướng dẫn thuyên tắc phổi cấp.","vip": "Jackson 1998 (VIP score); INS – Infusion Therapy Standards of Practice, 9th ed. (2024); IDSA 2009 (nhiễm khuẩn liên quan catheter).","icdsc": "Bergeron và cs., Intensive Care Med 2001; SCCM PADIS 2018; SCCM ICU Liberation Bundle.","camicu": "Ely và cs., JAMA 2001; SCCM PADIS 2018; SCCM ICU Liberation Bundle.","sofa1": "Vincent và cs., Intensive Care Med 1996; Ferreira và cs., JAMA 2001 (tử vong theo điểm); Sepsis-3 (Singer và cs., JAMA 2016); Surviving Sepsis Campaign 2021.","sofa2": "Ranzani và cs., JAMA 2025 (SOFA-2); Sepsis-3 2016; Surviving Sepsis Campaign 2021.","nrs": "Kondrup và cs., Clin Nutr 2003 (ESPEN); ESPEN – Dinh dưỡng trong hồi sức 2019/2023; NICE CG32 & ASPEN 2020 (hội chứng nuôi ăn lại).","qt": "Tisdale và cs., Circ Cardiovasc Qual Outcomes 2013; AHA/ACCF Scientific Statement 2010 (Drew và cs.) – phòng ngừa xoắn đỉnh; CredibleMeds.","abcdef": "SCCM ICU Liberation Bundle; SCCM PADIS 2018; Pun và cs., Crit Care Med 2019.","clabsi": "SHEA/IDSA/APIC Compendium 2022 – Phòng ngừa CLABSI; CDC/HICPAC 2011; INS 2024.","cauti": "SHEA/IDSA/APIC Compendium 2022 – Phòng ngừa CAUTI; CDC/HICPAC 2009.","vap": "SHEA/IDSA/APIC Compendium 2022 – Phòng ngừa VAP/VAE (Klompas và cs.); IHI Ventilator Bundle.","sepsis": "Surviving Sepsis Campaign 2021 (Evans và cs.); SSC Hour-1 Bundle 2018; Sepsis-3 2016.","news2": "Royal College of Physicians – National Early Warning Score 2 (2017).","dka": "Hyperglycemic Crises in Adults – Consensus Report ADA/EASD/JBDS/AACE/DTS 2024; JBDS-IP.","aki": "KDIGO Clinical Practice Guideline for AKI 2012.","vas": "SCCM PADIS 2018; Hawker và cs., Arthritis Care Res 2011 (thang VAS/NRS).","vent": "ARDS Network 2000; ATS 2024 & ESICM 2023 (ARDS); GOLD 2026; GINA; Brain Trauma Foundation 4th ed. (2017); ESICM 2020 (thở máy tổn thương não).","halert": "ISMP List of High-Alert Medications in Acute Care Settings; khuyến cáo chuẩn hóa nồng độ ISMP/ASHP.","dosecalc": "Surviving Sepsis Campaign 2021; SCCM PADIS 2018; tờ hướng dẫn sử dụng thuốc.","compat": "Hướng dẫn sử dụng kháng sinh – BV Thống Nhất (Phụ lục 14, 15), đã được khoa Dược kiểm chứng; Quyết định 5948/QĐ-BYT (2021)."};
+const srcOf=id=>SRC[id]||"";
+const APP_VERSION="2026.10.06";
+const APP_UPDATED="06/10/2026";   /* ngày cập nhật — hiện ở cuối màn hình đăng nhập */
 const APP_AUTHOR="Tăng Ngọc Tân";
 const WC={0:"#11A177",1:"#E08A00",2:"#D62F1E"};
 const BANDBG={"r-good":["#E3F7F0","#0A6B50"],"r-mid":["#FFF4DC","#8A5600"],"r-bad":["#FFEAE6","#B5210F"],"r-crit":["#FFEAE6","#9B1B0F"]};
@@ -6455,7 +6463,7 @@ function qtTotal(){
 const QT_BANDS=[
  {min:0,max:6,cls:"r-good",dot:"#11A177",name:"Nguy cơ thấp",
   note:"Tisdale ≤ 6 điểm. Nguy cơ kéo dài QTc trong đợt nằm viện này thấp, nhưng vẫn phải theo dõi nếu có thêm thuốc mới.",
-  acts:["Duy trì kali máu trên 4,0 mmol/L và magnesi máu trên 1,0 mmol/L — đây là biện pháp dự phòng rẻ và hiệu quả nhất.",
+  acts:["Duy trì kali máu trên 4,0 mmol/L và magnesi máu trên 0,8 mmol/L (2 mg/dL) — đây là biện pháp dự phòng rẻ và hiệu quả nhất.",
         "Chấm lại thang này mỗi khi thêm một thuốc mới vào y lệnh, hoặc khi tình trạng người bệnh xấu đi.",
         "Ghi lại danh sách thuốc kéo dài QT đang dùng vào biên bản bàn giao ca."]},
  {min:7,max:10,cls:"r-mid",dot:"#F0B429",name:"Nguy cơ trung bình",
@@ -7922,6 +7930,13 @@ function runSelfTest(){
   GROUPS.forEach(g=>g.items.forEach(id=>T("Nhóm trang chủ","Tồn tại: "+g.id+" › "+id, !!SCALES.find(x=>x.id===id))));
   GROUPS.forEach(g=>g.tools.forEach(id=>T("Nhóm trang chủ","Có tên ngắn: "+id, !!TOOL_LABEL[id])));
 
+  /* --- Căn cứ can thiệp --- */
+  SCALES.filter(x=>x.type!=="duo").forEach(x=>T("Căn cứ","Có dòng Căn cứ: "+x.id, srcOf(x.id).length>20));
+  SCALES.filter(x=>x.bands).forEach(x=>x.bands.forEach(b=>(b.acts||[]).forEach(a=>{
+    if(/chlorhexidine/i.test(a)&&!/không dùng/i.test(a)) T("Căn cứ","Không còn khuyến cáo chlorhexidine súc miệng: "+x.id,false,a);
+  })));
+  T("Căn cứ","Gói VAP không còn chlorhexidine súc miệng thường quy", !VAP_ITEMS.some(i=>/chlorhexidine/i.test(i.title)));
+
   return R;
 }
 
@@ -8765,7 +8780,7 @@ function evalVap(){
   if(missing.length) acts.push(`Ghi nhận trạng thái cho: ${missing.join(", ")} — hành động chưa đánh giá không có nghĩa là đã hoàn thành.`);
   const wanted=[["hob","ok","Nâng đầu giường lên tối thiểu 30°, duy trì liên tục."],
     ["sat","done","Thực hiện đánh giá SAT/SBT ngay nếu không có chống chỉ định."],
-    ["oral","ok","Vệ sinh răng miệng bằng chlorhexidine đủ theo lịch mỗi 6–12 giờ."],
+    ["oral","ok","Chải răng cho người bệnh ít nhất 2 lần/ngày; không dùng chlorhexidine súc miệng thường quy."],
     ["cuff","ok","Kiểm tra và điều chỉnh áp lực bóng chèn về 20–30 cmH₂O."],
     ["sub","ok","Xử lý dịch ứ đọng dây máy thở hoặc tăng cường hút miệng hầu nếu không có ống hút dưới thanh môn."],
     ["mob","ok","Tăng cường vận động sớm và thay đổi tư thế khi huyết động cho phép."],
@@ -8977,6 +8992,9 @@ function update(){
   el("evm").innerHTML=(r.chips||[]).map(c=>`<b>${c}</b>`).join("");
   const ul=el("acts");ul.innerHTML="";
   b.acts.forEach(a=>{const li=document.createElement("li");li.textContent=a;ul.appendChild(li);});
+  const srcTxt=b.src||srcOf(cur.id);
+  el("actSrc").hidden=!srcTxt;
+  el("actSrc").innerHTML=srcTxt?"<b>Căn cứ:</b> "+String(srcTxt).replace(/&/g,"&amp;").replace(/</g,"&lt;"):"";
   el("actBlock").hidden=false;
   el("barTotal").textContent = cur.type==="camicu"?r.tag:r.tag;
   el("barTotal").style.color=b.dot;
@@ -9009,8 +9027,9 @@ function resultText(r){
   L.push("");
   if(!r.ready){L.push("Chưa hoàn thành đầy đủ.");return L.join("\n");}
   if(r.chips&&r.chips.length) L.push(r.chips.join(" · "));
-  L.push(`Kết luận: ${r.band.name}`,r.band.note,"","Can thiệp đề xuất:");
+  L.push(`Kết luận: ${r.band.name}`,r.band.note,"","Can thiệp đề xuất (gợi ý tham khảo — thực hiện theo y lệnh và phác đồ của bệnh viện):");
   r.band.acts.forEach((a,i)=>L.push(`${i+1}. ${a}`));
+  { const st=r.band.src||srcOf(cur.id); if(st) L.push("Căn cứ: "+st); }
   if(r.flags&&r.flags.length){L.push("","Cảnh báo:");r.flags.forEach(f=>L.push(`- [${f[0]==="red"?"ĐỎ":"VÀNG"}] ${f[1]}: ${f[3]}`));}
   L.push("","--- Công cụ hỗ trợ tính toán, không phải hồ sơ bệnh án. Kết quả cần được xác nhận",
             "    và chép vào hồ sơ bệnh án chính thức. Không thay thế đánh giá lâm sàng",
@@ -9191,7 +9210,7 @@ el("printBtn").onclick=()=>{
   ph.innerHTML=`<div style="font-weight:800;font-size:15px">PHIẾU LƯỢNG GIÁ ĐIỀU DƯỠNG — HỒI SỨC TÍCH CỰC</div>
     <div style="font-size:12px">Ngày ${dayLabel(d)}${codes.length?" · người bệnh: "+esc(codes.join(", ")):""}</div>
     <div style="font-size:11px;font-style:italic">Công cụ hỗ trợ tính toán — không phải hồ sơ bệnh án. Kết quả phải được chép vào hồ sơ bệnh án chính thức.</div>
-    <div style="font-size:10.5px">Chịu trách nhiệm: Tăng Ngọc Tân · Phiên bản 2026.10.05</div>`;
+    <div style="font-size:10.5px">Chịu trách nhiệm: Tăng Ngọc Tân · Phiên bản 2026.10.06</div>`;
   window.print();
 };
 el("xlsxToggle").onclick=()=>{
