@@ -776,6 +776,9 @@ td.dv-green,td.dv-green input{color:#0A6B50;font-weight:700}
 .gate-pane[hidden]{display:none}
 .gate .gf{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
 .gate .gf label{font-size:12.5px;font-weight:700;color:var(--ink2)}
+.gate .ghint{font-size:12px;color:var(--ink2);line-height:1.45}
+.gate .ghint b{color:var(--ink)}
+.gate .ghint.ok{color:#0A6B50}
 .gate .gf input{font-family:inherit;font-size:15px;padding:11px 12px;border:1.5px solid var(--line);border-radius:11px;background:#fff;color:var(--ink)}
 .gate .gf input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-s)}
 .gate .gbtn{width:100%;font-family:"Nunito";font-weight:800;font-size:15px;padding:12px;border-radius:12px;border:0;
@@ -990,6 +993,16 @@ window.HSTC_ADMINS = ["tntan.bv@ctump.edu.vn"];
    Ai đã tự đặt mật khẩu trước đó thì vẫn dùng mật khẩu của mình. */
 window.HSTC_SCHOOL_DOMAIN = "@ctump.edu.vn";
 window.HSTC_DEFAULT_PW = "123456";
+/* Email nhân viên bệnh viện có dạng ten.bv@ctump.edu.vn. Người dùng chỉ cần gõ phần tên
+   (vd: tntan) — công cụ tự thêm ".bv@ctump.edu.vn". Gõ đủ email thì giữ nguyên. */
+window.HSTC_STAFF_SUFFIX = ".bv@ctump.edu.vn";
+window.hstcEmail = function (v) {
+  v = String(v || "").trim().toLowerCase().replace(/\s+/g, "");
+  if (!v) return "";
+  if (v.endsWith("@")) v = v.slice(0, -1);
+  if (v.indexOf("@") < 0) return v.replace(/\.bv$/, "") + window.HSTC_STAFF_SUFFIX;
+  return v;
+};
 </script>
 </head>
 <body>
@@ -1013,12 +1026,12 @@ window.HSTC_DEFAULT_PW = "123456";
 
     <form class="gate-pane" id="gLogin" hidden autocomplete="on">
       <h2>Đăng nhập</h2>
-      <div class="gf"><label for="gEmail">Email</label><input id="gEmail" type="email" autocomplete="username" required></div>
+      <div class="gf"><label for="gEmail">Email</label><input id="gEmail" type="text" inputmode="email" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="username" placeholder="tntan hoặc tntan.bv@ctump.edu.vn" required><small class="ghint" id="gEmailHint">Chỉ cần gõ phần tên — công cụ tự thêm <b>.bv@ctump.edu.vn</b></small></div>
       <div class="gf"><label for="gPass">Mật khẩu</label><div class="pw"><input id="gPass" type="password" autocomplete="current-password" required><button type="button" class="eye" data-eye="gPass" aria-label="Hiện mật khẩu" title="Hiện mật khẩu"></button></div></div>
       <label class="remember"><input type="checkbox" id="gRemember" checked> Ghi nhớ email trên máy này</label>
       <button class="gbtn" type="submit">Đăng nhập</button>
       <div class="glinks"><button type="button" data-go="gReset">Quên mật khẩu?</button><button type="button" data-go="gSignup">Email ngoài trường? Tạo tài khoản</button></div>
-      <p class="gnote">Thành viên có email <b>@ctump.edu.vn</b> đã được người quản trị thêm vào danh sách: đăng nhập bằng email đó với mật khẩu mặc định <b>123456</b> (nếu trước đây bạn đã tự đặt mật khẩu riêng thì dùng mật khẩu đó). Có thể đổi mật khẩu sau khi vào, ở nút “Đổi mật khẩu”.</p>
+      <p class="gnote">Thành viên có email <b>ten.bv@ctump.edu.vn</b> đã được người quản trị thêm vào danh sách: gõ phần tên (vd: <b>tntan</b>) và mật khẩu mặc định <b>123456</b> (nếu trước đây bạn đã tự đặt mật khẩu riêng thì dùng mật khẩu đó). Có thể đổi mật khẩu sau khi vào, ở nút “Đổi mật khẩu”.</p>
     </form>
 
     <form class="gate-pane" id="gSignup" hidden autocomplete="on">
@@ -1033,7 +1046,7 @@ window.HSTC_DEFAULT_PW = "123456";
 
     <form class="gate-pane" id="gReset" hidden>
       <h2>Đặt lại mật khẩu</h2>
-      <div class="gf"><label for="rEmail">Email đã đăng ký</label><input id="rEmail" type="email" autocomplete="username" required></div>
+      <div class="gf"><label for="rEmail">Email đã đăng ký</label><input id="rEmail" type="text" inputmode="email" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="username" placeholder="tntan hoặc tntan.bv@ctump.edu.vn" required><small class="ghint" id="rEmailHint">Chỉ cần gõ phần tên — công cụ tự thêm <b>.bv@ctump.edu.vn</b></small></div>
       <button class="gbtn" type="submit">Gửi email đặt lại mật khẩu</button>
       <div class="glinks"><button type="button" data-go="gLogin">← Quay lại đăng nhập</button></div>
     </form>
@@ -1138,9 +1151,9 @@ window.HSTC_DEFAULT_PW = "123456";
 <div class="mdl" id="memModal" hidden>
   <div class="mdl-card">
     <h2>Thành viên được phép dùng <button type="button" id="memClose" aria-label="Đóng">×</button></h2>
-    <p class="sub">Thêm email của điều dưỡng để họ đăng nhập được. Email <b>@ctump.edu.vn</b> vào ngay bằng mật khẩu mặc định <b>123456</b> (không cần tự tạo tài khoản hay xác nhận email); email khác phải tự “Tạo tài khoản” và xác nhận email. Điều dưỡng chỉ thấy bản ghi do chính mình nhập; người quản trị thấy toàn bộ. Gỡ email thì người đó không vào được nữa, nhưng bản ghi họ đã nhập vẫn được giữ.</p>
+    <p class="sub">Thêm email của điều dưỡng để họ đăng nhập được — chỉ cần gõ phần tên, công cụ tự thêm <b>.bv@ctump.edu.vn</b>. Email <b>@ctump.edu.vn</b> vào ngay bằng mật khẩu mặc định <b>123456</b> (không cần tự tạo tài khoản hay xác nhận email); email khác phải tự “Tạo tài khoản” và xác nhận email. Điều dưỡng chỉ thấy bản ghi do chính mình nhập; người quản trị thấy toàn bộ. Gỡ email thì người đó không vào được nữa, nhưng bản ghi họ đã nhập vẫn được giữ.</p>
     <form class="mem-add" id="memForm">
-      <input id="memEmail" type="email" placeholder="ten@ctump.edu.vn" required>
+      <input id="memEmail" type="text" inputmode="email" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="tên (tự thêm .bv@ctump.edu.vn)" required>
       <input id="memName" placeholder="Họ tên (ghi chú)" maxlength="60">
       <button type="submit">Thêm</button>
     </form>
@@ -1164,7 +1177,7 @@ window.HSTC_DEFAULT_PW = "123456";
     <div class="badge"><b id="cnt">0</b> thang điểm sẵn có · thêm được không giới hạn</div>
     <h1><span>Bộ công cụ số hỗ trợ chuẩn hóa đánh giá điều dưỡng, cảnh báo sớm và an toàn dùng thuốc</span></h1>
     <p class="byline"><span class="author">Chịu trách nhiệm bởi Tăng Ngọc Tân</span>
-      <span class="ver" id="verChip" style="cursor:pointer" title="Bấm để chạy tự kiểm tra">Phiên bản 2026.10.09</span></p>
+      <span class="ver" id="verChip" style="cursor:pointer" title="Bấm để chạy tự kiểm tra">Phiên bản 2026.10.12</span></p>
     <p class="lede">Nhập họ tên, tuổi và số giường của người bệnh, chọn thang điểm cần dùng, chấm điểm và nhận ngay kết luận kèm can thiệp đề xuất. Sau khi lưu các thang điểm đã chấm, dùng nút in ở cuối trang để xuất một phiếu lượng giá tổng hợp.</p>
 
     <details class="legal-mini" id="legalMini">
@@ -1263,7 +1276,7 @@ window.HSTC_DEFAULT_PW = "123456";
     </div>
 
     <footer>
-      <b>Bộ công cụ số hỗ trợ chuẩn hóa đánh giá điều dưỡng, cảnh báo sớm và an toàn dùng thuốc — chịu trách nhiệm bởi Tăng Ngọc Tân. Phiên bản 2026.10.09.</b><br><br>Các thang điểm và gói can thiệp được xây dựng theo bản gốc quốc tế: Glasgow Coma Scale (Teasdale &amp; Jennett 1974, cập nhật 2014), Morse Fall Scale cải tiến (Morse 1989), Braden Scale (Bergstrom, Braden và cs. 1987), CPOT (Gélinas 2006), ICDSC (Bergeron 2001), CAM-ICU (Ely 2001) kèm thang RASS (Sessler 2002), AVPU và bản mở rộng ACVPU (RCP 2017), FOUR score (Wijdicks 2005), SAS (Riker 1999), ABCDEF Bundle / ICU Liberation (Devlin PADIS 2018; Pun 2019; Barnes-Daly 2017), VIP Score (Jackson 1998), VAP Bundle (SHEA/IDSA/APIC 2022, IHI, CDC), Central Line Bundle phòng ngừa CLABSI (CDC/HICPAC, IHI), CAUTI Bundle (CDC/HICPAC, SHEA/IDSA), Sepsis Bundle giờ đầu tiên (Surviving Sepsis Campaign — SCCM/ESICM), Geneva cải tiến (Le Gal 2006), Wells cải tiến (Wells 2000–2001), NEWS2 (RCP 2017), SOFA (Vincent 1996) và SOFA-2 (Ranzani 2025), KDIGO 2012 cho tổn thương thận cấp, thang điểm đau trực quan VAS/NRS. Danh mục thuốc cao nguy cơ theo ISMP List of High-Alert Medications in Acute Care Settings; khoảng liều thuốc truyền tham khảo Surviving Sepsis Campaign 2021 và PADIS 2018; phân tầng thuốc kéo dài QT theo CredibleMeds (AZCERT) và thang nguy cơ Tisdale 2013; cài đặt máy thở ban đầu theo ARDS Network, ATS 2024, ESICM 2023, GOLD 2026, GINA, Brain Trauma Foundation và đồng thuận ESICM 2020. Can thiệp tham chiếu hướng dẫn EPUAP/NPIAP/PPPIA 2019, NICE NG232, AHRQ, INS 2024, PADIS 2018, ESC 2019, SSC 2021, SHEA/IDSA/APIC 2022 và KDIGO 2012; mỗi kết quả có dòng "Căn cứ" ghi nguồn. Can thiệp là gợi ý tham khảo — thực hiện theo y lệnh và phác đồ của bệnh viện. Công cụ hỗ trợ ra quyết định, không thay thế đánh giá lâm sàng trực tiếp, y lệnh của bác sĩ hay phác đồ của cơ sở điều trị. Kết quả phải được chép vào hồ sơ bệnh án chính thức; bản ghi tại đây không phải hồ sơ bệnh án và không có giá trị pháp lý thay thế. Bản ghi được lưu trực tuyến theo tài khoản đăng nhập (máy chủ Firebase của Google, khu vực Singapore); chỉ thành viên được quản trị viên duyệt mới truy cập được. Bản ghi có họ tên, tuổi, số giường của người bệnh nên thuộc dữ liệu cá nhân nhạy cảm theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15: chỉ dùng trên máy thuộc quản lý của đơn vị, khóa màn hình khi rời máy, và xóa bản ghi khi không còn cần dùng.
+      <b>Bộ công cụ số hỗ trợ chuẩn hóa đánh giá điều dưỡng, cảnh báo sớm và an toàn dùng thuốc — chịu trách nhiệm bởi Tăng Ngọc Tân. Phiên bản 2026.10.12.</b><br><br>Các thang điểm và gói can thiệp được xây dựng theo bản gốc quốc tế: Glasgow Coma Scale (Teasdale &amp; Jennett 1974, cập nhật 2014), Morse Fall Scale cải tiến (Morse 1989), Braden Scale (Bergstrom, Braden và cs. 1987), CPOT (Gélinas 2006), ICDSC (Bergeron 2001), CAM-ICU (Ely 2001) kèm thang RASS (Sessler 2002), AVPU và bản mở rộng ACVPU (RCP 2017), FOUR score (Wijdicks 2005), SAS (Riker 1999), ABCDEF Bundle / ICU Liberation (Devlin PADIS 2018; Pun 2019; Barnes-Daly 2017), VIP Score (Jackson 1998), VAP Bundle (SHEA/IDSA/APIC 2022, IHI, CDC), Central Line Bundle phòng ngừa CLABSI (CDC/HICPAC, IHI), CAUTI Bundle (CDC/HICPAC, SHEA/IDSA), Sepsis Bundle giờ đầu tiên (Surviving Sepsis Campaign — SCCM/ESICM), Geneva cải tiến (Le Gal 2006), Wells cải tiến (Wells 2000–2001), NEWS2 (RCP 2017), SOFA (Vincent 1996) và SOFA-2 (Ranzani 2025), KDIGO 2012 cho tổn thương thận cấp, thang điểm đau trực quan VAS/NRS. Danh mục thuốc cao nguy cơ theo ISMP List of High-Alert Medications in Acute Care Settings; khoảng liều thuốc truyền tham khảo Surviving Sepsis Campaign 2021 và PADIS 2018; phân tầng thuốc kéo dài QT theo CredibleMeds (AZCERT) và thang nguy cơ Tisdale 2013; cài đặt máy thở ban đầu theo ARDS Network, ATS 2024, ESICM 2023, GOLD 2026, GINA, Brain Trauma Foundation và đồng thuận ESICM 2020. Can thiệp tham chiếu hướng dẫn EPUAP/NPIAP/PPPIA 2019, NICE NG232, AHRQ, INS 2024, PADIS 2018, ESC 2019, SSC 2021, SHEA/IDSA/APIC 2022 và KDIGO 2012; mỗi kết quả có dòng "Căn cứ" ghi nguồn. Can thiệp là gợi ý tham khảo — thực hiện theo y lệnh và phác đồ của bệnh viện. Công cụ hỗ trợ ra quyết định, không thay thế đánh giá lâm sàng trực tiếp, y lệnh của bác sĩ hay phác đồ của cơ sở điều trị. Kết quả phải được chép vào hồ sơ bệnh án chính thức; bản ghi tại đây không phải hồ sơ bệnh án và không có giá trị pháp lý thay thế. Bản ghi được lưu trực tuyến theo tài khoản đăng nhập (máy chủ Firebase của Google, khu vực Singapore); chỉ thành viên được quản trị viên duyệt mới truy cập được. Bản ghi có họ tên, tuổi, số giường của người bệnh nên thuộc dữ liệu cá nhân nhạy cảm theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15: chỉ dùng trên máy thuộc quản lý của đơn vị, khóa màn hình khi rời máy, và xóa bản ghi khi không còn cần dùng.
     </footer>
   </div>
 </div>
@@ -3405,8 +3418,8 @@ const KEYWORDS={
 /* Căn cứ của phần can thiệp, theo từng công cụ (bảng rà soát nguồn 06/10/2026) */
 const SRC={"gcs": "Teasdale & Jennett 1974; Teasdale và cs. 2014; NICE NG232 (2023) Chấn thương đầu; ATLS 10th ed. (2018); BTS 2017 Oxy liệu pháp; EPUAP/NPIAP/PPPIA 2019.","avpu": "Royal College of Physicians – NEWS2 (2017); SCCM PADIS 2018; Resuscitation Council UK – tiếp cận ABCDE; BTS 2017 Oxy liệu pháp.","four": "Wijdicks và cs., Ann Neurol 2005; thực hành hồi sức thần kinh. Các mức điểm do công cụ đặt để xếp ưu tiên — FOUR không có phân độ chính thức.","rass": "Sessler và cs., AJRCCM 2002; SCCM PADIS 2018 (Devlin và cs.); SCCM ICU Liberation Bundle (ABCDEF).","sas": "Riker và cs., Crit Care Med 1999; SCCM PADIS 2018; SCCM ICU Liberation Bundle (ABCDEF).","braden": "Bergstrom, Braden và cs., Nurs Res 1987; EPUAP/NPIAP/PPPIA 2019 – Hướng dẫn quốc tế phòng ngừa và điều trị loét tỳ đè.","morse": "Morse 1989; AHRQ Preventing Falls in Hospitals Toolkit (2013); NICE CG161 (2013) / NG249 (2025) về té ngã.","cpot": "Gélinas và cs., Am J Crit Care 2006; SCCM PADIS 2018.","geneva": "Le Gal và cs., Ann Intern Med 2006; ESC 2019 – Hướng dẫn thuyên tắc phổi cấp (Konstantinides và cs.).","wells": "Wells và cs., Thromb Haemost 2000 / Ann Intern Med 2001; ESC 2019 – Hướng dẫn thuyên tắc phổi cấp.","vip": "Jackson 1998 (VIP score); INS – Infusion Therapy Standards of Practice, 9th ed. (2024); IDSA 2009 (nhiễm khuẩn liên quan catheter).","icdsc": "Bergeron và cs., Intensive Care Med 2001; SCCM PADIS 2018; SCCM ICU Liberation Bundle.","camicu": "Ely và cs., JAMA 2001; SCCM PADIS 2018; SCCM ICU Liberation Bundle.","sofa1": "Vincent và cs., Intensive Care Med 1996; Ferreira và cs., JAMA 2001 (tử vong theo điểm); Sepsis-3 (Singer và cs., JAMA 2016); Surviving Sepsis Campaign 2021.","sofa2": "Ranzani và cs., JAMA 2025 (SOFA-2); Sepsis-3 2016; Surviving Sepsis Campaign 2021.","nrs": "Kondrup và cs., Clin Nutr 2003 (ESPEN); ESPEN – Dinh dưỡng trong hồi sức 2019/2023; NICE CG32 & ASPEN 2020 (hội chứng nuôi ăn lại).","qt": "Tisdale và cs., Circ Cardiovasc Qual Outcomes 2013; AHA/ACCF Scientific Statement 2010 (Drew và cs.) – phòng ngừa xoắn đỉnh; CredibleMeds.","abcdef": "SCCM ICU Liberation Bundle; SCCM PADIS 2018; Pun và cs., Crit Care Med 2019.","clabsi": "SHEA/IDSA/APIC Compendium 2022 – Phòng ngừa CLABSI; CDC/HICPAC 2011; INS 2024.","cauti": "SHEA/IDSA/APIC Compendium 2022 – Phòng ngừa CAUTI; CDC/HICPAC 2009.","vap": "SHEA/IDSA/APIC Compendium 2022 – Phòng ngừa VAP/VAE (Klompas và cs.); IHI Ventilator Bundle.","sepsis": "Surviving Sepsis Campaign 2021 (Evans và cs.); SSC Hour-1 Bundle 2018; Sepsis-3 2016.","news2": "Royal College of Physicians – National Early Warning Score 2 (2017).","dka": "Hyperglycemic Crises in Adults – Consensus Report ADA/EASD/JBDS/AACE/DTS 2024; JBDS-IP.","aki": "KDIGO Clinical Practice Guideline for AKI 2012.","vas": "SCCM PADIS 2018; Hawker và cs., Arthritis Care Res 2011 (thang VAS/NRS).","vent": "ARDS Network 2000; ATS 2024 & ESICM 2023 (ARDS); GOLD 2026; GINA; Brain Trauma Foundation 4th ed. (2017); ESICM 2020 (thở máy tổn thương não).","halert": "ISMP List of High-Alert Medications in Acute Care Settings; khuyến cáo chuẩn hóa nồng độ ISMP/ASHP.","dosecalc": "Surviving Sepsis Campaign 2021; SCCM PADIS 2018; tờ hướng dẫn sử dụng thuốc.","compat": "Hướng dẫn sử dụng kháng sinh – BV Thống Nhất (Phụ lục 14, 15), đã được khoa Dược kiểm chứng; Quyết định 5948/QĐ-BYT (2021)."};
 const srcOf=id=>SRC[id]||"";
-const APP_VERSION="2026.10.09";
-const APP_UPDATED="09/10/2026";   /* ngày cập nhật — hiện ở cuối màn hình đăng nhập */
+const APP_VERSION="2026.10.12";
+const APP_UPDATED="12/10/2026";   /* ngày cập nhật — hiện ở cuối màn hình đăng nhập */
 const APP_AUTHOR="Tăng Ngọc Tân";
 const WC={0:"#11A177",1:"#E08A00",2:"#D62F1E"};
 const BANDBG={"r-good":["#E3F7F0","#0A6B50"],"r-mid":["#FFF4DC","#8A5600"],"r-bad":["#FFEAE6","#B5210F"],"r-crit":["#FFEAE6","#9B1B0F"]};
@@ -9247,7 +9260,7 @@ el("printBtn").onclick=()=>{
   ph.innerHTML=`<div style="font-weight:800;font-size:15px">PHIẾU LƯỢNG GIÁ ĐIỀU DƯỠNG — HỒI SỨC TÍCH CỰC</div>
     <div style="font-size:12px">Ngày ${dayLabel(d)}${codes.length?" · người bệnh: "+esc(codes.join(", ")):""}</div>
     <div style="font-size:11px;font-style:italic">Công cụ hỗ trợ tính toán — không phải hồ sơ bệnh án. Kết quả phải được chép vào hồ sơ bệnh án chính thức.</div>
-    <div style="font-size:10.5px">Chịu trách nhiệm: Tăng Ngọc Tân · Phiên bản 2026.10.09</div>`;
+    <div style="font-size:10.5px">Chịu trách nhiệm: Tăng Ngọc Tân · Phiên bản 2026.10.12</div>`;
   window.print();
 };
 el("xlsxToggle").onclick=()=>{
@@ -9293,6 +9306,16 @@ refreshPt();renderHome();paintStoreNote();
   };
   let saved=""; try{ saved=localStorage.getItem(KEY)||""; }catch(e){}
   if(saved && el("gEmail")){ el("gEmail").value=saved; }
+  /* Gõ phần tên → hiện ngay email đầy đủ sẽ dùng; rời ô thì điền luôn đuôi .bv@ctump.edu.vn */
+  [["gEmail","gEmailHint"],["rEmail","rEmailHint"]].forEach(([id,hid])=>{
+    const inp=el(id), hint=el(hid); if(!inp||!hint||!window.hstcEmail) return;
+    const base=hint.innerHTML;
+    const paint=()=>{ const v=inp.value.trim();
+      if(v && v.indexOf("@")<0){ hint.innerHTML="Sẽ đăng nhập bằng <b>"+esc(window.hstcEmail(v))+"</b>"; hint.classList.add("ok"); }
+      else { hint.innerHTML=base; hint.classList.remove("ok"); } };
+    inp.addEventListener("input",paint);
+    inp.addEventListener("blur",()=>{ if(inp.value.trim()) inp.value=window.hstcEmail(inp.value); paint(); });
+  });
   if(el("gRemember")) el("gRemember").checked = true;
   /* Đặt con trỏ vào ô mật khẩu khi email đã có sẵn */
   const focusLogin=()=>{ const f=el("gLogin"); if(!f||f.hidden) return;
@@ -9675,7 +9698,8 @@ document.querySelectorAll("[data-signout]").forEach(b => b.onclick = doSignOut);
 
 $("gLogin").onsubmit = async e => {
   e.preventDefault(); const f = e.target; busy(f, true); msg("");
-  const em = $("gEmail").value.trim(), pw = $("gPass").value;
+  const em = window.hstcEmail($("gEmail").value), pw = $("gPass").value;
+  $("gEmail").value = em;
   const remember = () => { $("gPass").value = ""; window.hstcRememberEmail && window.hstcRememberEmail(em); };
   try { await signInWithEmailAndPassword(auth, em, pw); remember(); }
   catch (err) {
@@ -9717,7 +9741,8 @@ $("gSignup").onsubmit = async e => {
 
 $("gReset").onsubmit = async e => {
   e.preventDefault(); const f = e.target; busy(f, true); msg("");
-  try { await sendPasswordResetEmail(auth, $("rEmail").value.trim()); msg("Nếu email này đã đăng ký, một đường link đặt lại mật khẩu đã được gửi. Xem cả mục Thư rác.", "ok"); }
+  const rem = window.hstcEmail($("rEmail").value); $("rEmail").value = rem;
+  try { await sendPasswordResetEmail(auth, rem); msg("Nếu email này đã đăng ký, một đường link đặt lại mật khẩu đã được gửi. Xem cả mục Thư rác.", "ok"); }
   catch (err) { msg(errText(err)); }
   busy(f, false);
 };
@@ -9834,7 +9859,7 @@ $("memClose").onclick = () => { $("memModal").hidden = true; };
 $("memModal").onclick = e => { if (e.target.id === "memModal") $("memModal").hidden = true; };
 $("memForm").onsubmit = async e => {
   e.preventDefault();
-  const em = $("memEmail").value.trim().toLowerCase(), name = $("memName").value.trim();
+  const em = window.hstcEmail($("memEmail").value), name = $("memName").value.trim();
   if (!em) return;
   try {
     await setDoc(doc(db, "members", em), { name, addedBy: user.email.toLowerCase(), addedAt: serverTimestamp() });
