@@ -286,6 +286,23 @@ table.edit{border-collapse:collapse;width:100%;font-size:.86rem;min-width:720px}
 table.edit th,table.edit td{border-top:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:middle}
 table.edit th{font-size:.76rem;color:var(--muted);font-weight:700;background:var(--field)}
 table.edit .inwrap input{width:100%}
+.inwrap input.mk{font-family:var(--f-num);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.inwrap input.mk-d{width:7.4rem}.inwrap input.mk-t{width:4.3rem}.inwrap input.mk-dt{width:10.4rem}
+table.edit .inwrap input.mk{width:100%}
+.inwrap input.mk.bad{color:var(--crit);background:var(--crit-soft)}
+.qsteps{display:flex;gap:6px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:thin}
+.qstep{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 12px;font:600 .82rem var(--f-body);cursor:pointer;white-space:nowrap}
+.qstep.ok{border-color:var(--ok);color:var(--ok)}.qstep.ok::after{content:" \2713"}
+.qstep.on{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.qnav{position:sticky;bottom:0;z-index:20;display:flex;align-items:center;gap:10px;justify-content:space-between;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 18px rgba(0,0,0,.08)}
+.qnav .btn{padding:11px 16px;font-size:.95rem}
+.qnav .qc{font-size:.8rem;color:var(--muted);text-align:center;line-height:1.35}
+.chead.q .formsel{display:none}
+#tabbody.quick .chip{min-height:44px;padding:8px 14px;font-size:.95rem}
+#tabbody.quick .row{scroll-margin-block:110px}
+@keyframes qpulse{0%{box-shadow:0 0 0 0 var(--accent)}100%{box-shadow:0 0 0 10px transparent}}
+.btn.pulse{animation:qpulse .9s ease-out 2}
+@media (prefers-reduced-motion: reduce){.btn.pulse{animation:none;outline:3px solid var(--accent)}}
 table.edit .inwrap{width:100%}
 table.edit td.c{text-align:center}
 .xbtn{all:unset;cursor:pointer;width:26px;height:26px;border-radius:6px;display:grid;place-items:center;color:var(--muted);font-size:1.1rem}
@@ -435,7 +452,7 @@ pre.rules{background:var(--field);border:1px solid var(--line);border-radius:8px
   <span class="saved busy" id="saved">Đang kết nối…</span>
 </div></header>
 <main class="wrap"><div class="inner" id="view"></div></main>
-<footer class="wrap"><div class="inner">Phiên bản 1.8 trực tuyến (06/11/2026) · Dữ liệu lưu trên máy chủ Firebase, chỉ tài khoản của đề tài đọc được. Vẫn nên tải file sao lưu định kỳ và cất trong Drive riêng.</div></footer>
+<footer class="wrap"><div class="inner">Phiên bản 1.9 trực tuyến (06/11/2026) · Dữ liệu lưu trên máy chủ Firebase, chỉ tài khoản của đề tài đọc được. Vẫn nên tải file sao lưu định kỳ và cất trong Drive riêng.</div></footer>
 </div>
 
 <aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="dtitle">
@@ -496,7 +513,7 @@ function hoursBetween(a,b){if(!a||!b||a.length<16||b.length<16)return null;const
 /* ---------- constants ---------- */
 const KHOA={HS:{name:'Đơn vị Hồi sức tích cực',short:'Hồi sức tích cực'},NTH:{name:'Nội tổng hợp',short:'Nội tổng hợp'},TM:{name:'Tim mạch can thiệp – thần kinh',short:'Tim mạch CT – TK'}};
 const KORDER=['HS','NTH','TM'];
-const PFX={HS:'HS-',NTH:'NTH-',TM:'TMTK-'};const APP_VER='1.8';
+const PFX={HS:'HS-',NTH:'NTH-',TM:'TMTK-'};const APP_VER='1.9';
 const MOC=['N3','N7','N10','N14','N17','N21','N24','N28'];
 const MOCDAY={N3:3,N7:7,N10:10,N14:14,N17:17,N21:21,N24:24,N28:28};
 const DEVICES=[[1,'Ống thông dạ dày'],[2,'Ống nội khí quản/mở khí quản'],[3,'Mặt nạ thở không xâm nhập'],[4,'Gọng/mặt nạ oxy'],[5,'Ống thông tiểu'],[6,'Đầu đo SpO2'],[7,'Băng đo huyết áp'],[8,'Dây cố định chi'],[9,'Khác']];
@@ -769,9 +786,9 @@ function partHTML(p,base){const path=p.k?base+'.'+p.k:'';const pi=REG.push({p,ba
  switch(p.t){
   case 'text':inner=fld(`<input type="text" id="${fid(path)}" data-path="${path}" placeholder="${esc(p.ph||'')}" autocomplete="off">`);break;
   case 'num':inner=fld(`<input type="text" inputmode="decimal" id="${fid(path)}" data-path="${path}" placeholder="${esc(p.ph||'')}" autocomplete="off">`);break;
-  case 'date':inner=fld(`<input type="date" id="${fid(path)}" data-path="${path}">`);break;
-  case 'dt':inner=fld(`<input type="datetime-local" id="${fid(path)}" data-path="${path}">`);break;
-  case 'time':inner=fld(`<input type="time" id="${fid(path)}" data-path="${path}">`);break;
+  case 'date':inner=fld(mkInput('d',`id="${fid(path)}" data-path="${path}"`));break;
+  case 'dt':inner=fld(mkInput('dt',`id="${fid(path)}" data-path="${path}"`));break;
+  case 'time':inner=fld(mkInput('t',`id="${fid(path)}" data-path="${path}"`));break;
   case 'sel':inner=fld(`<select id="${fid(path)}" data-path="${path}"><option value="">—</option>${p.opts.map(([v,l])=>`<option value="${esc(v)}">${esc(l)}</option>`).join('')}</select>`);break;
   case 'radio':case 'checks':inner=(p.pre?`<span class="plab">${p.pre}</span>`:'')+`<span class="chips${p.col?' col':''}${p.nums?' nums':''}" role="group">`+p.opts.map(([v,l])=>`<button type="button" class="chip" data-path="${path}" data-v="${esc(v)}" data-m="${p.t==='checks'?1:0}"${p.x&&p.x.includes(v)?' data-x="1"':''} aria-pressed="false">${l}</button>`).join('')+'</span>';break;
   case 'auto':inner='<span class="autov"></span>';break;
@@ -791,8 +808,8 @@ function refresh(){const c=cur();if(!c)return;
   if(!x.r.opt&&!x.el.hidden){const empty=x.r.parts.some(p=>p.k&&INPUTS.includes(p.t)&&!(p.if&&!p.if(sc,c,x.base))&&!isOpt(p,sc)&&isEmpty(sc[p.k]));x.el.classList.toggle('empty',empty);}});
  REG.forEach(x=>{if(!x.el)return;const sc=getP(c,x.base)||{};if(x.p.if)x.el.hidden=!x.p.if(sc,c,x.base);if(x.p.t==='auto'){const v=x.p.f(sc,c,x.base)||'';const a=x.el.firstChild;if(a.innerHTML!==v)a.innerHTML=v;}});
  $$('#view .chip[data-path]').forEach(b=>{const v=getP(c,b.dataset.path);const on=b.dataset.m==='1'?has(v,b.dataset.v):v===b.dataset.v;b.setAttribute('aria-pressed',on?'true':'false');});
- $$('#view input[data-path],#view select[data-path]').forEach(el=>{if(el===document.activeElement)return;const v=getP(c,el.dataset.path);const s=v==null?'':String(v);if(el.value!==s)el.value=s;});
- headerRefresh(c);}
+ $$('#view input[data-path],#view select[data-path]').forEach(el=>{if(el===document.activeElement)return;const v=getP(c,el.dataset.path);const s=el.dataset.mk?mkShow(el.dataset.mk,v):(v==null?'':String(v));if(el.value!==s){el.value=s;el._dg=s.replace(/\D/g,'');}});
+ headerRefresh(c);if(S.quick&&S.tab==='p2')quickRefresh(c);}
 
 /* ---------- home ---------- */
 function buildTodo(){const out=[],t=todayISO();
@@ -811,7 +828,7 @@ function renderHome(){
  const real=S.cases.filter(c=>!c.ex);const ex=S.cases.filter(c=>c.ex);
  const todo=buildTodo();
  const byK=k=>real.filter(c=>c.khoa===k);
- let h=`<div class="stack">
+ let h=`<div class="stack">${bkBanner(real)}
  <div class="hero"><p class="eyebrow">Nghiên cứu loét tỳ đè · 3 khoa nội</p><h1>Thu thập số liệu theo từng người bệnh</h1><p>Mỗi người bệnh mặc định có Phiếu 1 và Phiếu 2. Phiếu 3 (vết loét) và Phiếu 4 (quan sát tư thế) bật khi cần. Thang điểm chấm trong hộp bên cạnh và tự điền vào phiếu.</p></div>
  <div class="kpis">
   <div class="kpi"><span class="k">Cỡ mẫu</span><span class="v">${real.filter(c=>c.p1.incl==='1').length}<small> / 204 ca đưa vào</small></span><span class="bar"><i style="width:${Math.min(100,real.filter(c=>c.p1.incl==='1').length/204*100)}%"></i></span></div>
@@ -827,7 +844,7 @@ function renderHome(){
   <div id="clist"></div>
   ${ex.length?`<div class="legend"><span>Đang có ${ex.length} ca <b>ví dụ</b> (mã 000) để xem thử giao diện.</span><button type="button" class="btn sm" data-act="clearEx">Xóa ca ví dụ</button></div>`:''}
  </section>
- ${backupHTML(real)}${acctHTML()}</div>`;
+ ${backupHTML(real)}${dgHTML()}${acctHTML()}</div>`;
  if(S.acct&&S.acct.error)h=h.replace('<div class="stack">','<div class="stack">'+errBanner());
  $('#view').innerHTML=h;renderList();window.scrollTo(0,0);}
 function errBanner(){const e=S.acct.error;return `<div class="banner t-crit"><span>${e==='permission-denied'?'Máy chủ chưa cho tài khoản này đọc/ghi dữ liệu đề tài. Thêm “Quy tắc Firestore cho đề tài” (mục Tài khoản trực tuyến cuối trang), bấm Publish, rồi tải lại trang. Chưa nên nhập số liệu lúc này.':'Không tải được dữ liệu từ máy chủ ('+esc(e)+'). Kiểm tra mạng rồi tải lại trang.'}</span></div>`;}
@@ -872,7 +889,7 @@ function renderCase(keepScroll){const c=cur();if(!c){location.hash='';return;}de
  REG=[];ROWS=[];
  if(S.tab==='p3'&&!c.forms.p3)S.tab='p1';if(S.tab==='p4'&&!c.forms.p4)S.tab='p1';
  const a=admit(c);const tm=tabMeta(c);
- let h=`<div class="stack"><div class="chead">
+ let h=`<div class="stack"><div class="chead${S.quick&&S.tab==='p2'&&!S.p2table?' q':''}">
   <div class="l1"><button type="button" class="btn sm ghost" data-act="home">‹ Danh sách</button>${S.fromCheck?'<button type="button" class="btn sm" data-act="backCheck">‹ Kiểm tra số liệu</button>':''}${S.fromSo?'<button type="button" class="btn sm" data-act="backSo">‹ Sổ liên kết</button>':''}<span class="cid">${c.id}</span><span class="tag">${KHOA[c.khoa].name}</span>${c.ex?'<span class="tag ex">ví dụ</span>':''}<span id="h-grp"></span>
    <span id="h-chk"></span><span class="cact"><button type="button" class="btn sm" data-act="endFollow">Kết thúc theo dõi</button><button type="button" class="btn sm primary" data-act="pdf">Tải PDF phiếu</button><button type="button" class="btn sm ghost" data-act="delCase">Xóa ca</button></span></div>
   <div class="cmeta"><span class="cname" id="h-name"></span><span id="h-day"></span></div>
@@ -880,10 +897,10 @@ function renderCase(keepScroll){const c=cur();if(!c){location.hash='';return;}de
    <span class="lb">Có điều kiện</span><span class="fs"><button type="button" class="ftog" data-act="toggleForm" data-f="p3" aria-pressed="${c.forms.p3}">Phiếu 3 · Vết loét <span class="hint" id="hint-p3"${needP3(c)&&!c.forms.p3?'':' hidden'}>có loét</span></button><button type="button" class="ftog" data-act="toggleForm" data-f="p4" aria-pressed="${c.forms.p4}">Phiếu 4 · Quan sát tư thế <span class="hint" id="hint-p4"${needP4(c)&&!c.forms.p4?'':' hidden'}>vận động 1–2</span></button></span></div>
  </div>
  <nav class="tabs" role="tablist">${[['p1','Phiếu 1'],['p2','Phiếu 2'],['p3','Phiếu 3'],['p4','Phiếu 4']].filter(([k])=>k==='p1'||k==='p2'||c.forms[k]).map(([k,l])=>`<button type="button" class="tab" role="tab" data-act="tab" data-t="${k}" aria-selected="${S.tab===k}">${l} <span class="tb" id="tb-${k}">${tm[k]}</span></button>`).join('')}</nav>
- <div class="stack" id="tabbody">`;
+ <div class="stack${S.quick&&S.tab==='p2'&&!S.p2table?' quick':''}" id="tabbody">`;
  if(S.tab==='p1')h+=viewP1(c);else if(S.tab==='p2')h+=viewP2(c);else if(S.tab==='p3')h+=viewP3(c);else h+=viewP4(c);
  h+='</div></div>';
- $('#view').innerHTML=h;bindRegs();refresh();window.scrollTo(0,y);if(S.focus){const f=S.focus;S.focus=null;setTimeout(()=>focusPath(f),40);}}
+ $('#view').innerHTML=h;bindRegs();refresh();window.scrollTo(0,y);if(S.quick&&S.tab==='p2'&&!S.p2table&&!keepScroll)qTop();if(S.focus){const f=S.focus;S.focus=null;setTimeout(()=>focusPath(f),40);}}
 function headerRefresh(c){const a=admit(c);const g=grpInfo(c);const set=(id,v)=>{const e=document.getElementById(id);if(e&&e.innerHTML!==v)e.innerHTML=v;};
  set('h-name',c.p1.hoTen?esc(c.p1.hoTen)+(c.p1.c1?` · ${c.p1.c1} tuổi`:''):'<span class="muted">(chưa nhập họ tên)</span>');
  set('h-day',a?`Nhập khoa ${fD(a)} · ${isClosed(c)?'đã kết thúc '+fD(c.p2.end.a5):'ngày thứ '+(diffD(a,todayISO())+1)}`:'<span class="muted">Chưa có thời điểm nhập khoa</span>');
@@ -897,11 +914,11 @@ function viewP1(c){return `<div class="ftitle"><div><h2>Phiếu 1. Đánh giá k
 
 function viewP2(c){const g=grpInfo(c);
  if(!S.moc){const yd=addD(todayISO(),-1);const nx=MOC.find(m=>{const s=mocStatus(c,m);return s.st!=='done'&&s.st!=='na'&&(!s.opt||!s.date||s.date>=yd);});S.moc=nx||'KT';}
- let h=`<div class="ftitle"><div><h2>Phiếu 2. Đánh giá theo mốc</h2><p>Mã chung: 0 = Không; 1 = Có; 8 = Không áp dụng; 9 = Không có thông tin. Mục 2 ghi cho khoảng thời gian kể từ mốc trước.</p></div><div class="toolrow"><button type="button" class="btn sm" data-act="p2table">${S.p2table?'Nhập theo từng mốc':'Xem dạng bảng như phiếu giấy'}</button></div></div>`;
+ let h=`<div class="ftitle"><div><h2>Phiếu 2. Đánh giá theo mốc</h2>${S.quick?'<p>Mã chung: 0 Không · 1 Có · 8 Không áp dụng · 9 Không có thông tin</p>':'<p>Mã chung: 0 = Không; 1 = Có; 8 = Không áp dụng; 9 = Không có thông tin. Mục 2 ghi cho khoảng thời gian kể từ mốc trước.</p>'}</div><div class="toolrow">${S.p2table?'':`<button type="button" class="btn sm${S.quick?' primary':''}" data-act="quick" aria-pressed="${!!S.quick}">${S.quick?'Đang nhập nhanh · xem đủ':'Nhập nhanh từng nhóm'}</button>`}<button type="button" class="btn sm" data-act="p2table">${S.p2table?'Nhập theo từng mốc':'Xem dạng bảng như phiếu giấy'}</button></div></div>`;
  if(!admit(c))h+='<div class="banner t-warn">Nhập thời điểm nhập khoa ở Phiếu 1 để tính lịch mốc N3, N7, N10…</div>';
  if(g.g==='T'){const rv=c.p2.review||[];h+=`<section class="block"><div class="bhead"><h2>Rà soát nhóm tối thiểu</h2><span class="muted" style="font-size:.8rem">2 lần/tuần, qua điều dưỡng khoa hoặc hồ sơ</span></div><div class="legend" style="border-top:0;align-items:center">
   <span class="rvlist">${rv.length?rv.map((r,i)=>`<span class="pill ${r.r==='C'?'t-acc':'t-none'}">${fDM(r.d)} ${r.r}<button type="button" data-act="delReview" data-i="${i}" aria-label="Xóa lần rà soát">×</button></span>`).join(''):'<span>Chưa có lần rà soát.</span>'}</span>
-  <label class="fld"><span class="inwrap"><input type="date" id="rv-d" value="${todayISO()}" aria-label="Ngày rà soát"></span></label><button type="button" class="btn sm" data-act="addReview" data-r="G">+ Giữ nhóm (G)</button><button type="button" class="btn sm" data-act="addReview" data-r="C">+ Chuyển sang sát (C)</button></div>
+  <label class="fld"><span class="inwrap">${mkInput('d','id="rv-d" value="'+mkShow('d',todayISO())+'" aria-label="Ngày rà soát"')}</span></label><button type="button" class="btn sm" data-act="addReview" data-r="G">+ Giữ nhóm (G)</button><button type="button" class="btn sm" data-act="addReview" data-r="C">+ Chuyển sang sát (C)</button></div>
   <p class="secintro">Nhóm tối thiểu: các mốc N3…N28 là tùy chọn. Buổi rà soát rơi vào mốc nào (± 1 ngày) thì điền đủ Phiếu 2 cho mốc đó; mỗi mốc đã đánh giá được tính là một lần rà soát. Khi chuyển sang theo dõi sát: ghi A7 = 1 ở mốc gần ngày chuyển nhất, từ mốc đó trở đi các mốc là bắt buộc. Cột “Kết thúc” điền khi kết thúc theo dõi.</p></section>`;}
  if(S.p2table)return h+`<section class="block">${p2TableHTML(c)}</section>`+P2END.map(s=>secHTML(s,'p2.end')).join('');
  h+='<div class="mocs" role="group" aria-label="Chọn mốc">'+MOC.concat(['KT']).map(m=>{const s=mocStatus(c,m);const lab={done:'Đã đánh giá',due:'Đến hạn',over:'Quá hạn',future:'Sắp tới',na:'Không cần',opt:'Tùy chọn'}[s.st];
@@ -912,6 +929,7 @@ function viewP2(c){const g=grpInfo(c);
   h+=has?`<div class="banner t-crit"><span>Cột “Kết thúc” đang có dữ liệu${kt.ngay?' ngày <b>'+fD(kt.ngay)+'</b>':''} nhưng ca <b>chưa kết thúc theo dõi</b>. Nếu đây là buổi đánh giá giữa chừng (ví dụ ngày chuyển nhóm), hãy chuyển sang mốc theo dõi để giữ trống cột Kết thúc cho lần cuối.</span><button type="button" class="btn sm primary" data-act="ktToMoc">Chuyển sang mốc ${ktTarget(c)}</button></div>`
    :'<div class="banner t-warn"><span>Cột “Kết thúc” chỉ dùng cho lần đánh giá khi kết thúc theo dõi (ra viện, chuyển viện, đủ 30 ngày…). Buổi đánh giá giữa chừng ghi vào mốc theo dõi gần ngày đó nhất (với nhóm tối thiểu, các mốc là tùy chọn).</span></div>';}
  const base='p2.m.'+S.moc;
+ if(S.quick)return h+quickHTML(c);
  h+=P2.filter(s=>!s.onlyT||(g.g==='T'&&S.moc!=='KT')).map(s=>secHTML(s,base)).join('');
  if(S.moc==='KT')h+=P2END.map(s=>secHTML(s,'p2.end')).join('');
  else h+='<div class="banner t-acc">Phần kết thúc theo dõi (A5, A6, E4, F12…) nằm ở cột “Kết thúc”.<button type="button" class="btn sm" data-act="moc" data-m="KT">Mở cột Kết thúc</button></div>';
@@ -933,7 +951,7 @@ function viewP3(c){const W=c.p3;if(S.wound>=W.length)S.wound=Math.max(0,W.length
  h+=P3.map(s=>secHTML(Object.assign({},s,{tools:`<button type="button" class="btn sm ghost" data-act="delWound" data-i="${i}">Xóa vết ${i+1}</button>`}),base)).join('');
  const prog=w.prog||[];
  h+=`<section class="sec"><div class="sechead"><h3>Theo dõi diễn tiến vết loét</h3><span class="tools"><button type="button" class="btn sm" data-act="addProg">+ Thêm lần ghi</button></span></div><div class="tscroll"><table class="edit"><thead><tr><th style="width:9rem">Ngày</th><th style="width:13rem">Phân độ</th><th style="width:9rem">Kích thước (cm)</th><th>Ghi chú (chăm sóc, thay đổi)</th><th style="width:2.5rem"></th></tr></thead><tbody>
- ${prog.length?prog.map((r,j)=>`<tr><td><span class="inwrap"><input type="date" data-path="${base}.prog.${j}.d" aria-label="Ngày"></span></td><td><span class="inwrap"><select data-path="${base}.prog.${j}.st" aria-label="Phân độ"><option value="">—</option>${STAGES.map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}</select></span></td><td><span class="inwrap"><input type="text" data-path="${base}.prog.${j}.sz" placeholder="3 × 2" aria-label="Kích thước"></span></td><td><span class="inwrap"><input type="text" data-path="${base}.prog.${j}.note" aria-label="Ghi chú"></span></td><td><button type="button" class="xbtn" data-act="delProg" data-i="${j}" aria-label="Xóa dòng">×</button></td></tr>`).join(''):'<tr><td colspan="5" class="muted">Chưa có lần ghi diễn tiến.</td></tr>'}</tbody></table></div></section>`;
+ ${prog.length?prog.map((r,j)=>`<tr><td><span class="inwrap">${mkInput('d','data-path="'+base+'.prog.'+j+'.d" aria-label="Ngày"')}</span></td><td><span class="inwrap"><select data-path="${base}.prog.${j}.st" aria-label="Phân độ"><option value="">—</option>${STAGES.map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}</select></span></td><td><span class="inwrap"><input type="text" data-path="${base}.prog.${j}.sz" placeholder="3 × 2" aria-label="Kích thước"></span></td><td><span class="inwrap"><input type="text" data-path="${base}.prog.${j}.note" aria-label="Ghi chú"></span></td><td><button type="button" class="xbtn" data-act="delProg" data-i="${j}" aria-label="Xóa dòng">×</button></td></tr>`).join(''):'<tr><td colspan="5" class="muted">Chưa có lần ghi diễn tiến.</td></tr>'}</tbody></table></div></section>`;
  h+=P3END.map(s=>secHTML(s,base)).join('');
  return h;}
 
@@ -944,7 +962,7 @@ function viewP4(c){const rows=c.p4.rows||[];const vd=c.p1.brVD;const wd=firstNew
  h+=`<section class="block"><details class="guide" style="border-top:0"><summary>Hướng dẫn quan sát</summary><ul><li>Mỗi cặp gồm hai lần ghé giường cách nhau 2–3 giờ, giờ ngẫu nhiên, không báo trước.</li><li>Có thay đổi = tư thế lần 2 khác lần 1 (1); giống nhau (0). Người bệnh rời giường làm cận lâm sàng/thủ thuật giữa hai lần: chọn cột Hợp lệ = 0 – Bỏ.</li><li>Thực hiện 2–3 cặp/tuần đến khi kết thúc theo dõi; với người bệnh có loét, chỉ các cặp trước ngày phát hiện loét được dùng tính F4.</li></ul></details>
  <div class="tscroll"><table class="edit"><thead><tr><th style="width:2.5rem">STT</th><th>Ngày</th><th>Giờ lần 1</th><th>Tư thế lần 1</th><th>Giờ lần 2</th><th>Tư thế lần 2</th><th class="c">Có thay đổi</th><th>Hợp lệ</th><th>Người quan sát</th><th style="width:2.5rem"></th></tr></thead><tbody>
  ${rows.length?rows.map((r,i)=>{const b='p4.rows.'+i;const gap=(r.t1&&r.t2)?minsBetween(r.t1,r.t2):null;const bad=gap!=null&&(gap<120||gap>180);const after=wd&&r.d&&r.d>=wd;
-  return `<tr><td class="mono">${i+1}</td><td><span class="inwrap"><input type="date" data-path="${b}.d" aria-label="Ngày"></span></td><td><span class="inwrap"><input type="time" data-path="${b}.t1" aria-label="Giờ lần 1"></span></td><td><span class="inwrap"><select data-path="${b}.p1" aria-label="Tư thế lần 1"><option value="">—</option>${POS.map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}</select></span></td><td><span class="inwrap"><input type="time" data-path="${b}.t2" aria-label="Giờ lần 2"></span></td><td><span class="inwrap"><select data-path="${b}.p2" aria-label="Tư thế lần 2"><option value="">—</option>${POS.map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}</select></span></td><td class="c"><b class="mono" id="ch-${i}">${r.ch||''}</b>${bad?`<br><span class="warn" style="font-size:.72rem">cách ${Math.round(gap)} phút</span>`:''}${after?'<br><span class="muted" style="font-size:.72rem">sau ngày phát hiện loét</span>':''}</td><td><span class="inwrap"><select data-path="${b}.hl" aria-label="Cặp hợp lệ"><option value="1">1 – Hợp lệ</option><option value="0">0 – Bỏ (rời giường)</option></select></span></td><td><span class="inwrap"><input type="text" data-path="${b}.obs" aria-label="Người quan sát"></span></td><td><button type="button" class="xbtn" data-act="delPair" data-i="${i}" aria-label="Xóa cặp">×</button></td></tr>`;}).join(''):'<tr><td colspan="10" class="muted">Chưa có cặp quan sát.</td></tr>'}</tbody></table></div>
+  return `<tr><td class="mono">${i+1}</td><td><span class="inwrap">${mkInput('d','data-path="'+b+'.d" aria-label="Ngày"')}</span></td><td><span class="inwrap">${mkInput('t','data-path=\"'+b+'.t1\" aria-label=\"Giờ lần 1\"')}</span></td><td><span class="inwrap"><select data-path="${b}.p1" aria-label="Tư thế lần 1"><option value="">—</option>${POS.map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}</select></span></td><td><span class="inwrap">${mkInput('t','data-path=\"'+b+'.t2\" aria-label=\"Giờ lần 2\"')}</span></td><td><span class="inwrap"><select data-path="${b}.p2" aria-label="Tư thế lần 2"><option value="">—</option>${POS.map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}</select></span></td><td class="c"><b class="mono" id="ch-${i}">${r.ch||''}</b>${bad?`<br><span class="warn" style="font-size:.72rem">cách ${Math.round(gap)} phút</span>`:''}${after?'<br><span class="muted" style="font-size:.72rem">sau ngày phát hiện loét</span>':''}</td><td><span class="inwrap"><select data-path="${b}.hl" aria-label="Cặp hợp lệ"><option value="1">1 – Hợp lệ</option><option value="0">0 – Bỏ (rời giường)</option></select></span></td><td><span class="inwrap"><input type="text" data-path="${b}.obs" aria-label="Người quan sát"></span></td><td><button type="button" class="xbtn" data-act="delPair" data-i="${i}" aria-label="Xóa cặp">×</button></td></tr>`;}).join(''):'<tr><td colspan="10" class="muted">Chưa có cặp quan sát.</td></tr>'}</tbody></table></div>
  <div class="legend"><button type="button" class="btn sm primary" data-act="addPair">+ Thêm cặp quan sát</button><span>Mã tư thế: <b>N</b> nằm ngửa · <b>T</b> nghiêng trái · <b>P</b> nghiêng phải · <b>F</b> Fowler ≥ 45° · <b>S</b> nằm sấp · <b>K</b> khác</span></div></section>
  <section class="sec"><div class="row"><div class="rcode">F4</div><div class="rlab">Tổng hợp</div><div class="rans"><span>Tổng số cặp quan sát hợp lệ: <b class="mono">${valid.length}</b></span><span>Số cặp có thay đổi tư thế: <b class="mono">${chg}</b></span><span>Tỷ lệ: <b class="mono">${valid.length?fmt(chg/valid.length*100,1):'—'}</b> %</span></div></div></section>`;
  return h;}
@@ -955,10 +973,10 @@ function firstNewWound(c){return (c.p3||[]).filter(w=>w.loai==='moi'&&w.a4).map(
 const view=$('#view');
 function onChange(path,structural){const c=cur();if(!c)return;derive(c);c.updated=Date.now();
  if(structural||/^p4\./.test(path)&&/\.(p1|p2|t1|t2|d|hl)$/.test(path))renderCase(true);else refresh();save();}
-view.addEventListener('input',e=>{const el=e.target;if(el.id==='q'){S.q=el.value;renderList();return;}if(el.id==='cq'){S.chkQ=el.value;renderCheckList();return;}if(el.id==='soq'){S.soQ=el.value;renderSoList();return;}if(el.id==='so-rvd'){S.soRvd=el.value;return;}if(!el.dataset||!el.dataset.path)return;if(!cur())return;setP(cur(),el.dataset.path,el.value);
+view.addEventListener('input',e=>{const el=e.target;if(el.dataset&&el.dataset.mk){mkOnInput(el,e);return;}if(el.id==='dg-ten'){UCFG.dg=el.value;saveCfg();const t=$('#dg-tat');if(t)t.textContent=dgTat();return;}if(el.id==='q'){S.q=el.value;renderList();return;}if(el.id==='cq'){S.chkQ=el.value;renderCheckList();return;}if(el.id==='soq'){S.soQ=el.value;renderSoList();return;}if(!el.dataset||!el.dataset.path)return;if(!cur())return;setP(cur(),el.dataset.path,el.value);
  if(/^p4\./.test(el.dataset.path)){const c=cur();derive(c);c.updated=Date.now();save();refresh();return;}
- onChange(el.dataset.path);});
-view.addEventListener('change',e=>{const el=e.target;if(el.id==='restoreFile'){doRestore(el.files&&el.files[0]);el.value='';return;}if(!el.dataset||!el.dataset.path)return;if(!cur())return;setP(cur(),el.dataset.path,el.value);onChange(el.dataset.path,/^p4\./.test(el.dataset.path)||/\.prog\./.test(el.dataset.path));});
+ autoFill(el.dataset.path);onChange(el.dataset.path);});
+view.addEventListener('change',e=>{const el=e.target;if(el.dataset&&el.dataset.mk){mkOnChange(el);return;}if(el.id==='restoreFile'){doRestore(el.files&&el.files[0]);el.value='';return;}if(!el.dataset||!el.dataset.path)return;if(!cur())return;setP(cur(),el.dataset.path,el.value);onChange(el.dataset.path,/^p4\./.test(el.dataset.path)||/\.prog\./.test(el.dataset.path));});
 view.addEventListener('click',e=>{const chip=e.target.closest('.chip[data-path]');if(chip){toggleChip(chip);return;}const a=e.target.closest('[data-act]');if(a){e.preventDefault();doAct(a);}});
 $('#appbar').addEventListener('click',e=>{const a=e.target.closest('[data-act]');if(a){e.preventDefault();doAct(a);}});
 function toggleChip(b){const c=cur();const path=b.dataset.path,v=b.dataset.v;
@@ -966,19 +984,20 @@ function toggleChip(b){const c=cur();const path=b.dataset.path,v=b.dataset.v;
  else setP(c,path,getP(c,path)===v?'':v);
  if(/\.nhom$/.test(path))c.p1.nhomAuto=false;
  if(/\.(f5tu|f6|f9)$/.test(path)){const m=getP(c,path.replace(/\.[^.]+$/,''));if(m){m._no8=true;m._auto8=false;}}
- onChange(path,/^p1\.dev\./.test(path)===false&&/^p1\.(brVD|a1)$/.test(path));}
+ onChange(path,/^p1\.dev\./.test(path)===false&&/^p1\.(brVD|a1)$/.test(path));
+ if(S.quick&&S.tab==='p2'&&b.dataset.m!=='1')qAdvance(path);}
 let armed=null;
-function twoTap(btn,key,label,fn){if(armed&&armed.key===key){clearTimeout(armed.t);armed=null;fn();return;}if(armed){armed.btn.classList.remove('armed');armed.btn.textContent=armed.txt;clearTimeout(armed.t);}armed={key,btn,txt:btn.textContent,t:setTimeout(()=>{btn.classList.remove('armed');btn.textContent=armed?armed.txt:btn.textContent;armed=null;},3000)};btn.classList.add('armed');btn.textContent=label;}
+function twoTap(btn,key,label,fn){if(armed&&armed.key===key){clearTimeout(armed.t);armed=null;fn();return;}if(armed){armed.btn.classList.remove('armed');armed.btn.textContent=armed.txt;clearTimeout(armed.t);}armed={key,btn,txt:btn.textContent,t:setTimeout(()=>{btn.classList.remove('armed');btn.textContent=armed?armed.txt:btn.textContent;armed=null;},5000)};btn.classList.add('armed');btn.textContent=label;}
 function doAct(b){const c=cur();const act=b.dataset.act;
  switch(act){
  case 'home':S.fromCheck=false;S.fromSo=false;location.hash='';if(!location.hash)renderHome();break;
- case 'new':{const k=b.dataset.k;const nc=blankCase(k,nextSeq(k));S.cases.push(nc);save();S.tab='p1';S.moc=null;S.wound=0;location.hash=nc.id.toLowerCase();toast('Đã tạo người bệnh '+nc.id);break;}
- case 'open':{S.fromCheck=false;S.fromSo=b.dataset.from==='so';S.tab=b.dataset.tab||'p1';S.moc=b.dataset.moc||null;S.wound=0;const id=b.dataset.id.toLowerCase();if(location.hash.slice(1)===id)route();else location.hash=id;break;}
+ case 'new':{const k=b.dataset.k;const nc=blankCase(k,nextSeq(k));nc.p1.tDG=nowDT();if(dgTen())nc.p1.nguoiDG=dgTen();S.cases.push(nc);save();S.tab='p1';S.moc=null;S.wound=0;location.hash=nc.id.toLowerCase();toast('Đã tạo người bệnh '+nc.id);break;}
+ case 'open':{S.qs=0;S.fromCheck=false;S.fromSo=b.dataset.from==='so';S.tab=b.dataset.tab||'p1';S.moc=b.dataset.moc||null;S.wound=0;const id=b.dataset.id.toLowerCase();if(location.hash.slice(1)===id)route();else location.hash=id;break;}
  case 'filter':S.filter=b.dataset.f;$$('.fchip').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.f===S.filter)));renderList();break;
  case 'so':case 'backSo':S.fromCheck=false;S.fromSo=false;if(location.hash.slice(1)==='so-lien-ket')renderSo();else location.hash='so-lien-ket';break;
  case 'soK':S.soK=b.dataset.v;$$('[data-act="soK"]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.v===S.soK)));renderSoList();break;
  case 'soSt':S.soSt=b.dataset.v;$$('[data-act="soSt"]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.v===S.soSt)));renderSoList();break;
- case 'soRv':{const x=S.cases.find(y=>y.id===b.dataset.id);const d=($('#so-rvd')||{}).value;if(!x)break;if(!d){toast('Chọn ngày rà soát');break;}if(d<admit(x)){toast('Ngày rà soát trước ngày nhập khoa');break;}if((x.p2.review||[]).some(r=>r.d===d)){toast(x.id+' đã có lần rà soát ngày '+fDM(d));break;}const tg=addReviewTo(x,d,b.dataset.r);derive(x);save();renderSo();toast(b.dataset.r==='C'?x.id+' chuyển sang theo dõi sát từ '+fDM(d)+(tg?' – mở ca để nhập mốc '+tg+' (A7 = 1 đã điền sẵn)':''):'Đã ghi '+x.id+' · '+fDM(d)+' G (giữ nhóm)');break;}
+ case 'soRv':{const x=S.cases.find(y=>y.id===b.dataset.id);const d=mkVal($('#so-rvd'));if(!x)break;if(!d){toast('Chọn ngày rà soát');break;}if(d<admit(x)){toast('Ngày rà soát trước ngày nhập khoa');break;}if((x.p2.review||[]).some(r=>r.d===d)){toast(x.id+' đã có lần rà soát ngày '+fDM(d));break;}const tg=addReviewTo(x,d,b.dataset.r);derive(x);save();renderSo();toast(b.dataset.r==='C'?x.id+' chuyển sang theo dõi sát từ '+fDM(d)+(tg?' – mở ca để nhập mốc '+tg+' (A7 = 1 đã điền sẵn)':''):'Đã ghi '+x.id+' · '+fDM(d)+' G (giữ nhóm)');break;}
  case 'soPdf':PV.khoa=KHOA[S.soK]?S.soK:'all';openPrint('so');break;
  case 'soXlsx':soXlsx();break;
  case 'copyUid':copyText(S.acct.uid,'Đã sao chép UID');break;
@@ -989,13 +1008,19 @@ function doAct(b){const c=cur();const act=b.dataset.act;
  case 'toggleForm':{const f=b.dataset.f;c.forms[f]=!c.forms[f];if(c.forms[f]){S.tab=f;if(f==='p3'&&!c.p3.length&&c.p1.a1==='1'){addWound(c,'p1');}}else if(S.tab===f)S.tab='p1';save();renderCase();toast(c.forms[f]?(f==='p3'?'Đã bật Phiếu 3':'Đã bật Phiếu 4'):'Đã ẩn phiếu – dữ liệu vẫn được giữ');break;}
  case 'calc':openCalc(b.dataset.calc,b.dataset.base);break;
  case 'allSites':c.p1.vungDa=VUNG.map(v=>v[0]);onChange('p1.vungDa');break;
- case 'today':setP(c,b.dataset.base+'.ngay',todayISO());onChange(b.dataset.base+'.ngay',true);break;
+ case 'today':setP(c,b.dataset.base+'.ngay',todayISO());autoFill(b.dataset.base+'.ngay');onChange(b.dataset.base+'.ngay',true);break;
  case 'sec':{const el=document.getElementById(b.dataset.s);if(el)el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});break;}
  case 'gotoEmpty':{const rows=$$('#view .row.empty').filter(r=>!r.hidden&&r.offsetParent);if(!rows.length){toast('Phiếu 1 đã điền đủ các mục bắt buộc');break;}const y=window.scrollY+120;const nx=rows.find(r=>r.getBoundingClientRect().top+window.scrollY>y+10)||rows[0];nx.scrollIntoView({block:'center'});nx.classList.remove('flash');void nx.offsetWidth;nx.classList.add('flash');const f=nx.querySelector('input,select,.chip');if(f)f.focus({preventScroll:true});break;}
- case 'moc':S.moc=b.dataset.m;renderCase(true);break;
+ case 'moc':S.moc=b.dataset.m;S.qs=0;renderCase(true);break;
+ case 'quick':S.quick=!S.quick;S.qs=0;try{localStorage.setItem(LS+'-quick',S.quick?'1':'0');}catch(e){}renderCase(!S.quick);break;
+ case 'qs':S.qs=+b.dataset.i;renderCase();break;
+ case 'qprev':S.qs=Math.max(0,(S.qs||0)-1);renderCase();break;
+ case 'qnext':S.qs=(S.qs||0)+1;renderCase();break;
+ case 'qdone':qDone(b);break;
+ case 'bkLater':UCFG.snooze=todayISO();saveCfg(true);renderHome();break;
  case 'p2table':S.p2table=!S.p2table;renderCase(true);break;
  case 'copyPrev':{const p=prevMoc(c,S.moc);if(!p)break;const src=c.p2.m[p];const skip=['ngay','nguoi','a2','a3','d3','_brAuto','f5','f5tu','_auto8','a7'].concat(BRK);const dst=c.p2.m[S.moc]=c.p2.m[S.moc]||{};Object.keys(src).forEach(k=>{if(!skip.includes(k))dst[k]=clone({v:src[k]}).v;});onChange('p2',true);toast('Đã chép mục 2–5 từ mốc '+(p==='KT'?'Kết thúc':p)+' – kiểm tra lại chỗ thay đổi');break;}
- case 'addReview':{const d=($('#rv-d')||{}).value;if(!d){toast('Chọn ngày rà soát');break;}const tg=addReviewTo(c,d,b.dataset.r);if(b.dataset.r==='C'){if(tg)S.moc=tg;S.p2table=false;}onChange('p2',true);toast(b.dataset.r==='C'?'Đã chuyển sang theo dõi sát từ '+fDM(d)+(tg?' – nhập buổi đánh giá hôm đó vào mốc '+tg+' (A7 = 1 đã điền sẵn)':''):'Đã ghi rà soát '+fDM(d)+' – giữ nhóm');break;}
+ case 'addReview':{const d=mkVal($('#rv-d'));if(!d){toast('Chọn ngày rà soát');break;}const tg=addReviewTo(c,d,b.dataset.r);if(b.dataset.r==='C'){if(tg)S.moc=tg;S.p2table=false;}onChange('p2',true);toast(b.dataset.r==='C'?'Đã chuyển sang theo dõi sát từ '+fDM(d)+(tg?' – nhập buổi đánh giá hôm đó vào mốc '+tg+' (A7 = 1 đã điền sẵn)':''):'Đã ghi rà soát '+fDM(d)+' – giữ nhóm');break;}
  case 'delReview':c.p2.review.splice(+b.dataset.i,1);onChange('p2',true);break;
  case 'clear8':{const m=getP(c,b.dataset.base)||{};['f5tu','f6','f9'].forEach(k=>{if(m[k]==='8')m[k]='';});m._no8=false;m._auto8=false;onChange(b.dataset.base,true);toast('Đã bỏ mã 8 ở F5, F6, F9 – chọn lại theo thực tế');break;}
  case 'ktToMoc':{const kt=c.p2.m.KT;if(!kt)break;const t=ktTarget(c);c.p2.m[t]=Object.assign({},kt);delete c.p2.m.KT;
@@ -1007,7 +1032,7 @@ function doAct(b){const c=cur();const act=b.dataset.act;
  case 'delWound':twoTap(b,'dw'+b.dataset.i,'Bấm lần nữa để xóa',()=>{c.p3.splice(+b.dataset.i,1);S.wound=0;onChange('p3',true);toast('Đã xóa vết loét');});break;
  case 'addProg':{const w=c.p3[S.wound];w.prog=(w.prog||[]).concat([{d:todayISO()}]);onChange('p3',true);break;}
  case 'delProg':{const w=c.p3[S.wound];w.prog.splice(+b.dataset.i,1);onChange('p3',true);break;}
- case 'addPair':c.p4.rows=(c.p4.rows||[]).concat([{d:todayISO(),hl:'1'}]);onChange('p4',true);break;
+ case 'addPair':c.p4.rows=(c.p4.rows||[]).concat([{d:todayISO(),t1:nowHM(),obs:dgTat(),hl:'1'}]);onChange('p4',true);break;
  case 'delPair':twoTap(b,'dp'+b.dataset.i,'?',()=>{c.p4.rows.splice(+b.dataset.i,1);onChange('p4',true);});break;
  case 'endFollow':S.tab='p2';S.moc='KT';S.p2table=false;renderCase();setTimeout(()=>{const el=$$('#view .sec').find(s=>/kết thúc theo dõi/i.test(s.textContent.slice(0,60)));if(el)el.scrollIntoView({block:'start'});},30);break;
  case 'pdf':openPrint('case');break;
@@ -1025,7 +1050,7 @@ function doAct(b){const c=cur();const act=b.dataset.act;
  case 'seedEx':seed();renderHome();toast('Đã thêm 2 ca ví dụ (mã 000)');break;
  case 'delCase':twoTap(b,'dc','Bấm lần nữa để xóa '+c.id,()=>{S.cases=S.cases.filter(x=>x!==c);save();location.hash='';toast('Đã xóa '+c.id);});break;
  }}
-function addWound(c,from){c.forms.p3=true;const w={c4:c.khoa,prog:[]};
+function addWound(c,from){c.forms.p3=true;const w={c4:c.khoa,prog:[],nguoi:dgTen()};
  if(from==='p1'){w.loai='cs';w.a4=admit(c);w.b6='nc';}
  else if(from&&from.startsWith('p2.m.')){const m=getP(c,from)||{};w.loai='moi';w.a4=m.ngay||todayISO();w.b6='nc';if(m.a3==='1')w.tb='1';}
  c.p3.push(w);S.tab='p3';S.wound=c.p3.length-1;derive(c);save();toast('Đã thêm vết loét '+c.p3.length+' vào Phiếu 3');}
@@ -1071,7 +1096,7 @@ function renderSo(){S.cur=null;closeDrawer();const {L,ex}=soBase();L.forEach(der
  <section class="block"><div class="bhead" style="align-items:center"><div class="filters">${[['all','Tất cả khoa']].concat(KORDER.map(k=>[k,PFX[k].slice(0,-1)])).map(([v,l])=>`<button type="button" class="fchip" data-act="soK" data-v="${v}" aria-pressed="${(S.soK||'all')===v}">${l}</button>`).join('')}
   <span class="fsep"></span>${[['all','Mọi trạng thái'],['open','Đang theo dõi'],['due','Đến hạn'],['closed','Đã kết thúc']].map(([v,l])=>`<button type="button" class="fchip" data-act="soSt" data-v="${v}" aria-pressed="${(S.soSt||'all')===v}">${l}</button>`).join('')}
   <label class="search"><input id="soq" type="search" placeholder="Mã NC, tên, số vào viện, giường" value="${esc(S.soQ||'')}" aria-label="Tìm trong sổ"></label></div>
-  <label class="fld rvd"><span class="muted">Ngày rà soát</span><span class="inwrap"><input type="date" id="so-rvd" value="${S.soRvd}" aria-label="Ngày ghi rà soát"></span></label></div>
+  <label class="fld rvd"><span class="muted">Ngày rà soát</span><span class="inwrap">${mkInput('d','id="so-rvd" value="'+mkShow('d',S.soRvd)+'" aria-label="Ngày ghi rà soát"')}</span></label></div>
   <div id="solist"></div>
   <p class="legend">Nhóm: S = sát; T = tối thiểu; T→S = chuyển sang sát. Ngày N3 / N7 tính từ ngày nhập khoa (N1): <span class="ms ms-done">đã đánh giá</span> <span class="ms ms-due">đến hạn</span> <span class="ms ms-over">quá hạn</span>. Rà soát nhóm tối thiểu 2 lần/tuần: G = giữ nhóm, C = chuyển sang theo dõi sát (bấm + G / + C để ghi theo “Ngày rà soát”). Lý do kết thúc: RV ra viện; CV chuyển viện; CK chuyển khoa ngoài các khoa nội; TV tử vong/nặng xin về; 30N đủ 30 ngày; RL rút khỏi nghiên cứu.</p></section></div>`;
  $('#view').innerHTML=h;renderSoList();window.scrollTo(0,0);}
@@ -1114,6 +1139,81 @@ function soXlsx(){const L=soFiltered();if(!L.length){toast('Không có dòng nà
  const name='So_lien_ket_ma_so'+(KHOA[S.soK]?'_'+PFX[S.soK].slice(0,-1):'')+'_'+todayISO()+'.xlsx';
  const a=document.createElement('a');a.href=URL.createObjectURL(zip(files));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);
  toast(`Đã xuất ${name} (${D.length} người bệnh)`);}
+
+/* ---------- ô ngày/giờ gõ liên tục (24 giờ, dd/mm/yyyy) ---------- */
+const MK={d:{ph:'dd/mm/yyyy',n:8},t:{ph:'hh:mm',n:4},dt:{ph:'dd/mm/yyyy hh:mm',n:12}};
+function mkInput(kind,attrs){return `<input type="text" inputmode="numeric" class="mk mk-${kind}" data-mk="${kind}" placeholder="${MK[kind].ph}" maxlength="${MK[kind].ph.length}" autocomplete="off" ${attrs||''}>`;}
+function mkNorm(kind,raw){const out=[];for(const ch of raw){const p=out.length;if(p>=MK[kind].n)break;const d=+ch;
+  if(kind==='t'){if(p===0&&d>2){out.push('0');}else if(p===2&&d>5){out.push('0');}}
+  else{if(p===0&&d>3)out.push('0');else if(p===2&&d>1)out.push('0');else if(kind==='dt'&&p===8&&d>2)out.push('0');else if(kind==='dt'&&p===10&&d>5)out.push('0');}
+  if(out.length<MK[kind].n)out.push(ch);}return out.join('').slice(0,MK[kind].n);}
+function mkFmt(kind,dg){let o='';for(let i=0;i<dg.length;i++){if(kind==='t'){if(i===2)o+=':';}else{if(i===2||i===4)o+='/';if(i===8)o+=' ';if(i===10)o+=':';}o+=dg[i];}return o;}
+function mkISO(kind,dg){if(!dg.length)return '';if(dg.length<MK[kind].n)return null;
+ const tm=s=>{const h=+s.slice(0,2),m=+s.slice(2,4);return (h<=23&&m<=59)?pad(h)+':'+pad(m):undefined;};
+ if(kind==='t')return tm(dg);
+ const D=+dg.slice(0,2),M=+dg.slice(2,4),Y=+dg.slice(4,8);if(Y<1900||Y>2100||M<1||M>12||D<1||D>new Date(Y,M,0).getDate())return undefined;
+ const d=Y+'-'+pad(M)+'-'+pad(D);if(kind==='d')return d;const t=tm(dg.slice(8,12));return t?d+'T'+t:undefined;}
+function mkShow(kind,v){if(v==null||v==='')return '';v=String(v);
+ if(kind==='t')return /^\d{2}:\d{2}/.test(v)?v.slice(0,5):v;
+ const m=v.match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?/);if(!m)return v;const d=m[3]+'/'+m[2]+'/'+m[1];
+ return kind==='dt'&&m[4]?d+' '+m[4]+':'+m[5]:d;}
+function mkVal(el){if(!el)return '';return mkISO(el.dataset.mk,mkNorm(el.dataset.mk,el.value.replace(/\D/g,'')));}
+function focusNext(el){const L=$$('#view input,#view select,#view textarea').filter(x=>!x.disabled&&x.type!=='hidden'&&x.type!=='file'&&x.offsetParent&&x.id!=='q'&&x.id!=='soq'&&x.id!=='cq');
+ const i=L.indexOf(el);const nx=L[i+1];if(nx){nx.focus();if(nx.select&&nx.tagName==='INPUT')try{nx.select();}catch(e){}}else el.blur();}
+function mkCommit(el,iso){const path=el.dataset.path;
+ if(el.id==='so-rvd'){S.soRvd=iso;return;}
+ if(!path||!cur())return;setP(cur(),path,iso);
+ if(/^p4\./.test(path)||/\.prog\./.test(path)){const c=cur();derive(c);c.updated=Date.now();save();refresh();return;}
+ autoFill(path);onChange(path);}
+function mkOnInput(el,e){const k=el.dataset.mk;let dg=el.value.replace(/\D/g,'');const prev=el._dg||'';
+ if(e.inputType==='deleteContentBackward'&&dg===prev&&dg.length)dg=dg.slice(0,-1);
+ dg=mkNorm(k,dg);el._dg=dg;const f=mkFmt(k,dg);if(el.value!==f){el.value=f;try{el.setSelectionRange(f.length,f.length);}catch(_){}}
+ const iso=mkISO(k,dg);
+ if(iso===null){el.classList.remove('bad');return;}
+ if(iso===undefined){el.classList.add('bad');toast(k==='t'?'Giờ không hợp lệ (00:00–23:59)':'Ngày giờ không hợp lệ – kiểm tra lại ngày, tháng'+(k==='dt'?', giờ':''));return;}
+ el.classList.remove('bad');mkCommit(el,iso);
+ if(iso&&dg.length===MK[k].n&&(e.inputType||'').startsWith('insert'))focusNext(el);}
+function mkOnChange(el){const iso=mkVal(el);if(iso===null||iso===undefined){const path=el.dataset.path;const old=path&&cur()?getP(cur(),path):(el.id==='so-rvd'?S.soRvd:'');el.value=mkShow(el.dataset.mk,old);el._dg=el.value.replace(/\D/g,'');el.classList.remove('bad');if(el.value||iso===undefined)toast('Chưa nhập đủ hoặc sai ngày giờ – đã giữ giá trị cũ');}}
+
+/* ---------- người đánh giá mặc định, nhắc sao lưu (cài đặt dùng chung) ---------- */
+const UCFGK=LS+'-cfg';const UCFG={dg:'Tăng Ngọc Tân',bk:'',snooze:''};
+try{Object.assign(UCFG,JSON.parse(localStorage.getItem(UCFGK)||'{}'));}catch(e){}
+let cfgT;function saveCfg(now){try{localStorage.setItem(UCFGK,JSON.stringify(UCFG));}catch(e){}clearTimeout(cfgT);const go=()=>{if(window.LTDFB&&window.LTDFB.setCfg&&S.acct)window.LTDFB.setCfg(UCFG);};if(now)go();else cfgT=setTimeout(go,800);}
+const dgTen=()=>(UCFG.dg||'').trim();
+const dgTat=()=>dgTen().split(/\s+/).filter(Boolean).map(w=>w[0].toLocaleUpperCase('vi')).join('');
+const nowDT=()=>{const d=new Date();return todayISO()+'T'+pad(d.getHours())+':'+pad(d.getMinutes());};
+const nowHM=()=>{const d=new Date();return pad(d.getHours())+':'+pad(d.getMinutes());};
+function autoFill(path){const c=cur();if(!c||!dgTen())return;let m;
+ if((m=path.match(/^p2\.m\.(\w+)\.ngay$/))){const s=c.p2.m[m[1]];if(s&&s.ngay&&!s.nguoi)s.nguoi=dgTat();}
+ else if(path==='p2.end.a5'){if(c.p2.end.a5&&!c.p2.end.nguoiTH)c.p2.end.nguoiTH=dgTen();}
+ else if(path==='p1.tDG'){if(c.p1.tDG&&!c.p1.nguoiDG)c.p1.nguoiDG=dgTen();}}
+function bkBanner(real){const lb=lastBackup();if(!real.length)return '';const d=lb?diffD(lb,todayISO()):null;if(lb&&d<7)return '';if(UCFG.snooze===todayISO())return '';
+ return `<div class="banner t-warn"><span><b>Nhắc sao lưu hằng tuần:</b> ${lb?`đã ${d} ngày chưa tải file sao lưu (lần gần nhất ${fD(lb)})`:'chưa có file sao lưu nào'}. Tải một bản và cất vào Drive riêng để luôn có bản dự phòng.</span><span class="homebar"><button type="button" class="btn sm primary" data-act="backup">Tải file sao lưu</button><button type="button" class="btn sm ghost" data-act="bkLater">Để mai</button></span></div>`;}
+function dgHTML(){return `<section class="block"><div class="bhead"><h2>Người đánh giá mặc định</h2></div><div class="legend" style="border-top:0;align-items:center"><label class="fld"><span class="inwrap"><input type="text" id="dg-ten" value="${esc(dgTen())}" autocomplete="off" aria-label="Họ tên người đánh giá mặc định" style="width:14rem"></span></label><span>Tự điền họ tên vào Phiếu 1, Phiếu 3 và người tổng hợp; điền viết tắt <b id="dg-tat">${esc(dgTat())}</b> vào Phiếu 2 và Phiếu 4 khi bắt đầu một lần đánh giá. Ô đã có tên thì giữ nguyên.</span></div></section>`;}
+
+/* ---------- chế độ nhập nhanh Phiếu 2 ---------- */
+const QSHORT={'Ngày và người đánh giá':'Ngày','Da và loét':'Da – loét','Diễn biến lâm sàng kể từ mốc trước':'Diễn biến','Thiết bị y tế':'Thiết bị','Chăm sóc dự phòng':'Dự phòng','Phỏng vấn người chăm sóc':'Phỏng vấn','Nhóm theo dõi':'Nhóm','Phần kết thúc theo dõi':'Kết thúc'};
+try{S.quick=localStorage.getItem(LS+'-quick')==='1';}catch(e){S.quick=false;}
+function quickSecs(c){const g=grpInfo(c);const base='p2.m.'+S.moc;return P2.filter(s=>!s.onlyT||(g.g==='T'&&S.moc!=='KT')).map(s=>({s,b:base})).concat(S.moc==='KT'?P2END.map(s=>({s,b:'p2.end'})):[]);}
+function quickStat(c){return quickSecs(c).map(x=>countFill([x.s],x.b,c));}
+function quickHTML(c){const secs=quickSecs(c);const n=secs.length;if(S.qs==null||S.qs>=n||S.qs<0)S.qs=0;const st=quickStat(c);
+ let h=`<nav class="qsteps" aria-label="Các nhóm mục">`+secs.map((x,i)=>`<button type="button" class="qstep${i===S.qs?' on':''}${st[i].t&&st[i].f>=st[i].t?' ok':''}" data-act="qs" data-i="${i}" aria-current="${i===S.qs?'step':'false'}">${x.s.num?x.s.num+'. ':''}${QSHORT[x.s.title]||x.s.title}</button>`).join('')+'</nav>';
+ h+=secHTML(secs[S.qs].s,secs[S.qs].b);
+ h+=`<div class="qnav"><button type="button" class="btn" data-act="qprev"${S.qs===0?' disabled':''}>‹ Trước</button><span class="qc" id="qcnt"></span>${S.qs<n-1?'<button type="button" class="btn primary" data-act="qnext">Tiếp ›</button>':`<button type="button" class="btn primary" data-act="qdone">Xong ${S.moc==='KT'?'cột Kết thúc':'mốc '+S.moc}</button>`}</div>`;
+ return h;}
+function quickRefresh(c){const el=$('#qcnt');if(!el)return;const secs=quickSecs(c);const st=quickStat(c);const s=st[S.qs]||{t:0,f:0};const left=st.reduce((a,x)=>a+Math.max(0,x.t-x.f),0);
+ el.innerHTML=`Nhóm ${S.qs+1}/${secs.length}<br>${s.t>s.f?'còn '+(s.t-s.f)+' mục trống':'nhóm này đã đủ'}${left&&s.t<=s.f?' · cả mốc còn '+left:''}`;
+ $$('.qstep').forEach((b,i)=>b.classList.toggle('ok',!!(st[i]&&st[i].t&&st[i].f>=st[i].t)));}
+function qTop(){const q=$('.qsteps');if(!q)return;const ab=$('#appbar');const y=q.getBoundingClientRect().top+window.scrollY-(ab?ab.offsetHeight:0)-8;window.scrollTo(0,Math.max(0,y));}
+function qAdvance(path){setTimeout(()=>{const el=$(`#tabbody [data-path="${path}"]`);if(!el)return;const row=el.closest('.row');if(!row||row.classList.contains('empty'))return;
+ const rows=$$('#tabbody .row').filter(r=>!r.hidden&&r.offsetParent);const i=rows.indexOf(row);const nx=rows.slice(i+1).find(r=>r.classList.contains('empty'));
+ const sm=matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth';
+ if(nx)nx.scrollIntoView({behavior:sm,block:'center'});else if(!rows.some(r=>r.classList.contains('empty'))){const b=$('.qnav .btn.primary');if(b){b.classList.remove('pulse');void b.offsetWidth;b.classList.add('pulse');}}},80);}
+function qDone(b){const c=cur();const st=quickStat(c);const left=st.reduce((a,x)=>a+Math.max(0,x.t-x.f),0);
+ const go=()=>{const nx=buildTodo().find(t=>t.c.id!==c.id);S.qs=0;
+  if(nx){S.tab=nx.tab;S.moc=nx.moc||null;S.wound=0;S.p2table=false;toast('Đã xong '+c.id+' – chuyển sang '+nx.c.id+' · '+nx.text);location.hash=nx.c.id.toLowerCase();}
+  else{toast('Đã xong '+c.id+'. Không còn ca nào đến hạn hôm nay.');location.hash='';}};
+ if(left)twoTap(b,'qd','Còn '+left+' mục trống – bấm lần nữa vẫn xong',go);else go();}
 
 /* ---------- routing ---------- */
 function navMark(h){$$('#appbar [data-nav]').forEach(x=>{if(x.dataset.nav===h)x.setAttribute('aria-current','page');else x.removeAttribute('aria-current');});}
@@ -1408,11 +1508,11 @@ window.addEventListener('afterprint',()=>{document.title=oldTitle;});
 
 /* ---------- backup / restore ---------- */
 function normalize(c){if(c.id&&c.id.indexOf('-')<0&&PFX[c.khoa])c.id=PFX[c.khoa]+String(c.seq||0).padStart(3,'0');c.p1=c.p1||{};c.p2=c.p2||{m:{},end:{},review:[]};c.p2.m=c.p2.m||{};c.p2.end=c.p2.end||{};c.p2.review=c.p2.review||[];c.p3=c.p3||[];c.p4=c.p4||{rows:[]};c.p4.rows=c.p4.rows||[];c.p4.rows.forEach(r=>{if(r.hl==null)r.hl='1';});c.forms=c.forms||{p3:false,p4:false};derive(c);return c;}
-function lastBackup(){try{return localStorage.getItem(LS+'-bk')||'';}catch(e){return '';}}
+function lastBackup(){let a='';try{a=localStorage.getItem(LS+'-bk')||'';}catch(e){}const b=UCFG.bk||'';return a>b?a:b;}
 function doBackup(){const real=S.cases.filter(c=>!c.ex);if(!real.length){toast('Chưa có ca thật nào để sao lưu');return;}
  const data={app:'ltd-thuthap',v:1,exported:new Date().toISOString(),cases:real};const blob=new Blob([JSON.stringify(data)],{type:'application/json'});
  const a=document.createElement('a');a.href=URL.createObjectURL(blob);const _d=new Date();a.download='sao-luu-loet-ty-de-'+todayISO()+'-'+pad(_d.getHours())+'h'+pad(_d.getMinutes())+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);
- try{localStorage.setItem(LS+'-bk',todayISO());}catch(e){}toast('Đã tạo file sao lưu '+real.length+' ca – xem trong thư mục Tải về');setTimeout(()=>{if(!S.cur)renderHome();},400);}
+ try{localStorage.setItem(LS+'-bk',todayISO());}catch(e){}UCFG.bk=todayISO();UCFG.snooze='';saveCfg(true);toast('Đã tạo file sao lưu '+real.length+' ca – xem trong thư mục Tải về');setTimeout(()=>{if(!S.cur)renderHome();},400);}
 function doRestore(file){if(!file)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);const arr=Array.isArray(d)?d:d.cases;if(!Array.isArray(arr))throw 0;let add=0,upd=0,skip=0;
   arr.forEach(nc=>{if(!nc||!nc.id||!KHOA[nc.khoa])return;normalize(nc);const i=S.cases.findIndex(x=>x.id===nc.id);if(i<0){S.cases.push(nc);add++;}else if((nc.updated||0)>=(S.cases[i].updated||0)){S.cases[i]=nc;upd++;}else skip++;});
   save();renderHome();toast(`Đã khôi phục: thêm ${add} ca, cập nhật ${upd} ca`+(skip?`, giữ nguyên ${skip} ca có bản trên máy mới hơn`:''));}catch(e){toast('File không đúng định dạng sao lưu của công cụ này');}};r.readAsText(file);}
@@ -1661,6 +1761,7 @@ window.LTD={
   const ae=document.activeElement;const typing=ae&&$('#view').contains(ae)&&/INPUT|SELECT|TEXTAREA/.test(ae.tagName);
   if(S.cur){if(!hit)return;if(!cur()){toast('Ca này vừa bị xóa trên thiết bị khác');location.hash='';return;}if(typing||$('#drawer').getAttribute('aria-hidden')==='false'){S.remotePending=true;toast('Ca này vừa được cập nhật từ thiết bị khác');}else renderCase(true);}
   else if(typing)S.remotePending=true;else{const y=window.scrollY;route();window.scrollTo(0,y);}},
+ cfg(j){try{const o=JSON.parse(j)||{};const before=JSON.stringify(UCFG);Object.assign(UCFG,o);try{localStorage.setItem(UCFGK,JSON.stringify(UCFG));}catch(e){}if(before!==JSON.stringify(UCFG)&&!S.cur&&!location.hash.slice(1)){const ae=document.activeElement;if(!(ae&&ae.id==='dg-ten'))renderHome();}}catch(e){}},
  status(t,bad,busy){const el=$('#saved');el.textContent=t;el.classList.toggle('bad',!!bad);el.classList.toggle('busy',!!busy&&!bad);}
 };
 $('#view').addEventListener('focusout',()=>{if(!S.remotePending)return;setTimeout(()=>{const ae=document.activeElement;if(ae&&$('#view').contains(ae)&&/INPUT|SELECT|TEXTAREA/.test(ae.tagName))return;S.remotePending=false;if(S.cur)renderCase(true);else route();},60);});
@@ -1710,9 +1811,9 @@ function openData(u){const m=getMode();
  db=initializeFirestore(app,{localCache:m==='chung'?memoryLocalCache():persistentLocalCache({tabManager:persistentMultipleTabManager()})});
  col=collection(db,'ltd',u.uid,'cases');window.LTD.loading();
  unsub=onSnapshot(col,snap=>{
-  if(!started){started=true;const list=[];snap.forEach(d=>{const j=d.data().json;try{list.push(JSON.parse(j));}catch(e){}});
-   window.LTD.start(list,{email:u.email,uid:u.uid,mode:m,fromCache:snap.metadata.fromCache});lastOk=hhmm();status();return;}
-  const ch=[];snap.docChanges().forEach(x=>{if(x.doc.metadata.hasPendingWrites)return;const id=x.doc.id;
+  if(!started){started=true;const list=[];let cj=null;snap.forEach(d=>{const j=d.data().json;if(d.id==='_cfg'){cj=j;return;}try{list.push(JSON.parse(j));}catch(e){}});
+   if(cj)window.LTD.cfg(cj);window.LTD.start(list,{email:u.email,uid:u.uid,mode:m,fromCache:snap.metadata.fromCache});lastOk=hhmm();status();return;}
+  const ch=[];snap.docChanges().forEach(x=>{if(x.doc.metadata.hasPendingWrites)return;const id=x.doc.id;if(id==='_cfg'){if(x.type!=='removed')window.LTD.cfg(x.doc.data().json);return;}
    if(x.type==='removed'){if(!synced.has(id))return;synced.delete(id);ch.push({id,json:null});}
    else{const j=x.doc.data().json;if(synced.get(id)===j)return;ch.push({id,json:j});}});
   if(ch.length)window.LTD.remote(ch);},
@@ -1737,6 +1838,7 @@ window.LTDFB={
   cases.forEach(c=>{seen.add(c.id);const j=JSON.stringify(c);if(synced.get(c.id)===j)return;synced.set(c.id,j);
    track(setDoc(doc(col,c.id),{json:j,updated:c.updated||Date.now(),khoa:c.khoa||'',ex:!!c.ex}));});
   [...synced.keys()].forEach(id=>{if(!seen.has(id)){synced.delete(id);track(deleteDoc(doc(col,id)));}});},
+ setCfg(o){if(!col)return;track(setDoc(doc(col,'_cfg'),{json:JSON.stringify(o),updated:Date.now(),khoa:'',ex:false}));},
  mark(cases){cases.forEach(c=>synced.set(c.id,JSON.stringify(c)));},
  pending:()=>pending,
  logout:()=>logout()};
