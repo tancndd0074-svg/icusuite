@@ -1762,6 +1762,9 @@ window.LTD={
   if(S.cur){if(!hit)return;if(!cur()){toast('Ca này vừa bị xóa trên thiết bị khác');location.hash='';return;}if(typing||$('#drawer').getAttribute('aria-hidden')==='false'){S.remotePending=true;toast('Ca này vừa được cập nhật từ thiết bị khác');}else renderCase(true);}
   else if(typing)S.remotePending=true;else{const y=window.scrollY;route();window.scrollTo(0,y);}},
  cfg(j){try{const o=JSON.parse(j)||{};const before=JSON.stringify(UCFG);Object.assign(UCFG,o);try{localStorage.setItem(UCFGK,JSON.stringify(UCFG));}catch(e){}if(before!==JSON.stringify(UCFG)&&!S.cur&&!location.hash.slice(1)){const ae=document.activeElement;if(!(ae&&ae.id==='dg-ten'))renderHome();}}catch(e){}},
+ flush(){syncNow();},
+ rescue(arr,at){let n=0;arr.forEach(nc=>{if(!nc||!nc.id||!KHOA[nc.khoa])return;normalize(nc);const i=S.cases.findIndex(x=>x.id===nc.id);if(i<0){S.cases.push(nc);n++;}else if((nc.updated||0)>(S.cases[i].updated||0)){S.cases[i]=nc;n++;}});
+  if(n){save();if(!S.cur)route();toast('Đã gửi lại '+n+' ca có thay đổi chưa kịp lên máy chủ ở lần dùng trước'+(at?(()=>{const d=new Date(at);return ' (lúc '+pad(d.getHours())+':'+pad(d.getMinutes())+' ngày '+pad(d.getDate())+'/'+pad(d.getMonth()+1)+')';})():''));}},
  status(t,bad,busy){const el=$('#saved');el.textContent=t;el.classList.toggle('bad',!!bad);el.classList.toggle('busy',!!busy&&!bad);}
 };
 $('#view').addEventListener('focusout',()=>{if(!S.remotePending)return;setTimeout(()=>{const ae=document.activeElement;if(ae&&$('#view').contains(ae)&&/INPUT|SELECT|TEXTAREA/.test(ae.tagName))return;S.remotePending=false;if(S.cur)renderCase(true);else route();},60);});
@@ -1790,7 +1793,7 @@ const MODEK='ltd-online-mode',IDLE_MIN=30;
 const A=id=>document.getElementById(id);
 const getMode=()=>{try{return localStorage.getItem(MODEK)||'rieng';}catch(e){return 'rieng';}};
 let db=null,col=null,unsub=null,user=null,started=false,pending=0,lastErr='',idleT=null,lastOk='';
-const synced=new Map();
+const synced=new Map();const inflight=new Map();const RESK=()=>'ltd-cuu-ho-'+(user?user.uid:'');
 let note='';try{note=sessionStorage.getItem('ltd-logout-note')||'';sessionStorage.removeItem('ltd-logout-note');}catch(e){}
 const pad=n=>String(n).padStart(2,'0');const hhmm=()=>{const d=new Date();return pad(d.getHours())+':'+pad(d.getMinutes());};
 function showLogin(msg){A('auth').hidden=false;document.body.classList.add('authopen');A('a-form').hidden=false;A('a-msg').textContent=msg||note;note='';
@@ -1812,23 +1815,29 @@ function openData(u){const m=getMode();
  col=collection(db,'ltd',u.uid,'cases');window.LTD.loading();
  unsub=onSnapshot(col,snap=>{
   if(!started){started=true;const list=[];let cj=null;snap.forEach(d=>{const j=d.data().json;if(d.id==='_cfg'){cj=j;return;}try{list.push(JSON.parse(j));}catch(e){}});
-   if(cj)window.LTD.cfg(cj);window.LTD.start(list,{email:u.email,uid:u.uid,mode:m,fromCache:snap.metadata.fromCache});lastOk=hhmm();status();return;}
+   if(cj)window.LTD.cfg(cj);window.LTD.start(list,{email:u.email,uid:u.uid,mode:m,fromCache:snap.metadata.fromCache});lastOk=hhmm();status();
+   try{const r=JSON.parse(localStorage.getItem(RESK())||'null');if(r&&Array.isArray(r.cases)&&r.cases.length){const arr=r.cases.map(j=>{try{return JSON.parse(j);}catch(e){return null;}}).filter(Boolean);localStorage.removeItem(RESK());window.LTD.rescue(arr,r.at);}}catch(e){}
+   return;}
   const ch=[];snap.docChanges().forEach(x=>{if(x.doc.metadata.hasPendingWrites)return;const id=x.doc.id;if(id==='_cfg'){if(x.type!=='removed')window.LTD.cfg(x.doc.data().json);return;}
    if(x.type==='removed'){if(!synced.has(id))return;synced.delete(id);ch.push({id,json:null});}
    else{const j=x.doc.data().json;if(synced.get(id)===j)return;ch.push({id,json:j});}});
   if(ch.length)window.LTD.remote(ch);},
  err=>{const code=err&&err.code||String(err);if(!started){started=true;window.LTD.start([],{email:u.email,uid:u.uid,mode:m,error:code});}lastErr=code;status();});
  if(m==='chung')armIdle();}
-function track(p){pending++;status();p.then(()=>{pending--;lastErr='';lastOk=hhmm();status();},e=>{pending--;lastErr=e&&e.code||String(e);status();});}
+function saveRescue(){try{if(inflight.size){localStorage.setItem(RESK(),JSON.stringify({at:Date.now(),cases:[...inflight.values()]}));}else localStorage.removeItem(RESK());}catch(e){}}
+function track(p,id,j){pending++;if(id&&j){inflight.set(id,j);saveRescue();}status();
+ const done=()=>{if(id&&inflight.get(id)===j){inflight.delete(id);saveRescue();}};
+ p.then(()=>{pending--;lastErr='';lastOk=hhmm();done();status();},e=>{pending--;lastErr=e&&e.code||String(e);status();});}
 function status(){let t,bad=false;
  if(lastErr){t=lastErr==='permission-denied'?'Máy chủ từ chối ghi – cần thêm quy tắc Firestore':'Lỗi đồng bộ ('+lastErr+')';bad=true;}
  else if(pending>0)t=navigator.onLine?'Đang đồng bộ '+pending+' thay đổi…':'Ngoại tuyến · '+pending+' thay đổi chờ gửi';
  else t=navigator.onLine?'Đã đồng bộ lên máy chủ'+(lastOk?' · '+lastOk:''):'Ngoại tuyến · không có thay đổi chờ gửi';
  window.LTD.status(t,bad,pending>0);}
+window.addEventListener('beforeunload',e=>{if(!user)return;try{window.LTD.flush();}catch(_){}if(pending>0){e.preventDefault();e.returnValue='Còn thay đổi chưa gửi lên máy chủ. Rời trang bây giờ có thể mất các thay đổi này.';return e.returnValue;}});
 window.addEventListener('online',status);window.addEventListener('offline',status);
 function armIdle(){const reset=()=>{clearTimeout(idleT);idleT=setTimeout(()=>{if(pending>0){reset();return;}logout('Đã tự đăng xuất sau '+IDLE_MIN+' phút không dùng (máy dùng chung).');},IDLE_MIN*60000);};
  ['pointerdown','keydown','scroll'].forEach(ev=>window.addEventListener(ev,reset,{passive:true}));reset();}
-async function logout(note){try{if(unsub)unsub();}catch(e){}
+async function logout(note){try{localStorage.removeItem(RESK());}catch(e){}try{if(unsub)unsub();}catch(e){}
  try{if(db){await terminate(db);await clearIndexedDbPersistence(db);}}catch(e){}
  try{await signOut(auth);}catch(e){}
  try{sessionStorage.setItem('ltd-logout-note',note||'Đã đăng xuất. Dữ liệu tạm trên máy này đã được xóa.');}catch(e){}
@@ -1836,7 +1845,7 @@ async function logout(note){try{if(unsub)unsub();}catch(e){}
 window.LTDFB={
  push(cases){if(!col)return;const seen=new Set();
   cases.forEach(c=>{seen.add(c.id);const j=JSON.stringify(c);if(synced.get(c.id)===j)return;synced.set(c.id,j);
-   track(setDoc(doc(col,c.id),{json:j,updated:c.updated||Date.now(),khoa:c.khoa||'',ex:!!c.ex}));});
+   track(setDoc(doc(col,c.id),{json:j,updated:c.updated||Date.now(),khoa:c.khoa||'',ex:!!c.ex}),c.id,j);});
   [...synced.keys()].forEach(id=>{if(!seen.has(id)){synced.delete(id);track(deleteDoc(doc(col,id)));}});},
  setCfg(o){if(!col)return;track(setDoc(doc(col,'_cfg'),{json:JSON.stringify(o),updated:Date.now(),khoa:'',ex:false}));},
  mark(cases){cases.forEach(c=>synced.set(c.id,JSON.stringify(c)));},
