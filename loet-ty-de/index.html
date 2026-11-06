@@ -1843,7 +1843,10 @@ window.LTDFB={
  pending:()=>pending,
  logout:()=>logout()};
 
-if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+if('serviceWorker' in navigator&&location.protocol==='https:'){const hadCtl=!!navigator.serviceWorker.controller;let reloaded=false;
+ navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(reg=>{try{reg.update();}catch(e){}}).catch(()=>{});
+ navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!hadCtl||reloaded)return;const ae=document.activeElement;const busy=pending>0||(ae&&/INPUT|SELECT|TEXTAREA/.test(ae.tagName));
+  if(busy){window.LTD&&window.LTD.status('Đã có bản công cụ mới – tải lại trang để dùng',false,false);return;}reloaded=true;location.reload();});}
 </script>
 
 </body>
