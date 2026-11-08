@@ -289,6 +289,11 @@ table.edit .inwrap input{width:100%}
 .inwrap input.mk{font-family:var(--f-num);font-variant-numeric:tabular-nums;letter-spacing:.02em}
 .inwrap input.mk-d{width:7.4rem}.inwrap input.mk-t{width:4.3rem}.inwrap input.mk-dt{width:10.4rem}
 table.edit .inwrap input.mk{width:100%}
+.mkw{display:inline-flex;align-items:center;gap:4px;max-width:100%}
+table.edit .mkw{display:flex}table.edit .mkw .mk{min-width:0;flex:1}
+.mkpick{position:relative;flex:none;width:30px;height:30px;display:inline-grid;place-items:center;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--muted);cursor:pointer;overflow:hidden}
+.mkpick:hover{color:var(--accent);border-color:var(--accent)}
+.inwrap .mkpick input.mknat,.mkpick input.mknat{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;padding:0;border:0;cursor:pointer;font-size:16px}
 .inwrap input.mk.bad{color:var(--crit);background:var(--crit-soft)}
 .qsteps{display:flex;gap:6px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:thin}
 .qstep{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 12px;font:600 .82rem var(--f-body);cursor:pointer;white-space:nowrap}
@@ -302,6 +307,7 @@ table.edit .inwrap input.mk{width:100%}
 #tabbody.quick .row{scroll-margin-block:110px}
 @keyframes qpulse{0%{box-shadow:0 0 0 0 var(--accent)}100%{box-shadow:0 0 0 10px transparent}}
 .btn.pulse{animation:qpulse .9s ease-out 2}
+.qcopy{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;background:var(--field);border:1px dashed var(--line);border-radius:10px;padding:9px 12px;font-size:.84rem}
 @media (prefers-reduced-motion: reduce){.btn.pulse{animation:none;outline:3px solid var(--accent)}}
 table.edit .inwrap{width:100%}
 table.edit td.c{text-align:center}
@@ -452,7 +458,7 @@ pre.rules{background:var(--field);border:1px solid var(--line);border-radius:8px
   <span class="saved busy" id="saved">Đang kết nối…</span>
 </div></header>
 <main class="wrap"><div class="inner" id="view"></div></main>
-<footer class="wrap"><div class="inner">Phiên bản 1.9 trực tuyến (06/11/2026) · Dữ liệu lưu trên máy chủ Firebase, chỉ tài khoản của đề tài đọc được. Vẫn nên tải file sao lưu định kỳ và cất trong Drive riêng.</div></footer>
+<footer class="wrap"><div class="inner">Phiên bản 1.9.1 trực tuyến (08/11/2026) · Dữ liệu lưu trên máy chủ Firebase, chỉ tài khoản của đề tài đọc được. Vẫn nên tải file sao lưu định kỳ và cất trong Drive riêng.</div></footer>
 </div>
 
 <aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="dtitle">
@@ -513,7 +519,7 @@ function hoursBetween(a,b){if(!a||!b||a.length<16||b.length<16)return null;const
 /* ---------- constants ---------- */
 const KHOA={HS:{name:'Đơn vị Hồi sức tích cực',short:'Hồi sức tích cực'},NTH:{name:'Nội tổng hợp',short:'Nội tổng hợp'},TM:{name:'Tim mạch can thiệp – thần kinh',short:'Tim mạch CT – TK'}};
 const KORDER=['HS','NTH','TM'];
-const PFX={HS:'HS-',NTH:'NTH-',TM:'TMTK-'};const APP_VER='1.9';
+const PFX={HS:'HS-',NTH:'NTH-',TM:'TMTK-'};const APP_VER='1.9.1';
 const MOC=['N3','N7','N10','N14','N17','N21','N24','N28'];
 const MOCDAY={N3:3,N7:7,N10:10,N14:14,N17:17,N21:21,N24:24,N28:28};
 const DEVICES=[[1,'Ống thông dạ dày'],[2,'Ống nội khí quản/mở khí quản'],[3,'Mặt nạ thở không xâm nhập'],[4,'Gọng/mặt nạ oxy'],[5,'Ống thông tiểu'],[6,'Đầu đo SpO2'],[7,'Băng đo huyết áp'],[8,'Dây cố định chi'],[9,'Khác']];
@@ -620,7 +626,7 @@ const P1=[
 /* ---------- PHIẾU 2 (một mốc) ---------- */
 const P2=[
 {num:'',title:'Ngày và người đánh giá',rows:[
- R('','Ngày đánh giá',[P.date('ngay'),P.act('today','Hôm nay'),P.auto((s,c,b)=>mocPlanHTML(c,b,s),{block:true})]),
+ R('','Ngày đánh giá',[P.date('ngay'),P.act('today','Hôm nay'),P.act('clearMoc','Xóa đánh giá mốc này'),P.auto((s,c,b)=>mocPlanHTML(c,b,s),{block:true})]),
  R('','Người đánh giá (viết tắt)',[P.text('nguoi',{w:'s',ph:'TNT'})])]},
 {num:'1',title:'Da và loét',rows:[
  R('A2','Có loét mới',[P.radio('a2',C01),P.auto((s,c,b)=>s.a2==='1'?`<button type="button" class="btn sm" data-act="addWound" data-from="${b}">+ Ghi vào Phiếu 3</button>`:'')],{sub:'Ghi số Phiếu 3'}),
@@ -973,10 +979,15 @@ function firstNewWound(c){return (c.p3||[]).filter(w=>w.loai==='moi'&&w.a4).map(
 const view=$('#view');
 function onChange(path,structural){const c=cur();if(!c)return;derive(c);c.updated=Date.now();
  if(structural||/^p4\./.test(path)&&/\.(p1|p2|t1|t2|d|hl)$/.test(path))renderCase(true);else refresh();save();}
-view.addEventListener('input',e=>{const el=e.target;if(el.dataset&&el.dataset.mk){mkOnInput(el,e);return;}if(el.id==='dg-ten'){UCFG.dg=el.value;saveCfg();const t=$('#dg-tat');if(t)t.textContent=dgTat();return;}if(el.id==='q'){S.q=el.value;renderList();return;}if(el.id==='cq'){S.chkQ=el.value;renderCheckList();return;}if(el.id==='soq'){S.soQ=el.value;renderSoList();return;}if(!el.dataset||!el.dataset.path)return;if(!cur())return;setP(cur(),el.dataset.path,el.value);
+view.addEventListener('input',e=>{const el=e.target;if(el.classList&&el.classList.contains('mknat'))return;if(el.dataset&&el.dataset.mk){mkOnInput(el,e);return;}if(el.id==='dg-ten'){UCFG.dg=el.value;saveCfg();const t=$('#dg-tat');if(t)t.textContent=dgTat();return;}if(el.id==='q'){S.q=el.value;renderList();return;}if(el.id==='cq'){S.chkQ=el.value;renderCheckList();return;}if(el.id==='soq'){S.soQ=el.value;renderSoList();return;}if(!el.dataset||!el.dataset.path)return;if(!cur())return;setP(cur(),el.dataset.path,el.value);
  if(/^p4\./.test(el.dataset.path)){const c=cur();derive(c);c.updated=Date.now();save();refresh();return;}
  autoFill(el.dataset.path);onChange(el.dataset.path);});
-view.addEventListener('change',e=>{const el=e.target;if(el.dataset&&el.dataset.mk){mkOnChange(el);return;}if(el.id==='restoreFile'){doRestore(el.files&&el.files[0]);el.value='';return;}if(!el.dataset||!el.dataset.path)return;if(!cur())return;setP(cur(),el.dataset.path,el.value);onChange(el.dataset.path,/^p4\./.test(el.dataset.path)||/\.prog\./.test(el.dataset.path));});
+let lastPT='mouse';view.addEventListener('pointerdown',e=>{lastPT=e.pointerType||'mouse';const n=e.target;if(n.classList&&n.classList.contains('mknat')){const mk=n.closest('.mkw').querySelector('.mk');const k=mk.dataset.mk;n.value=mkVal(mk)||(k==='t'?nowHM():k==='d'?todayISO():nowDT());}},true);
+view.addEventListener('click',e=>{const n=e.target;if(n.classList&&n.classList.contains('mknat'))mkNatOpen(n);});
+view.addEventListener('mousedown',e=>{const el=e.target;if(lastPT==='mouse'&&el.dataset&&el.dataset.mk&&el.value&&document.activeElement!==el){e.preventDefault();el.focus();el.select();}});
+view.addEventListener('focusin',e=>{const el=e.target;if(el.dataset&&el.dataset.mk&&el.value&&el.selectionEnd-el.selectionStart<el.value.length){el._selNext=true;setTimeout(()=>{if(document.activeElement===el)try{el.select();}catch(_){}},0);}});
+view.addEventListener('mouseup',e=>{const el=e.target;if(el&&el._selNext){el._selNext=false;e.preventDefault();}});
+view.addEventListener('change',e=>{const el=e.target;if(el.classList&&el.classList.contains('mknat')){mkNatPick(el);return;}if(el.dataset&&el.dataset.mk){mkOnChange(el);return;}if(el.id==='restoreFile'){doRestore(el.files&&el.files[0]);el.value='';return;}if(!el.dataset||!el.dataset.path)return;if(!cur())return;setP(cur(),el.dataset.path,el.value);onChange(el.dataset.path,/^p4\./.test(el.dataset.path)||/\.prog\./.test(el.dataset.path));});
 view.addEventListener('click',e=>{const chip=e.target.closest('.chip[data-path]');if(chip){toggleChip(chip);return;}const a=e.target.closest('[data-act]');if(a){e.preventDefault();doAct(a);}});
 $('#appbar').addEventListener('click',e=>{const a=e.target.closest('[data-act]');if(a){e.preventDefault();doAct(a);}});
 function toggleChip(b){const c=cur();const path=b.dataset.path,v=b.dataset.v;
@@ -1017,6 +1028,8 @@ function doAct(b){const c=cur();const act=b.dataset.act;
  case 'qprev':S.qs=Math.max(0,(S.qs||0)-1);renderCase();break;
  case 'qnext':S.qs=(S.qs||0)+1;renderCase();break;
  case 'qdone':qDone(b);break;
+ case 'clearMoc':{const m=b.dataset.base.split('.')[2];const sc=c.p2.m[m];if(!sc||!Object.keys(sc).some(k=>!isEmpty(sc[k]))){toast('Mốc '+m+' chưa có dữ liệu');break;}twoTap(b,'clr'+m,'Bấm lần nữa để xóa toàn bộ mốc '+m,()=>{delete c.p2.m[m];S.qs=0;c.updated=Date.now();derive(c);save();renderCase(true);toast('Đã xóa đánh giá mốc '+m+' – có thể nhập lại từ đầu');});break;}
+ case 'qcopy':{const p=prevMoc(c,S.moc);if(!p)break;const secs=quickSecs(c);const sec=secs[S.qs]&&secs[S.qs].s;if(!sec)break;const keys=new Set();sec.rows.forEach(r=>{if(r.base){keys.add(r.base.split('.')[0]);return;}r.parts.forEach(x=>{if(x.k)keys.add(x.k);});});const skip=['ngay','nguoi','a2','a3','d3','_brAuto','f5','f5tu','_auto8','a7'].concat(BRK);const src=c.p2.m[p]||{};const dst=c.p2.m[S.moc]=c.p2.m[S.moc]||{};let n=0;keys.forEach(k=>{if(skip.includes(k)||src[k]===undefined)return;dst[k]=clone({v:src[k]}).v;n++;});Object.keys(src).filter(k=>/^_no8|^_/.test(k)&&!skip.includes(k)).forEach(k=>{if(keys.has(k.replace(/^_no8_?/,'')))dst[k]=src[k];});c.updated=Date.now();derive(c);save();renderCase(true);toast(n?'Đã chép nhóm “'+(QSHORT[sec.title]||sec.title)+'” từ mốc '+(p==='KT'?'Kết thúc':p)+' – chỉ cần sửa mục thay đổi':'Mốc '+p+' không có dữ liệu cho nhóm này');break;}
  case 'bkLater':UCFG.snooze=todayISO();saveCfg(true);renderHome();break;
  case 'p2table':S.p2table=!S.p2table;renderCase(true);break;
  case 'copyPrev':{const p=prevMoc(c,S.moc);if(!p)break;const src=c.p2.m[p];const skip=['ngay','nguoi','a2','a3','d3','_brAuto','f5','f5tu','_auto8','a7'].concat(BRK);const dst=c.p2.m[S.moc]=c.p2.m[S.moc]||{};Object.keys(src).forEach(k=>{if(!skip.includes(k))dst[k]=clone({v:src[k]}).v;});onChange('p2',true);toast('Đã chép mục 2–5 từ mốc '+(p==='KT'?'Kết thúc':p)+' – kiểm tra lại chỗ thay đổi');break;}
@@ -1142,7 +1155,13 @@ function soXlsx(){const L=soFiltered();if(!L.length){toast('Không có dòng nà
 
 /* ---------- ô ngày/giờ gõ liên tục (24 giờ, dd/mm/yyyy) ---------- */
 const MK={d:{ph:'dd/mm/yyyy',n:8},t:{ph:'hh:mm',n:4},dt:{ph:'dd/mm/yyyy hh:mm',n:12}};
-function mkInput(kind,attrs){return `<input type="text" inputmode="numeric" class="mk mk-${kind}" data-mk="${kind}" placeholder="${MK[kind].ph}" maxlength="${MK[kind].ph.length}" autocomplete="off" ${attrs||''}>`;}
+const MKNAT={d:'date',t:'time',dt:'datetime-local'};
+const MKICO={d:'<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 9.5h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',t:'<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5V12l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>'};MKICO.dt=MKICO.d;
+function mkInput(kind,attrs){return `<span class="mkw"><input type="text" inputmode="numeric" class="mk mk-${kind}" data-mk="${kind}" placeholder="${MK[kind].ph}" autocomplete="off" spellcheck="false" ${attrs||''}><label class="mkpick" title="Chọn ${kind==='t'?'giờ':kind==='d'?'ngày':'ngày giờ'}">${MKICO[kind]}<input type="${MKNAT[kind]}" class="mknat" tabindex="-1" aria-label="Chọn ${kind==='t'?'giờ':kind==='d'?'ngày':'ngày giờ'} từ lịch"></label></span>`;}
+function mkNatOpen(n){const mk=n.closest('.mkw')&&n.closest('.mkw').querySelector('.mk');if(!mk)return;const k=mk.dataset.mk;let v=mkVal(mk);
+ if(!v){v=k==='t'?nowHM():k==='d'?todayISO():nowDT();}n.value=v;try{if(n.showPicker)n.showPicker();}catch(e){}}
+function mkNatPick(n){const mk=n.closest('.mkw')&&n.closest('.mkw').querySelector('.mk');if(!mk||!n.value)return;const k=mk.dataset.mk;let iso=n.value;if(k==='dt')iso=iso.slice(0,16);if(k==='t')iso=iso.slice(0,5);
+ mk.value=mkShow(k,iso);mk._dg=mk.value.replace(/\D/g,'');mk.classList.remove('bad');mkCommit(mk,iso);}
 function mkNorm(kind,raw){const out=[];for(const ch of raw){const p=out.length;if(p>=MK[kind].n)break;const d=+ch;
   if(kind==='t'){if(p===0&&d>2){out.push('0');}else if(p===2&&d>5){out.push('0');}}
   else{if(p===0&&d>3)out.push('0');else if(p===2&&d>1)out.push('0');else if(kind==='dt'&&p===8&&d>2)out.push('0');else if(kind==='dt'&&p===10&&d>5)out.push('0');}
@@ -1158,21 +1177,26 @@ function mkShow(kind,v){if(v==null||v==='')return '';v=String(v);
  const m=v.match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?/);if(!m)return v;const d=m[3]+'/'+m[2]+'/'+m[1];
  return kind==='dt'&&m[4]?d+' '+m[4]+':'+m[5]:d;}
 function mkVal(el){if(!el)return '';return mkISO(el.dataset.mk,mkNorm(el.dataset.mk,el.value.replace(/\D/g,'')));}
-function focusNext(el){const L=$$('#view input,#view select,#view textarea').filter(x=>!x.disabled&&x.type!=='hidden'&&x.type!=='file'&&x.offsetParent&&x.id!=='q'&&x.id!=='soq'&&x.id!=='cq');
+function focusNext(el){const L=$$('#view input,#view select,#view textarea').filter(x=>!x.disabled&&!x.classList.contains('mknat')&&x.type!=='hidden'&&x.type!=='file'&&x.offsetParent&&x.id!=='q'&&x.id!=='soq'&&x.id!=='cq');
  const i=L.indexOf(el);const nx=L[i+1];if(nx){nx.focus();if(nx.select&&nx.tagName==='INPUT')try{nx.select();}catch(e){}}else el.blur();}
 function mkCommit(el,iso){const path=el.dataset.path;
  if(el.id==='so-rvd'){S.soRvd=iso;return;}
  if(!path||!cur())return;setP(cur(),path,iso);
  if(/^p4\./.test(path)||/\.prog\./.test(path)){const c=cur();derive(c);c.updated=Date.now();save();refresh();return;}
  autoFill(path);onChange(path);}
-function mkOnInput(el,e){const k=el.dataset.mk;let dg=el.value.replace(/\D/g,'');const prev=el._dg||'';
- if(e.inputType==='deleteContentBackward'&&dg===prev&&dg.length)dg=dg.slice(0,-1);
- dg=mkNorm(k,dg);el._dg=dg;const f=mkFmt(k,dg);if(el.value!==f){el.value=f;try{el.setSelectionRange(f.length,f.length);}catch(_){}}
- const iso=mkISO(k,dg);
+function mkCaret(f,cd,fwd){if(cd<=0)return 0;let n=0;for(let i=0;i<f.length;i++){if(/\d/.test(f[i])){n++;if(n===cd){let c=i+1;if(fwd)while(c<f.length&&!/\d/.test(f[c]))c++;return c;}}}return f.length;}
+function mkOnInput(el,e){const k=el.dataset.mk,N=MK[k].n;const raw=el.value;const pos=el.selectionStart==null?raw.length:el.selectionStart;
+ let dg=raw.replace(/\D/g,'');let cd=raw.slice(0,pos).replace(/\D/g,'').length;const prev=el._dg||'';const it=e.inputType||'';
+ if(it.startsWith('delete')){if(it==='deleteContentBackward'&&dg===prev&&cd>0)cd--;if(cd<dg.length||dg===prev)dg=dg.slice(0,cd);}
+ if(dg.length>N){const extra=dg.length-N;if(cd<dg.length&&cd>=extra)dg=dg.slice(0,cd)+dg.slice(cd+extra);dg=dg.slice(0,N);if(cd>N)cd=N;}
+ const full=mkNorm(k,dg);cd=Math.min(full.length,mkNorm(k,dg.slice(0,cd)).length);el._dg=full;
+ const f=mkFmt(k,full);const fwd=it.startsWith('insert');const cp=mkCaret(f,cd,fwd);
+ if(el.value!==f)el.value=f;try{el.setSelectionRange(cp,cp);}catch(_){}
+ const iso=mkISO(k,full);
  if(iso===null){el.classList.remove('bad');return;}
  if(iso===undefined){el.classList.add('bad');toast(k==='t'?'Giờ không hợp lệ (00:00–23:59)':'Ngày giờ không hợp lệ – kiểm tra lại ngày, tháng'+(k==='dt'?', giờ':''));return;}
  el.classList.remove('bad');mkCommit(el,iso);
- if(iso&&dg.length===MK[k].n&&(e.inputType||'').startsWith('insert'))focusNext(el);}
+ if(iso&&full.length===N&&fwd&&cd===N)focusNext(el);}
 function mkOnChange(el){const iso=mkVal(el);if(iso===null||iso===undefined){const path=el.dataset.path;const old=path&&cur()?getP(cur(),path):(el.id==='so-rvd'?S.soRvd:'');el.value=mkShow(el.dataset.mk,old);el._dg=el.value.replace(/\D/g,'');el.classList.remove('bad');if(el.value||iso===undefined)toast('Chưa nhập đủ hoặc sai ngày giờ – đã giữ giá trị cũ');}}
 
 /* ---------- người đánh giá mặc định, nhắc sao lưu (cài đặt dùng chung) ---------- */
@@ -1198,6 +1222,9 @@ function quickSecs(c){const g=grpInfo(c);const base='p2.m.'+S.moc;return P2.filt
 function quickStat(c){return quickSecs(c).map(x=>countFill([x.s],x.b,c));}
 function quickHTML(c){const secs=quickSecs(c);const n=secs.length;if(S.qs==null||S.qs>=n||S.qs<0)S.qs=0;const st=quickStat(c);
  let h=`<nav class="qsteps" aria-label="Các nhóm mục">`+secs.map((x,i)=>`<button type="button" class="qstep${i===S.qs?' on':''}${st[i].t&&st[i].f>=st[i].t?' ok':''}" data-act="qs" data-i="${i}" aria-current="${i===S.qs?'step':'false'}">${x.s.num?x.s.num+'. ':''}${QSHORT[x.s.title]||x.s.title}</button>`).join('')+'</nav>';
+ const pm=prevMoc(c,S.moc);const sn=secs[S.qs].s.num;
+ if(['2','3','4','5'].includes(String(sn))){h+=pm?`<div class="qcopy"><button type="button" class="btn sm" data-act="qcopy">Giống mốc ${pm==='KT'?'Kết thúc':pm}${c.p2.m[pm]&&c.p2.m[pm].ngay?' ('+fDM(c.p2.m[pm].ngay)+')':''}</button><span>Chép cả nhóm này từ lần đánh giá trước, rồi chỉ sửa mục nào thay đổi.</span></div>`:`<div class="qcopy"><span class="muted">Chưa có mốc nào đã đánh giá trước mốc này để chép.</span></div>`;}
+ else if(String(sn)===''&&pm){h+=`<div class="qcopy"><button type="button" class="btn sm" data-act="copyPrev">Chép một lần mục 2–5 từ mốc ${pm==='KT'?'Kết thúc':pm}</button><span>Hoặc chép từng nhóm ở các bước sau.</span></div>`;}
  h+=secHTML(secs[S.qs].s,secs[S.qs].b);
  h+=`<div class="qnav"><button type="button" class="btn" data-act="qprev"${S.qs===0?' disabled':''}>‹ Trước</button><span class="qc" id="qcnt"></span>${S.qs<n-1?'<button type="button" class="btn primary" data-act="qnext">Tiếp ›</button>':`<button type="button" class="btn primary" data-act="qdone">Xong ${S.moc==='KT'?'cột Kết thúc':'mốc '+S.moc}</button>`}</div>`;
  return h;}
