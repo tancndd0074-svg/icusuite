@@ -459,7 +459,7 @@ pre.rules{background:var(--field);border:1px solid var(--line);border-radius:8px
   <span class="saved busy" id="saved">Đang kết nối…</span>
 </div></header>
 <main class="wrap"><div class="inner" id="view"></div></main>
-<footer class="wrap"><div class="inner">Phiên bản 1.9.2 trực tuyến (08/11/2026) · Dữ liệu lưu trên máy chủ Firebase, chỉ tài khoản của đề tài đọc được. Vẫn nên tải file sao lưu định kỳ và cất trong Drive riêng.</div></footer>
+<footer class="wrap"><div class="inner">Phiên bản 1.9.3 trực tuyến (08/11/2026) · Dữ liệu lưu trên máy chủ Firebase, chỉ tài khoản của đề tài đọc được. Vẫn nên tải file sao lưu định kỳ và cất trong Drive riêng.</div></footer>
 </div>
 
 <aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="dtitle">
@@ -520,7 +520,7 @@ function hoursBetween(a,b){if(!a||!b||a.length<16||b.length<16)return null;const
 /* ---------- constants ---------- */
 const KHOA={HS:{name:'Đơn vị Hồi sức tích cực',short:'Hồi sức tích cực'},NTH:{name:'Nội tổng hợp',short:'Nội tổng hợp'},TM:{name:'Tim mạch can thiệp – thần kinh',short:'Tim mạch CT – TK'}};
 const KORDER=['HS','NTH','TM'];
-const PFX={HS:'HS-',NTH:'NTH-',TM:'TMTK-'};const APP_VER='1.9.2';
+const PFX={HS:'HS-',NTH:'NTH-',TM:'TMTK-'};const APP_VER='1.9.3';
 const MOC=['N3','N7','N10','N14','N17','N21','N24','N28'];
 const MOCDAY={N3:3,N7:7,N10:10,N14:14,N17:17,N21:21,N24:24,N28:28};
 const DEVICES=[[1,'Ống thông dạ dày'],[2,'Ống nội khí quản/mở khí quản'],[3,'Mặt nạ thở không xâm nhập'],[4,'Gọng/mặt nạ oxy'],[5,'Ống thông tiểu'],[6,'Đầu đo SpO2'],[7,'Băng đo huyết áp'],[8,'Dây cố định chi'],[9,'Khác']];
@@ -921,7 +921,7 @@ function viewP1(c){return `<div class="ftitle"><div><h2>Phiếu 1. Đánh giá k
 
 function viewP2(c){const g=grpInfo(c);
  if(!S.moc){const yd=addD(todayISO(),-1);const nx=MOC.find(m=>{const s=mocStatus(c,m);return s.st!=='done'&&s.st!=='na'&&(!s.opt||!s.date||s.date>=yd);});S.moc=nx||'KT';}
- let h=`<div class="ftitle"><div><h2>Phiếu 2. Đánh giá theo mốc</h2>${S.quick?'<p>Mã chung: 0 Không · 1 Có · 8 Không áp dụng · 9 Không có thông tin</p>':'<p>Mã chung: 0 = Không; 1 = Có; 8 = Không áp dụng; 9 = Không có thông tin. Mục 2 ghi cho khoảng thời gian kể từ mốc trước.</p>'}</div><div class="toolrow">${S.p2table?'':`<button type="button" class="btn sm${S.quick?' primary':''}" data-act="quick" aria-pressed="${!!S.quick}">${S.quick?'Đang nhập nhanh · xem đủ':'Nhập nhanh từng nhóm'}</button>`}<button type="button" class="btn sm" data-act="p2table">${S.p2table?'Nhập theo từng mốc':'Xem dạng bảng như phiếu giấy'}</button></div></div>`;
+ let h=`<div class="ftitle"><div><h2>Phiếu 2. Đánh giá theo mốc</h2>${S.quick?'<p>Mã chung: 0 Không · 1 Có · 8 Không áp dụng · 9 Không có thông tin</p>':'<p>Mã chung: 0 = Không; 1 = Có; 8 = Không áp dụng; 9 = Không có thông tin. Mục 2 ghi cho khoảng thời gian kể từ mốc trước.</p>'}</div><div class="toolrow">${S.p2table?'':`<button type="button" class="btn sm${S.quick?' primary':''}" data-act="quick" aria-pressed="${!!S.quick}">${S.quick?'Nhập nhanh: đang bật · bấm để tắt':'Nhập nhanh'}</button>`}<button type="button" class="btn sm" data-act="p2table">${S.p2table?'Nhập theo từng mốc':'Xem dạng bảng như phiếu giấy'}</button></div></div>`;
  if(!admit(c))h+='<div class="banner t-warn">Nhập thời điểm nhập khoa ở Phiếu 1 để tính lịch mốc N3, N7, N10…</div>';
  if(g.g==='T'){const rv=c.p2.review||[];h+=`<section class="block"><div class="bhead"><h2>Rà soát nhóm tối thiểu</h2><span class="muted" style="font-size:.8rem">2 lần/tuần, qua điều dưỡng khoa hoặc hồ sơ</span></div><div class="legend" style="border-top:0;align-items:center">
   <span class="rvlist">${rv.length?rv.map((r,i)=>`<span class="pill ${r.r==='C'?'t-acc':'t-none'}">${fDM(r.d)} ${r.r}<button type="button" data-act="delReview" data-i="${i}" aria-label="Xóa lần rà soát">×</button></span>`).join(''):'<span>Chưa có lần rà soát.</span>'}</span>
@@ -931,7 +931,7 @@ function viewP2(c){const g=grpInfo(c);
  h+='<div class="mocs" role="group" aria-label="Chọn mốc">'+MOC.concat(['KT']).map(m=>{const s=mocStatus(c,m);const lab={done:'Đã đánh giá',due:'Đến hạn',over:'Quá hạn',future:'Sắp tới',na:'Không cần',opt:'Tùy chọn'}[s.st];
   return `<button type="button" class="mchip ${s.st}" data-act="moc" data-m="${m}" aria-pressed="${S.moc===m}"${s.locked?' disabled':''}>${m==='KT'?'Kết thúc':m}<small>${s.date?fDM(s.date):(m==='KT'?'khi ra khỏi NC':'—')}</small><span class="st">${lab}</span></button>`;}).join('')+'</div>';
  const prev=prevMoc(c,S.moc);
- h+=`<div class="toolrow"><span class="plab">Đang nhập: ${S.moc==='KT'?'cột Kết thúc':'mốc '+S.moc}</span>${prev?`<button type="button" class="btn sm" data-act="copyPrev">Chép mục 2–5 từ mốc ${prev==='KT'?'Kết thúc':prev}</button>`:''}</div>`;
+ h+=`<div class="toolrow"><span class="plab">Đang nhập: ${S.moc==='KT'?'cột Kết thúc':'mốc '+S.moc}</span><button type="button" class="btn sm" data-act="copyPrev">Điền tất cả theo ${prev?(prev==='KT'?'cột Kết thúc':'mốc '+prev):'Phiếu 1'}</button></div>`;
  if(S.moc==='KT'&&!isClosed(c)){const kt=c.p2.m.KT||{};const has=Object.keys(kt).some(k=>!k.startsWith('_')&&k!=='e3'&&!isEmpty(kt[k]));
   h+=has?`<div class="banner t-crit"><span>Cột “Kết thúc” đang có dữ liệu${kt.ngay?' ngày <b>'+fD(kt.ngay)+'</b>':''} nhưng ca <b>chưa kết thúc theo dõi</b>. Nếu đây là buổi đánh giá giữa chừng (ví dụ ngày chuyển nhóm), hãy chuyển sang mốc theo dõi để giữ trống cột Kết thúc cho lần cuối.</span><button type="button" class="btn sm primary" data-act="ktToMoc">Chuyển sang mốc ${ktTarget(c)}</button></div>`
    :'<div class="banner t-warn"><span>Cột “Kết thúc” chỉ dùng cho lần đánh giá khi kết thúc theo dõi (ra viện, chuyển viện, đủ 30 ngày…). Buổi đánh giá giữa chừng ghi vào mốc theo dõi gần ngày đó nhất (với nhóm tối thiểu, các mốc là tùy chọn).</span></div>';}
@@ -1032,11 +1032,11 @@ function doAct(b){const c=cur();const act=b.dataset.act;
  case 'qnext':S.qs=(S.qs||0)+1;renderCase();break;
  case 'qdone':qDone(b);break;
  case 'clearMoc':{const m=b.dataset.base.split('.')[2];const sc=c.p2.m[m];if(!sc||!Object.keys(sc).some(k=>!isEmpty(sc[k]))){toast('Mốc '+m+' chưa có dữ liệu');break;}twoTap(b,'clr'+m,'Bấm lần nữa để xóa toàn bộ mốc '+m,()=>{delete c.p2.m[m];S.qs=0;c.updated=Date.now();derive(c);save();renderCase(true);toast('Đã xóa đánh giá mốc '+m+' – có thể nhập lại từ đầu');});break;}
- case 'qcopy':{const secs=quickSecs(c);const sec=secs[S.qs]&&secs[S.qs].s;if(!sec)break;const r=copyFromPrev(c,S.moc,secKeys(sec));if(!r.p)break;derive(c);save();renderCase(true);toast(r.n?'Đã chép '+r.n+' mục nhóm “'+(QSHORT[sec.title]||sec.title)+'” từ mốc '+(r.p==='KT'?'Kết thúc':r.p)+' (tô vàng)':'Mốc '+r.p+' chưa có dữ liệu cho nhóm này');break;}
+ case 'qcopy':{const secs=quickSecs(c);const sec=secs[S.qs]&&secs[S.qs].s;if(!sec)break;const r=copyFromPrev(c,S.moc,secKeys(sec));derive(c);save();renderCase(true);toast(r.n?'Đã điền '+r.n+' mục nhóm “'+(QSHORT[sec.title]||sec.title)+'” theo '+r.label:r.label+' chưa có dữ liệu cho nhóm này');break;}
  case 'qkeep':{const secs=quickSecs(c);const sec=secs[S.qs]&&secs[S.qs].s;const sc=c.p2.m[S.moc];if(!sec||!sc||!sc._copied)break;const ks=secKeys(sec);sc._copied=sc._copied.filter(k=>!ks.has(k));c.updated=Date.now();save();refresh();toast('Đã xác nhận nhóm này giống mốc trước');break;}
  case 'bkLater':UCFG.snooze=todayISO();saveCfg(true);renderHome();break;
  case 'p2table':S.p2table=!S.p2table;renderCase(true);break;
- case 'copyPrev':{const r=copyFromPrev(c,S.moc);if(!r.p)break;derive(c);save();renderCase(true);toast(r.n?'Đã chép '+r.n+' mục 2–5 từ mốc '+(r.p==='KT'?'Kết thúc':r.p)+' (tô vàng) – chỉ sửa mục thay đổi':'Mốc '+r.p+' không có dữ liệu để chép');break;}
+ case 'copyPrev':{const r=copyFromPrev(c,S.moc);const sc=c.p2.m[S.moc];if(sc)sc._ac=1;derive(c);save();renderCase(true);toast(r.n?'Đã điền '+r.n+' mục theo '+r.label+' – kiểm tra và sửa mục thay đổi':r.label+' chưa có dữ liệu để chép');break;}
  case 'addReview':{const d=mkVal($('#rv-d'));if(!d){toast('Chọn ngày rà soát');break;}const tg=addReviewTo(c,d,b.dataset.r);if(b.dataset.r==='C'){if(tg)S.moc=tg;S.p2table=false;}onChange('p2',true);toast(b.dataset.r==='C'?'Đã chuyển sang theo dõi sát từ '+fDM(d)+(tg?' – nhập buổi đánh giá hôm đó vào mốc '+tg+' (A7 = 1 đã điền sẵn)':''):'Đã ghi rà soát '+fDM(d)+' – giữ nhóm');break;}
  case 'delReview':c.p2.review.splice(+b.dataset.i,1);onChange('p2',true);break;
  case 'clear8':{const m=getP(c,b.dataset.base)||{};['f5tu','f6','f9'].forEach(k=>{if(m[k]==='8')m[k]='';});m._no8=false;m._auto8=false;onChange(b.dataset.base,true);toast('Đã bỏ mã 8 ở F5, F6, F9 – chọn lại theo thực tế');break;}
@@ -1234,24 +1234,34 @@ function quickSecs(c){const g=grpInfo(c);const base='p2.m.'+S.moc;return P2.filt
 function quickStat(c){return quickSecs(c).map(x=>countFill([x.s],x.b,c));}
 function quickHTML(c){const secs=quickSecs(c);const n=secs.length;if(S.qs==null||S.qs>=n||S.qs<0)S.qs=0;const st=quickStat(c);
  let h=`<nav class="qsteps" aria-label="Các nhóm mục">`+secs.map((x,i)=>`<button type="button" class="qstep${i===S.qs?' on':''}${st[i].t&&st[i].f>=st[i].t?' ok':''}" data-act="qs" data-i="${i}" aria-current="${i===S.qs?'step':'false'}">${x.s.num?x.s.num+'. ':''}${QSHORT[x.s.title]||x.s.title}</button>`).join('')+'</nav>';
- const pm=prevMoc(c,S.moc);const sn=secs[S.qs].s.num;
- if(['2','3','4','5'].includes(String(sn))){h+=pm?`<div class="qcopy"><button type="button" class="btn sm" data-act="qcopy">Giống mốc ${pm==='KT'?'Kết thúc':pm}${c.p2.m[pm]&&c.p2.m[pm].ngay?' ('+fDM(c.p2.m[pm].ngay)+')':''}</button><button type="button" class="btn sm ghost" data-act="qkeep">Đã kiểm tra – bỏ tô</button><span>Mục tô vàng là chép từ mốc trước: sửa mục nào thay đổi, còn lại giữ nguyên.</span></div>`:`<div class="qcopy"><span class="muted">Chưa có mốc nào đã đánh giá trước mốc này để chép.</span></div>`;}
- else if(String(sn)===''&&pm){h+=`<div class="qcopy"><button type="button" class="btn sm" data-act="copyPrev">Chép một lần mục 2–5 từ mốc ${pm==='KT'?'Kết thúc':pm}</button><span>Hoặc chép từng nhóm ở các bước sau.</span></div>`;}
+ const pm=prevMoc(c,S.moc);const sn=String(secs[S.qs].s.num);const lab=pm?(pm==='KT'?'cột Kết thúc':'mốc '+pm+(c.p2.m[pm]&&c.p2.m[pm].ngay?' ('+fDM(c.p2.m[pm].ngay)+')':'')):'Phiếu 1';
+ if(sn==='')h+=`<div class="qcopy"><button type="button" class="btn sm" data-act="copyPrev">Điền tất cả theo ${lab}</button><span>Nhập ngày đánh giá là công cụ tự điền sẵn mọi mục theo ${lab}; cậu chỉ sửa mục thay đổi.</span></div>`;
+ else h+=`<div class="qcopy"><button type="button" class="btn sm" data-act="qcopy">Điền nhóm này theo ${lab}</button></div>`;
  h+=secHTML(secs[S.qs].s,secs[S.qs].b);
  h+=`<div class="qnav"><button type="button" class="btn" data-act="qprev"${S.qs===0?' disabled':''}>‹ Trước</button><span class="qc" id="qcnt"></span>${S.qs<n-1?'<button type="button" class="btn primary" data-act="qnext">Tiếp ›</button>':`<button type="button" class="btn primary" data-act="qdone">Xong ${S.moc==='KT'?'cột Kết thúc':'mốc '+S.moc}</button>`}</div>`;
  return h;}
 function quickRefresh(c){const el=$('#qcnt');if(!el)return;const secs=quickSecs(c);const st=quickStat(c);const s=st[S.qs]||{t:0,f:0};const left=st.reduce((a,x)=>a+Math.max(0,x.t-x.f),0);
  el.innerHTML=`Nhóm ${S.qs+1}/${secs.length}<br>${s.t>s.f?'còn '+(s.t-s.f)+' mục trống':'nhóm này đã đủ'}${left&&s.t<=s.f?' · cả mốc còn '+left:''}`;
  $$('.qstep').forEach((b,i)=>b.classList.toggle('ok',!!(st[i]&&st[i].t&&st[i].f>=st[i].t)));}
-const CP_SKIP=['ngay','nguoi','a2','a3','d3','_brAuto','f5','f5tu','_auto8','a7','_copied','_ac'].concat(BRK);
-function copyFromPrev(c,m,keys){const p=prevMoc(c,m);if(!p)return {p:null,n:0};const src=c.p2.m[p]||{};const dst=c.p2.m[m]=c.p2.m[m]||{};const got=[];
- Object.keys(src).forEach(k=>{if(CP_SKIP.includes(k)||k.startsWith('_')&&!/^_no8/.test(k))return;if(keys&&!keys.has(k)&&!(/^_no8/.test(k)&&keys.has(k.replace(/^_no8_?/,''))))return;if(isEmpty(src[k]))return;dst[k]=clone({v:src[k]}).v;if(!k.startsWith('_'))got.push(k);});
- dst._copied=[...new Set((dst._copied||[]).concat(got))];c.updated=Date.now();return {p,n:got.length};}
+const CP_SKIP=['ngay','_copied','_ac'];
+function p1ToP2(c){const p=c.p1;derive(c);const o={};const put=(k,v)=>{if(!isEmpty(v))o[k]=v;};
+ BRK.forEach(k=>put(k,p[k]));if(p.brTong!=null&&p.brTong!==''){o.d3=String(p.brTong);o._brAuto=1;}
+ if(p.d6==='0'||p.d6==='1')o.d6=p.d6;
+ const d12=[];if(p.d12a==='1')d12.push('1');if(p.d12b==='1')d12.push('2');if(p.d12b==='2')d12.push('3');if(!d12.length&&p.d12a&&p.d12b)d12.push('0');if(d12.length)o.d12=d12;
+ put('d11',p.d11);
+ const on=[],fix=new Set(),dem=[];for(let i=1;i<=9;i++){const d=p.dev&&p.dev['d'+i];if(d&&d.on==='1'){on.push(String(i));if(d.fix!=null&&d.fix!=='')fix.add(String(d.fix));if(d.dem)dem.push(d.dem);}}
+ const anyDev=p.dev&&Object.keys(p.dev).length;if(on.length){o.e1=on;if(fix.size)o.e5=[...fix];if(dem.length)o.e6=dem.includes('0')?'0':dem.includes('1')?'1':'8';}else if(anyDev||p.dev)o.e1=['0'];
+ put('f8',p.f8);if(p.f3)o.f3=p.f3==='k'?'5':p.f3;
+ return o;}
+function copyFromPrev(c,m,keys){const p=prevMoc(c,m);const src=p?(c.p2.m[p]||{}):p1ToP2(c);const label=p?(p==='KT'?'cột Kết thúc':'mốc '+p):'Phiếu 1';
+ const dst=c.p2.m[m]=c.p2.m[m]||{};let n=0;
+ Object.keys(src).forEach(k=>{if(CP_SKIP.includes(k))return;const base=k.replace(/^_no8_?/,'');if(keys&&!keys.has(k)&&!keys.has(base)&&!(k==='_brAuto'&&keys.has('d3'))&&!(BRK.includes(k)&&keys.has('d3'))&&!(k==='_auto8'))return;if(isEmpty(src[k]))return;dst[k]=clone({v:src[k]}).v;if(!k.startsWith('_'))n++;});
+ c.updated=Date.now();return {p:p||'P1',label,n};}
 function secKeys(sec){const keys=new Set();sec.rows.forEach(r=>{if(r.base){keys.add(r.base.split('.')[0]);return;}r.parts.forEach(x=>{if(x.k)keys.add(x.k);});});return keys;}
 function mocHasCore(sc){return !!sc&&Object.keys(sc).some(k=>!['ngay','nguoi','_copied','_ac'].includes(k)&&!k.startsWith('_')&&!isEmpty(sc[k]));}
-function autoCopy(c){if(!S.quick||!S.moc||S.moc==='KT')return;const sc=c.p2.m[S.moc];if(!sc||!sc.ngay||sc._ac||mocHasCore(sc))return;const r=copyFromPrev(c,S.moc);sc._ac=1;if(r.n){derive(c);save();setTimeout(()=>toast('Đã chép sẵn '+r.n+' mục từ mốc '+r.p+' (tô vàng) – chỉ sửa mục thay đổi'),50);}}
-function uncopy(path){const m=String(path).match(/^p2\.m\.(\w+)\.([^.]+)/);if(!m)return;const c=cur();const sc=c&&c.p2.m[m[1]];if(sc&&sc._copied){const i=sc._copied.indexOf(m[2]);if(i>=0)sc._copied.splice(i,1);}}
-function markCopied(c){if(S.tab!=='p2'||!S.moc)return;const sc=c.p2.m[S.moc]||{};const L=sc._copied||[];$$('#tabbody .row').forEach(r=>r.classList.remove('copied'));if(!L.length)return;
+function autoCopy(c){if(!S.quick||!S.moc)return;const sc=c.p2.m[S.moc];if(!sc||!sc.ngay||sc._ac||mocHasCore(sc))return;const r=copyFromPrev(c,S.moc);sc._ac=1;if(r.n){derive(c);save();setTimeout(()=>toast('Đã điền sẵn '+r.n+' mục theo '+r.label+' – cậu kiểm tra và sửa mục thay đổi'),50);}}
+function uncopy(path){return;const m=String(path).match(/^p2\.m\.(\w+)\.([^.]+)/);if(!m)return;const c=cur();const sc=c&&c.p2.m[m[1]];if(sc&&sc._copied){const i=sc._copied.indexOf(m[2]);if(i>=0)sc._copied.splice(i,1);}}
+function markCopied(c){return;if(S.tab!=='p2'||!S.moc)return;const sc=c.p2.m[S.moc]||{};const L=sc._copied||[];$$('#tabbody .row').forEach(r=>r.classList.remove('copied'));if(!L.length)return;
  $$('#tabbody [data-path^="p2.m.'+S.moc+'."]').forEach(el=>{const k=el.dataset.path.split('.')[3];if(L.includes(k)){const r=el.closest('.row');if(r)r.classList.add('copied');}});}
 function qTop(){const q=$('.qsteps');if(!q)return;const ab=$('#appbar');const y=q.getBoundingClientRect().top+window.scrollY-(ab?ab.offsetHeight:0)-8;window.scrollTo(0,Math.max(0,y));}
 function qAdvance(path){setTimeout(()=>{const el=$(`#tabbody [data-path="${path}"]`);if(!el)return;const row=el.closest('.row');if(!row||row.classList.contains('empty'))return;
