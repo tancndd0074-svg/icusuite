@@ -303,6 +303,8 @@ table.edit .mkw{display:flex}table.edit .mkw .mk{min-width:0;flex:1}
 .qnav .btn{padding:11px 16px;font-size:.95rem}
 .qnav .qc{font-size:.8rem;color:var(--muted);text-align:center;line-height:1.35}
 .chead.q .formsel{display:none}
+.caseend{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-top:6px}
+.caseend .cact{display:flex;gap:8px;flex-wrap:wrap}
 #tabbody.quick .chip{min-height:44px;padding:8px 14px;font-size:.95rem}
 #tabbody.quick .row{scroll-margin-block:110px}
 @keyframes qpulse{0%{box-shadow:0 0 0 0 var(--accent)}100%{box-shadow:0 0 0 10px transparent}}
@@ -465,7 +467,7 @@ pre.rules{background:var(--field);border:1px solid var(--line);border-radius:8px
   <span class="saved busy" id="saved">Đang kết nối…</span>
 </div></header>
 <main class="wrap"><div class="inner" id="view"></div></main>
-<footer class="wrap"><div class="inner">Phiên bản 1.9.4 trực tuyến (14/11/2026) · Dữ liệu lưu trên máy chủ Firebase, chỉ tài khoản của đề tài đọc được. Vẫn nên tải file sao lưu định kỳ và cất trong Drive riêng.</div></footer>
+<footer class="wrap"><div class="inner">Phiên bản 1.9.5 trực tuyến (14/11/2026) · Dữ liệu lưu trên máy chủ Firebase, chỉ tài khoản của đề tài đọc được. Vẫn nên tải file sao lưu định kỳ và cất trong Drive riêng.</div></footer>
 </div>
 
 <aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="dtitle">
@@ -526,7 +528,7 @@ function hoursBetween(a,b){if(!a||!b||a.length<16||b.length<16)return null;const
 /* ---------- constants ---------- */
 const KHOA={HS:{name:'Đơn vị Hồi sức tích cực',short:'Hồi sức tích cực'},NTH:{name:'Nội tổng hợp',short:'Nội tổng hợp'},TM:{name:'Tim mạch can thiệp – thần kinh',short:'Tim mạch CT – TK'}};
 const KORDER=['HS','NTH','TM'];
-const PFX={HS:'HS-',NTH:'NTH-',TM:'TMTK-'};const APP_VER='1.9.3';
+const PFX={HS:'HS-',NTH:'NTH-',TM:'TMTK-'};const APP_VER='1.9.4';
 const MOC=['N3','N7','N10','N14','N17','N21','N24','N28'];
 const MOCDAY={N3:3,N7:7,N10:10,N14:14,N17:17,N21:21,N24:24,N28:28};
 const DEVICES=[[1,'Ống thông dạ dày'],[2,'Ống nội khí quản/mở khí quản'],[3,'Mặt nạ thở không xâm nhập'],[4,'Gọng/mặt nạ oxy'],[5,'Ống thông tiểu'],[6,'Đầu đo SpO2'],[7,'Băng đo huyết áp'],[8,'Dây cố định chi'],[9,'Khác']];
@@ -904,7 +906,7 @@ function renderCase(keepScroll){const c=cur();if(!c){location.hash='';return;}de
  const a=admit(c);const tm=tabMeta(c);
  let h=`<div class="stack"><div class="chead${S.quick&&S.tab==='p2'&&!S.p2table?' q':''}">
   <div class="l1"><button type="button" class="btn sm ghost" data-act="home">‹ Danh sách</button>${S.fromCheck?'<button type="button" class="btn sm" data-act="backCheck">‹ Kiểm tra số liệu</button>':''}${S.fromSo?'<button type="button" class="btn sm" data-act="backSo">‹ Sổ liên kết</button>':''}<span class="cid">${c.id}</span><span class="tag">${KHOA[c.khoa].name}</span>${c.ex?'<span class="tag ex">ví dụ</span>':''}<span id="h-grp"></span>
-   <span id="h-chk"></span><span class="cact"><button type="button" class="btn sm" data-act="endFollow">Kết thúc theo dõi</button><button type="button" class="btn sm primary" data-act="pdf">Tải PDF phiếu</button><button type="button" class="btn sm ghost" data-act="delCase">Xóa ca</button></span></div>
+   <span id="h-chk"></span><span class="cact"><button type="button" class="btn sm ghost" data-act="delCase">Xóa ca</button></span></div>
   <div class="cmeta"><span class="cname" id="h-name"></span><span id="h-day"></span></div>
   <div class="formsel"><span class="lb">Phiếu bắt buộc</span><span class="fs"><span class="ftog fixed" aria-pressed="true">Phiếu 1 · Nhập khoa</span><span class="ftog fixed" aria-pressed="true">Phiếu 2 · Theo mốc</span></span>
    <span class="lb">Có điều kiện</span><span class="fs"><button type="button" class="ftog" data-act="toggleForm" data-f="p3" aria-pressed="${c.forms.p3}">Phiếu 3 · Vết loét <span class="hint" id="hint-p3"${needP3(c)&&!c.forms.p3?'':' hidden'}>có loét</span></button><button type="button" class="ftog" data-act="toggleForm" data-f="p4" aria-pressed="${c.forms.p4}">Phiếu 4 · Quan sát tư thế <span class="hint" id="hint-p4"${needP4(c)&&!c.forms.p4?'':' hidden'}>vận động 1–2</span></button></span></div>
@@ -912,7 +914,7 @@ function renderCase(keepScroll){const c=cur();if(!c){location.hash='';return;}de
  <nav class="tabs" role="tablist">${[['p1','Phiếu 1'],['p2','Phiếu 2'],['p3','Phiếu 3'],['p4','Phiếu 4']].filter(([k])=>k==='p1'||k==='p2'||c.forms[k]).map(([k,l])=>`<button type="button" class="tab" role="tab" data-act="tab" data-t="${k}" aria-selected="${S.tab===k}">${l} <span class="tb" id="tb-${k}">${tm[k]}</span></button>`).join('')}</nav>
  <div class="stack${S.quick&&S.tab==='p2'&&!S.p2table?' quick':''}" id="tabbody">`;
  if(S.tab==='p1')h+=viewP1(c);else if(S.tab==='p2')h+=viewP2(c);else if(S.tab==='p3')h+=viewP3(c);else h+=viewP4(c);
- h+='</div></div>';
+ h+=`</div><div class="caseend"><span class="muted">${isClosed(c)?'Đã kết thúc theo dõi '+fD(c.p2.end.a5)+(c.p2.end.a6?' ('+esc(c.p2.end.a6)+')':''):'Điền xong phần kết thúc thì tải PDF để lưu bản giấy.'}</span><span class="cact"><button type="button" class="btn" data-act="endFollow">${isClosed(c)?'Xem/sửa phần kết thúc':'Kết thúc theo dõi'}</button><button type="button" class="btn primary" data-act="pdf">Tải PDF phiếu</button></span></div></div>`;
  $('#view').innerHTML=h;bindRegs();refresh();window.scrollTo(0,y);if(S.quick&&S.tab==='p2'&&!S.p2table&&!keepScroll)qTop();if(S.focus){const f=S.focus;S.focus=null;setTimeout(()=>focusPath(f),40);}}
 function headerRefresh(c){const a=admit(c);const g=grpInfo(c);const set=(id,v)=>{const e=document.getElementById(id);if(e&&e.innerHTML!==v)e.innerHTML=v;};
  set('h-name',c.p1.hoTen?esc(c.p1.hoTen)+(c.p1.c1?` · ${c.p1.c1} tuổi`:''):'<span class="muted">(chưa nhập họ tên)</span>');
