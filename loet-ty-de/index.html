@@ -443,6 +443,11 @@ body.pvopen{overflow:hidden}
 .a-note{margin:0;font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
 body.authopen{overflow:hidden}
 .saved.busy::before{background:var(--warn)}
+.who{font-size:.76rem;color:var(--muted);max-width:16rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.who.bad{color:var(--crit);font-weight:700}
+.wrongacc{max-width:560px;margin:24px auto;display:grid;gap:12px;background:var(--surface);border:1px solid var(--crit);border-radius:14px;padding:20px}
+.wrongacc h2{margin:0;font-size:1.2rem;color:var(--crit)}
+.wrongacc p{margin:0}
 pre.rules{background:var(--field);border:1px solid var(--line);border-radius:8px;padding:10px 12px;overflow-x:auto;font:500 .78rem/1.5 var(--f-num);margin:0;white-space:pre}
 .acct{display:grid;gap:10px;padding:12px 14px}
 .acct code{font:600 .82rem var(--f-num);background:var(--field);border:1px solid var(--line);border-radius:6px;padding:1px 6px;word-break:break-all}
@@ -456,10 +461,11 @@ pre.rules{background:var(--field);border:1px solid var(--line);border-radius:8px
 <header class="appbar wrap" id="appbar"><div class="inner">
   <a class="brand" href="#" data-act="home"><b>Thu thập số liệu loét tỳ đè</b><small>Phiếu 1–4 · 3 khoa nội · bản trực tuyến</small></a>
   <nav class="anav" aria-label="Trang"><button type="button" class="btn sm ghost" data-act="so" data-nav="so-lien-ket">Sổ liên kết</button><button type="button" class="btn sm ghost" data-act="chk" data-nav="kiem-tra">Kiểm tra số liệu</button><button type="button" class="btn sm ghost" data-act="logout">Đăng xuất</button></nav>
+  <span class="who" id="who" hidden></span>
   <span class="saved busy" id="saved">Đang kết nối…</span>
 </div></header>
 <main class="wrap"><div class="inner" id="view"></div></main>
-<footer class="wrap"><div class="inner">Phiên bản 1.9.3 trực tuyến (08/11/2026) · Dữ liệu lưu trên máy chủ Firebase, chỉ tài khoản của đề tài đọc được. Vẫn nên tải file sao lưu định kỳ và cất trong Drive riêng.</div></footer>
+<footer class="wrap"><div class="inner">Phiên bản 1.9.4 trực tuyến (14/11/2026) · Dữ liệu lưu trên máy chủ Firebase, chỉ tài khoản của đề tài đọc được. Vẫn nên tải file sao lưu định kỳ và cất trong Drive riêng.</div></footer>
 </div>
 
 <aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="dtitle">
@@ -1276,7 +1282,8 @@ function qDone(b){const c=cur();const st=quickStat(c);const left=st.reduce((a,x)
 
 /* ---------- routing ---------- */
 function navMark(h){$$('#appbar [data-nav]').forEach(x=>{if(x.dataset.nav===h)x.setAttribute('aria-current','page');else x.removeAttribute('aria-current');});}
-function route(){const h=location.hash.slice(1).toLowerCase();navMark(h);if(!h){renderHome();return;}if(h==='kiem-tra'){renderCheck();return;}if(h==='so-lien-ket'){renderSo();return;}const c=S.cases.find(x=>x.id.toLowerCase()===h);if(!c){location.hash='';renderHome();return;}if(S.cur!==c.id){if(!S.tab)S.tab='p1';}S.cur=c.id;renderCase();}
+function wrongHTML(){const a=S.acct||{};return `<div class='wrongacc' role='alert'><h2>Đây không phải tài khoản của đề tài</h2><p>Đang đăng nhập: <b>${esc(a.email||'')}</b>. Tài khoản này không được xem dữ liệu nghiên cứu loét tỳ đè, nên danh sách ca sẽ trống. Dữ liệu của đề tài vẫn an toàn trên máy chủ.</p><p>Bấm <b>Đăng xuất</b> rồi đăng nhập lại bằng tài khoản riêng của đề tài.</p><span class='homebar'><button type='button' class='btn primary' data-act='logout'>Đăng xuất</button></span></div>`;}
+function route(){if(S.acct&&S.acct.error==='wrong-account'){$('#view').innerHTML=wrongHTML();return;}const h=location.hash.slice(1).toLowerCase();navMark(h);if(!h){renderHome();return;}if(h==='kiem-tra'){renderCheck();return;}if(h==='so-lien-ket'){renderSo();return;}const c=S.cases.find(x=>x.id.toLowerCase()===h);if(!c){location.hash='';renderHome();return;}if(S.cur!==c.id){if(!S.tab)S.tab='p1';}S.cur=c.id;renderCase();}
 window.addEventListener('hashchange',route);
 
 /* ---------- toast ---------- */
@@ -1814,8 +1821,8 @@ $('#view').innerHTML='<p class="empty-note">Đang tải…</p>';
 S.acct=null;
 window.LTD={
  loading(){$('#view').innerHTML='<p class="empty-note">Đang tải dữ liệu từ máy chủ…</p>';},
- start(list,info){S.acct=info;S.cases=list.filter(c=>c&&c.id&&KHOA[c.khoa]).map(normalize);if(window.LTDFB)window.LTDFB.mark(S.cases);route();
-  if(info.error==='permission-denied')toast('Máy chủ chưa cấp quyền cho tài khoản này – xem mục Tài khoản trực tuyến');else if(info.fromCache)toast('Đang ngoại tuyến – hiển thị dữ liệu đã lưu trên máy');},
+ start(list,info){S.acct=info;{const w=$('#who');if(w){w.hidden=false;w.textContent=info.email||'';w.title='Đang đăng nhập: '+(info.email||'');w.classList.toggle('bad',info.error==='wrong-account');}}S.cases=list.filter(c=>c&&c.id&&KHOA[c.khoa]).map(normalize);if(window.LTDFB)window.LTDFB.mark(S.cases);route();
+  if(info.error==='wrong-account')toast('Tài khoản '+(info.email||'')+' không phải tài khoản đề tài – hãy đăng xuất và đăng nhập lại');else if(info.error==='permission-denied')toast('Máy chủ chưa cấp quyền cho tài khoản này – xem mục Tài khoản trực tuyến');else if(info.fromCache)toast('Đang ngoại tuyến – hiển thị dữ liệu đã lưu trên máy');},
  remote(ch){let hit=false;ch.forEach(({id,json})=>{const i=S.cases.findIndex(x=>x.id===id);if(json==null){if(i>=0)S.cases.splice(i,1);}else{let c;try{c=normalize(JSON.parse(json));}catch(e){return;}if(i>=0)S.cases[i]=c;else S.cases.push(c);if(window.LTDFB)window.LTDFB.mark([c]);}if(S.cur===id)hit=true;});
   const ae=document.activeElement;const typing=ae&&$('#view').contains(ae)&&/INPUT|SELECT|TEXTAREA/.test(ae.tagName);
   if(S.cur){if(!hit)return;if(!cur()){toast('Ca này vừa bị xóa trên thiết bị khác');location.hash='';return;}if(typing||$('#drawer').getAttribute('aria-hidden')==='false'){S.remotePending=true;toast('Ca này vừa được cập nhật từ thiết bị khác');}else renderCase(true);}
@@ -1856,7 +1863,7 @@ const synced=new Map();const inflight=new Map();const RESK=()=>'ltd-cuu-ho-'+(us
 let note='';try{note=sessionStorage.getItem('ltd-logout-note')||'';sessionStorage.removeItem('ltd-logout-note');}catch(e){}
 const pad=n=>String(n).padStart(2,'0');const hhmm=()=>{const d=new Date();return pad(d.getHours())+':'+pad(d.getMinutes());};
 function showLogin(msg){A('auth').hidden=false;document.body.classList.add('authopen');A('a-form').hidden=false;A('a-msg').textContent=msg||note;note='';
- const m=getMode();const r=document.querySelector(`input[name="a-mode"][value="${m}"]`);if(r)r.checked=true;setTimeout(()=>{const e=A('a-email');if(e&&!e.value)e.focus();},50);}
+ const m=getMode();const r=document.querySelector(`input[name="a-mode"][value="${m}"]`);if(r)r.checked=true;setTimeout(()=>{const e=A('a-email');if(e&&!e.value){let le='';try{le=localStorage.getItem('ltd-last-email')||'';}catch(_){}if(le){e.value=le;A('a-pass').focus();}else e.focus();}},50);}
 function hideLogin(){A('auth').hidden=true;document.body.classList.remove('authopen');}
 const AUTHMSG={'auth/invalid-credential':'Email hoặc mật khẩu không đúng.','auth/wrong-password':'Email hoặc mật khẩu không đúng.','auth/user-not-found':'Email hoặc mật khẩu không đúng.','auth/invalid-email':'Email không đúng định dạng.','auth/too-many-requests':'Đăng nhập sai nhiều lần – chờ vài phút rồi thử lại, hoặc dùng “Quên mật khẩu”.','auth/network-request-failed':'Không có kết nối mạng. Lần đăng nhập cần có mạng.','auth/user-disabled':'Tài khoản đã bị khóa trong Firebase.'};
 onAuthStateChanged(auth,u=>{if(u){user=u;hideLogin();openData(u);}else{user=null;showLogin('');}});
@@ -1869,7 +1876,10 @@ A('a-form').addEventListener('submit',async e=>{e.preventDefault();const btn=A('
 A('a-forgot').addEventListener('click',async()=>{const em=A('a-email').value.trim();const out=A('a-err');if(!em){out.className='a-err';out.textContent='Nhập email trước, rồi bấm “Quên mật khẩu”.';return;}
  try{await sendPasswordResetEmail(auth,em);out.className='a-err a-ok';out.textContent='Đã gửi thư đặt lại mật khẩu tới '+em+'. Xem cả mục thư rác.';}
  catch(err){out.className='a-err';out.textContent=AUTHMSG[err&&err.code]||('Không gửi được thư ('+(err&&err.code||err)+').');}});
+const LTD_UID='HVjOYMp7OXbsCRGDxKHnUwsdVBh2';
 function openData(u){const m=getMode();
+ if(u.uid!==LTD_UID){window.LTD.start([],{email:u.email,uid:u.uid,mode:m,error:'wrong-account'});window.LTD.status('Sai tài khoản – chưa tải dữ liệu',true,false);return;}
+ try{localStorage.setItem('ltd-last-email',u.email||'');}catch(e){}
  db=initializeFirestore(app,{localCache:m==='chung'?memoryLocalCache():persistentLocalCache({tabManager:persistentMultipleTabManager()})});
  col=collection(db,'ltd',u.uid,'cases');window.LTD.loading();
  unsub=onSnapshot(col,snap=>{
