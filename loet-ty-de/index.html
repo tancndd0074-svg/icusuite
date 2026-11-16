@@ -19,16 +19,6 @@
   --f-num:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   --r:12px; --dw:460px;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0d1412; --surface:#141f1c; --field:#101916; --sunk:#1b2825; --ink:#e2ebe8; --muted:#97a8a3; --line:#2b3a36;
-  --accent:#4dbfa6; --accent-ink:#05201a; --accent-soft:#17382f;
-  --ok:#64c488; --ok-soft:#163323; --warn:#e2b150; --warn-soft:#382c11; --high:#f0925c; --high-soft:#3b2314; --crit:#f2766d; --crit-soft:#3e1c19;
-  color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0d1412; --surface:#141f1c; --field:#101916; --sunk:#1b2825; --ink:#e2ebe8; --muted:#97a8a3; --line:#2b3a36;
-  --accent:#4dbfa6; --accent-ink:#05201a; --accent-soft:#17382f;
-  --ok:#64c488; --ok-soft:#163323; --warn:#e2b150; --warn-soft:#382c11; --high:#f0925c; --high-soft:#3b2314; --crit:#f2766d; --crit-soft:#3e1c19;
-  color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--surface)}
@@ -428,7 +418,8 @@ body.pvopen{overflow:hidden}
 .homebar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .page.pdfmode{min-height:0!important;padding:0!important;box-shadow:none!important;margin:0!important;flex:none}
 
-/* ===== Giao diện A – "Thẻ đi buồng" (bản 2.0) ===== */
+/* ===== Giao diện A – "Thẻ đi buồng" (bản 2.0), chỉ dùng nền sáng ===== */
+:root{color-scheme:light}
 :root{
   --bg:#eef1f6; --surface:#ffffff; --field:#f4f6fa; --sunk:#eaeef5; --ink:#141b2b; --muted:#5b6578; --line:#e2e7ef;
   --accent:#4448c9; --accent-ink:#ffffff; --accent-soft:#e6e7fb;
@@ -436,16 +427,6 @@ body.pvopen{overflow:hidden}
   --f-body:"Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   --r:20px; --sh:0 1px 2px rgb(20 27 43 / .05),0 6px 20px rgb(20 27 43 / .06); --sh-btn:0 1px 2px rgb(20 27 43 / .08); --sh-pri:0 4px 14px rgb(68 72 201 / .32);
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0e121a; --surface:#171c27; --field:#131824; --sunk:#1f2534; --ink:#e7eaf3; --muted:#9aa3b6; --line:#2a3142;
-  --accent:#8f93f7; --accent-ink:#0f1130; --accent-soft:#272a5c;
-  --ok:#64c488; --ok-soft:#163323; --warn:#e2b150; --warn-soft:#382c11; --high:#f0925c; --high-soft:#3b2314; --crit:#f2766d; --crit-soft:#3e1c19;
-  --sh:0 1px 2px rgb(0 0 0 / .4),0 8px 24px rgb(0 0 0 / .3); --sh-btn:0 1px 2px rgb(0 0 0 / .4); --sh-pri:0 4px 14px rgb(0 0 0 / .45);color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0e121a; --surface:#171c27; --field:#131824; --sunk:#1f2534; --ink:#e7eaf3; --muted:#9aa3b6; --line:#2a3142;
-  --accent:#8f93f7; --accent-ink:#0f1130; --accent-soft:#272a5c;
-  --ok:#64c488; --ok-soft:#163323; --warn:#e2b150; --warn-soft:#382c11; --high:#f0925c; --high-soft:#3b2314; --crit:#f2766d; --crit-soft:#3e1c19;
-  --sh:0 1px 2px rgb(0 0 0 / .4),0 8px 24px rgb(0 0 0 / .3); --sh-btn:0 1px 2px rgb(0 0 0 / .4); --sh-pri:0 4px 14px rgb(0 0 0 / .45);color-scheme:dark}
 body::before{background:var(--bg)}
 .appbar{background:var(--bg);border-bottom:0}
 .brand b{font-weight:800;letter-spacing:-.01em}
@@ -529,7 +510,7 @@ pre.rules{background:var(--field);border:1px solid var(--line);border-radius:8px
   <span class="saved busy" id="saved">Đang kết nối…</span>
 </div></header>
 <main class="wrap"><div class="inner" id="view"></div></main>
-<footer class="wrap"><div class="inner">Phiên bản 2.0 trực tuyến (16/11/2026) · Dữ liệu lưu trên máy chủ Firebase, chỉ tài khoản của đề tài đọc được. Vẫn nên tải file sao lưu định kỳ và cất trong Drive riêng.</div></footer>
+<footer class="wrap"><div class="inner">Phiên bản 2.0.1 trực tuyến (16/11/2026) · Dữ liệu lưu trên máy chủ Firebase, chỉ tài khoản của đề tài đọc được. Vẫn nên tải file sao lưu định kỳ và cất trong Drive riêng.</div></footer>
 </div>
 
 <aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="dtitle">
@@ -590,7 +571,7 @@ function hoursBetween(a,b){if(!a||!b||a.length<16||b.length<16)return null;const
 /* ---------- constants ---------- */
 const KHOA={HS:{name:'Đơn vị Hồi sức tích cực',short:'Hồi sức tích cực'},NTH:{name:'Nội tổng hợp',short:'Nội tổng hợp'},TM:{name:'Tim mạch can thiệp – thần kinh',short:'Tim mạch CT – TK'}};
 const KORDER=['HS','NTH','TM'];
-const PFX={HS:'HS-',NTH:'NTH-',TM:'TMTK-'};const APP_VER='2.0';
+const PFX={HS:'HS-',NTH:'NTH-',TM:'TMTK-'};const APP_VER='2.0.1';
 const MOC=['N3','N7','N10','N14','N17','N21','N24','N28'];
 const MOCDAY={N3:3,N7:7,N10:10,N14:14,N17:17,N21:21,N24:24,N28:28};
 const DEVICES=[[1,'Ống thông dạ dày'],[2,'Ống nội khí quản/mở khí quản'],[3,'Mặt nạ thở không xâm nhập'],[4,'Gọng/mặt nạ oxy'],[5,'Ống thông tiểu'],[6,'Đầu đo SpO2'],[7,'Băng đo huyết áp'],[8,'Dây cố định chi'],[9,'Khác']];
