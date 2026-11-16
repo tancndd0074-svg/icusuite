@@ -510,7 +510,7 @@ pre.rules{background:var(--field);border:1px solid var(--line);border-radius:8px
   <span class="saved busy" id="saved">Đang kết nối…</span>
 </div></header>
 <main class="wrap"><div class="inner" id="view"></div></main>
-<footer class="wrap"><div class="inner">Phiên bản 2.0.1 trực tuyến (16/11/2026) · Dữ liệu lưu trên máy chủ Firebase, chỉ tài khoản của đề tài đọc được. Vẫn nên tải file sao lưu định kỳ và cất trong Drive riêng.</div></footer>
+<footer class="wrap"><div class="inner">Phiên bản 2.0.2 trực tuyến (16/11/2026) · Dữ liệu lưu trên máy chủ Firebase, chỉ tài khoản của đề tài đọc được. Vẫn nên tải file sao lưu định kỳ và cất trong Drive riêng.</div></footer>
 </div>
 
 <aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="dtitle">
@@ -571,7 +571,7 @@ function hoursBetween(a,b){if(!a||!b||a.length<16||b.length<16)return null;const
 /* ---------- constants ---------- */
 const KHOA={HS:{name:'Đơn vị Hồi sức tích cực',short:'Hồi sức tích cực'},NTH:{name:'Nội tổng hợp',short:'Nội tổng hợp'},TM:{name:'Tim mạch can thiệp – thần kinh',short:'Tim mạch CT – TK'}};
 const KORDER=['HS','NTH','TM'];
-const PFX={HS:'HS-',NTH:'NTH-',TM:'TMTK-'};const APP_VER='2.0.1';
+const PFX={HS:'HS-',NTH:'NTH-',TM:'TMTK-'};const APP_VER='2.0.2';
 const MOC=['N3','N7','N10','N14','N17','N21','N24','N28'];
 const MOCDAY={N3:3,N7:7,N10:10,N14:14,N17:17,N21:21,N24:24,N28:28};
 const DEVICES=[[1,'Ống thông dạ dày'],[2,'Ống nội khí quản/mở khí quản'],[3,'Mặt nạ thở không xâm nhập'],[4,'Gọng/mặt nạ oxy'],[5,'Ống thông tiểu'],[6,'Đầu đo SpO2'],[7,'Băng đo huyết áp'],[8,'Dây cố định chi'],[9,'Khác']];
@@ -1031,10 +1031,10 @@ function firstNewWound(c){return (c.p3||[]).filter(w=>w.loai==='moi'&&w.a4).map(
 const view=$('#view');
 function onChange(path,structural){const c=cur();if(!c)return;uncopy(path);derive(c);c.updated=Date.now();
  if(structural||/^p4\./.test(path)&&/\.(p1|p2|t1|t2|d|hl)$/.test(path))renderCase(true);else refresh();save();}
-view.addEventListener('input',e=>{const el=e.target;if(el.classList&&el.classList.contains('mknat'))return;if(el.dataset&&el.dataset.mk){mkOnInput(el,e);return;}if(el.id==='dg-ten'){UCFG.dg=el.value;saveCfg();const t=$('#dg-tat');if(t)t.textContent=dgTat();return;}if(el.id==='q'){S.q=el.value;renderList();return;}if(el.id==='cq'){S.chkQ=el.value;renderCheckList();return;}if(el.id==='soq'){S.soQ=el.value;renderSoList();return;}if(!el.dataset||!el.dataset.path)return;if(!cur())return;setP(cur(),el.dataset.path,el.value);
+view.addEventListener('input',e=>{const el=e.target;if(el.classList&&el.classList.contains('mknat')){if(el.value)mkNatPick(el);return;}if(el.dataset&&el.dataset.mk){mkOnInput(el,e);return;}if(el.id==='dg-ten'){UCFG.dg=el.value;saveCfg();const t=$('#dg-tat');if(t)t.textContent=dgTat();return;}if(el.id==='q'){S.q=el.value;renderList();return;}if(el.id==='cq'){S.chkQ=el.value;renderCheckList();return;}if(el.id==='soq'){S.soQ=el.value;renderSoList();return;}if(!el.dataset||!el.dataset.path)return;if(!cur())return;setP(cur(),el.dataset.path,el.value);
  if(/^p4\./.test(el.dataset.path)){const c=cur();derive(c);c.updated=Date.now();save();refresh();return;}
  autoFill(el.dataset.path);onChange(el.dataset.path);});
-let lastPT='mouse';view.addEventListener('pointerdown',e=>{lastPT=e.pointerType||'mouse';const n=e.target;if(n.classList&&n.classList.contains('mknat')){const mk=n.closest('.mkw').querySelector('.mk');const k=mk.dataset.mk;n.value=mkVal(mk)||(k==='t'?nowHM():k==='d'?todayISO():nowDT());}},true);
+let lastPT='mouse';view.addEventListener('pointerdown',e=>{lastPT=e.pointerType||'mouse';const n=e.target;if(n.classList&&n.classList.contains('mknat')){const mk=n.closest('.mkw').querySelector('.mk');const k=mk.dataset.mk;n.value=mkVal(mk)||'';}},true);
 view.addEventListener('click',e=>{const n=e.target;if(n.classList&&n.classList.contains('mknat'))mkNatOpen(n);else if(n.dataset&&n.dataset.mk&&n._selNext){n._selNext=false;if(n.value===n._v0)try{n.select();}catch(_){}}});
 view.addEventListener('mousedown',e=>{const el=e.target;if(lastPT==='mouse'&&el.dataset&&el.dataset.mk&&el.value&&document.activeElement!==el){e.preventDefault();el.focus();el.select();}});
 view.addEventListener('focusin',e=>{const el=e.target;if(el.dataset&&el.dataset.mk&&el.value&&el.selectionEnd-el.selectionStart<el.value.length){el._selNext=true;const v0=el.value;el._v0=v0;setTimeout(()=>{if(document.activeElement===el&&el.value===v0)try{el.select();}catch(_){}},0);}});
@@ -1214,7 +1214,7 @@ const MKNAT={d:'date',t:'time',dt:'datetime-local'};
 const MKICO={d:'<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 9.5h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',t:'<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5V12l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>'};MKICO.dt=MKICO.d;
 function mkInput(kind,attrs){return `<span class="mkw"><input type="text" inputmode="numeric" class="mk mk-${kind}" data-mk="${kind}" placeholder="${MK[kind].ph}" autocomplete="off" spellcheck="false" ${attrs||''}><label class="mkpick" title="Chọn ${kind==='t'?'giờ':kind==='d'?'ngày':'ngày giờ'}">${MKICO[kind]}<input type="${MKNAT[kind]}" class="mknat" tabindex="-1" aria-label="Chọn ${kind==='t'?'giờ':kind==='d'?'ngày':'ngày giờ'} từ lịch"></label></span>`;}
 function mkNatOpen(n){const mk=n.closest('.mkw')&&n.closest('.mkw').querySelector('.mk');if(!mk)return;const k=mk.dataset.mk;let v=mkVal(mk);
- if(!v){v=k==='t'?nowHM():k==='d'?todayISO():nowDT();}n.value=v;try{if(n.showPicker)n.showPicker();}catch(e){}}
+ n.value=v||'';try{if(n.showPicker)n.showPicker();}catch(e){}}
 function mkNatPick(n){const mk=n.closest('.mkw')&&n.closest('.mkw').querySelector('.mk');if(!mk||!n.value)return;const k=mk.dataset.mk;let iso=n.value;if(k==='dt')iso=iso.slice(0,16);if(k==='t')iso=iso.slice(0,5);
  mk.value=mkShow(k,iso);mk._dg=mk.value.replace(/\D/g,'');mk.classList.remove('bad');mkCommit(mk,iso);}
 function mkNorm(kind,raw){const out=[];for(const ch of raw){const p=out.length;if(p>=MK[kind].n)break;const d=+ch;
