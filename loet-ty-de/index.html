@@ -510,7 +510,7 @@ pre.rules{background:var(--field);border:1px solid var(--line);border-radius:8px
   <span class="saved busy" id="saved">Đang kết nối…</span>
 </div></header>
 <main class="wrap"><div class="inner" id="view"></div></main>
-<footer class="wrap"><div class="inner">Phiên bản 2.0.2 trực tuyến (16/11/2026) · Dữ liệu lưu trên máy chủ Firebase, chỉ tài khoản của đề tài đọc được. Vẫn nên tải file sao lưu định kỳ và cất trong Drive riêng.</div></footer>
+<footer class="wrap"><div class="inner">Phiên bản 2.0.3 trực tuyến (17/11/2026) · Dữ liệu lưu trên máy chủ Firebase, chỉ tài khoản của đề tài đọc được. Vẫn nên tải file sao lưu định kỳ và cất trong Drive riêng.</div></footer>
 </div>
 
 <aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="dtitle">
@@ -525,7 +525,7 @@ pre.rules{background:var(--field);border:1px solid var(--line);border-radius:8px
  <div><p class="eyebrow">Nghiên cứu loét tỳ đè · bản trực tuyến</p><h1 id="a-title">Đăng nhập</h1></div>
  <p class="a-msg" id="a-msg">Đang kiểm tra đăng nhập…</p>
  <form id="a-form" hidden novalidate>
-  <label class="af">Email<input type="email" id="a-email" autocomplete="username" inputmode="email" required></label>
+  <label class="af">Email hoặc tên đăng nhập<input type="text" id="a-email" autocomplete="username" inputmode="email" autocapitalize="none" spellcheck="false" placeholder="vd: tntan.main" required></label>
   <label class="af">Mật khẩu<input type="password" id="a-pass" autocomplete="current-password" required></label>
   <fieldset class="amode"><legend>Thiết bị đang dùng</legend>
    <label><input type="radio" name="a-mode" value="rieng" checked><span>Máy riêng của tôi<small>Giữ đăng nhập; lưu tạm trên máy để nhập được khi mất mạng.</small></span></label>
@@ -922,6 +922,10 @@ function acctHTML(){const a=S.acct;if(!a)return '';
  return `<section class="block" id="acct"><div class="bhead"><h2>Tài khoản trực tuyến</h2><span class="pill ${a.mode==='chung'?'t-warn':'t-none'}">${a.mode==='chung'?'Máy dùng chung':'Máy riêng'}</span></div><div class="acct">
  <span>Đang đăng nhập: <b>${esc(a.email||'')}</b></span><span>User UID: <code>${esc(a.uid)}</code> <button type="button" class="btn sm" data-act="copyUid">Sao chép UID</button></span>
  <details${a.error?' open':''}><summary>Quy tắc Firestore cho đề tài</summary><p class="muted" style="margin:0;font-size:.82rem">Dán khối này vào Firebase Console → Firestore → Rules, ngay trên dòng <code>match /members/{email}</code>, rồi bấm Publish. Không sửa các phần khác của bộ công cụ HSTC.</p><pre class="rules" id="rulesTxt">${esc(rulesText(a.uid))}</pre><span><button type="button" class="btn sm" data-act="copyRules">Sao chép quy tắc</button></span></details>
+ <details><summary>Đổi email đăng nhập</summary><p class="muted" style="margin:0;font-size:.82rem">Dữ liệu, mật khẩu và quyền truy cập giữ nguyên, chỉ đổi email dùng để đăng nhập. Công cụ gửi thư xác nhận tới email mới; bấm liên kết trong thư thì việc đổi mới có hiệu lực, sau đó đăng nhập lại bằng email mới.</p>
+ <label class="af">Email mới (gõ tntan.main là đủ)<input type="text" id="ce-new" value="tntan.main" autocapitalize="none" spellcheck="false"></label>
+ <label class="af">Mật khẩu hiện tại<input type="password" id="ce-pw" autocomplete="current-password"></label>
+ <span class="homebar"><button type="button" class="btn sm primary" data-act="changeEmail">Gửi thư xác nhận đổi email</button></span><p class="a-err" id="ce-msg" role="status" style="margin:0"></p></details>
  <span class="homebar"><button type="button" class="btn sm ghost" data-act="logout">Đăng xuất</button></span></div></section>`;}
 function copyText(t,msg){const fb=()=>{const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy');}catch(e){}ta.remove();toast(ok?msg:'Không sao chép được – hãy chọn và sao chép thủ công');};
  try{navigator.clipboard.writeText(t).then(()=>toast(msg),fb);}catch(e){fb();}}
@@ -1065,6 +1069,7 @@ function doAct(b){const c=cur();const act=b.dataset.act;
  case 'soRv':{const x=S.cases.find(y=>y.id===b.dataset.id);const d=mkVal($('#so-rvd'));if(!x)break;if(!d){toast('Chọn ngày rà soát');break;}if(d<admit(x)){toast('Ngày rà soát trước ngày nhập khoa');break;}if((x.p2.review||[]).some(r=>r.d===d)){toast(x.id+' đã có lần rà soát ngày '+fDM(d));break;}const tg=addReviewTo(x,d,b.dataset.r);derive(x);save();renderSo();toast(b.dataset.r==='C'?x.id+' chuyển sang theo dõi sát từ '+fDM(d)+(tg?' – mở ca để nhập mốc '+tg+' (A7 = 1 đã điền sẵn)':''):'Đã ghi '+x.id+' · '+fDM(d)+' G (giữ nhóm)');break;}
  case 'soPdf':PV.khoa=KHOA[S.soK]?S.soK:'all';openPrint('so');break;
  case 'soXlsx':soXlsx();break;
+ case 'changeEmail':{const ne=($('#ce-new')||{}).value||'',pw=($('#ce-pw')||{}).value||'';const out=$('#ce-msg');if(!ne.trim()||!pw){out.className='a-err';out.textContent='Nhập email mới và mật khẩu hiện tại.';break;}b.disabled=true;out.className='a-err a-ok';out.textContent='Đang gửi…';window.LTDFB.changeEmail(ne,pw).then(em=>{out.className='a-err a-ok';out.textContent='Đã gửi thư xác nhận tới '+em+'. Mở thư (xem cả mục thư rác), bấm liên kết. Sau đó bấm Đăng xuất và đăng nhập lại bằng '+em.replace('@gmail.com','')+' với mật khẩu cũ.';$('#ce-pw').value='';},err=>{const c=err&&err.code||String(err);out.className='a-err';out.textContent=({'auth/wrong-password':'Mật khẩu hiện tại không đúng.','auth/invalid-credential':'Mật khẩu hiện tại không đúng.','auth/email-already-in-use':'Email này đã có tài khoản khác trong Firebase.','auth/invalid-email':'Email mới không đúng định dạng.','auth/too-many-requests':'Thử sai nhiều lần – chờ vài phút rồi thử lại.','auth/network-request-failed':'Không có mạng – cần có mạng để đổi email.','auth/operation-not-allowed':'Firebase chưa cho phép đổi email theo cách này – báo Claude để kiểm tra cài đặt.'})[c]||('Không đổi được email ('+c+').');}).finally(()=>{b.disabled=false;});break;}
  case 'copyUid':copyText(S.acct.uid,'Đã sao chép UID');break;
  case 'copyRules':copyText(rulesText(S.acct.uid),'Đã sao chép quy tắc Firestore');break;
  case 'logout':{syncNow();const p=window.LTDFB?window.LTDFB.pending():0;const go=()=>{b.disabled=true;window.LTDFB.logout();};if(!window.LTDFB)break;if(p>0)twoTap(b,'lo','Còn '+p+' thay đổi chưa gửi – bấm lần nữa vẫn thoát',go);else go();break;}
@@ -1887,7 +1892,7 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden)syncNow();}
 <script type="module">
 /* ---------- Kết nối Firebase (bản trực tuyến) ---------- */
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {getAuth,setPersistence,browserLocalPersistence,browserSessionPersistence,signInWithEmailAndPassword,sendPasswordResetEmail,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {getAuth,setPersistence,browserLocalPersistence,browserSessionPersistence,signInWithEmailAndPassword,sendPasswordResetEmail,onAuthStateChanged,signOut,EmailAuthProvider,reauthenticateWithCredential,verifyBeforeUpdateEmail} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {initializeFirestore,persistentLocalCache,persistentMultipleTabManager,memoryLocalCache,collection,doc,setDoc,deleteDoc,onSnapshot,terminate,clearIndexedDbPersistence} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 /* Cấu hình web của project icusuite (không phải mật khẩu; bảo vệ dữ liệu nằm ở Security Rules). */
 const CFG={
@@ -1910,15 +1915,16 @@ const pad=n=>String(n).padStart(2,'0');const hhmm=()=>{const d=new Date();return
 function showLogin(msg){A('auth').hidden=false;document.body.classList.add('authopen');A('a-form').hidden=false;A('a-msg').textContent=msg||note;note='';
  const m=getMode();const r=document.querySelector(`input[name="a-mode"][value="${m}"]`);if(r)r.checked=true;setTimeout(()=>{const e=A('a-email');if(e&&!e.value){let le='';try{le=localStorage.getItem('ltd-last-email')||'';}catch(_){}if(le){e.value=le;A('a-pass').focus();}else e.focus();}},50);}
 function hideLogin(){A('auth').hidden=true;document.body.classList.remove('authopen');}
+const normEmail=v=>{v=String(v||'').trim();return v&&!v.includes('@')?v+'@gmail.com':v;};
 const AUTHMSG={'auth/invalid-credential':'Email hoặc mật khẩu không đúng.','auth/wrong-password':'Email hoặc mật khẩu không đúng.','auth/user-not-found':'Email hoặc mật khẩu không đúng.','auth/invalid-email':'Email không đúng định dạng.','auth/too-many-requests':'Đăng nhập sai nhiều lần – chờ vài phút rồi thử lại, hoặc dùng “Quên mật khẩu”.','auth/network-request-failed':'Không có kết nối mạng. Lần đăng nhập cần có mạng.','auth/user-disabled':'Tài khoản đã bị khóa trong Firebase.'};
 onAuthStateChanged(auth,u=>{if(u){user=u;hideLogin();openData(u);}else{user=null;showLogin('');}});
-A('a-form').addEventListener('submit',async e=>{e.preventDefault();const btn=A('a-go');const em=A('a-email').value.trim(),pw=A('a-pass').value;
+A('a-form').addEventListener('submit',async e=>{e.preventDefault();const btn=A('a-go');const em=normEmail(A('a-email').value),pw=A('a-pass').value;
  const m=(document.querySelector('input[name="a-mode"]:checked')||{}).value||'rieng';try{localStorage.setItem(MODEK,m);}catch(_){}
  A('a-err').textContent='';A('a-err').className='a-err';btn.disabled=true;btn.textContent='Đang đăng nhập…';
  try{await setPersistence(auth,m==='chung'?browserSessionPersistence:browserLocalPersistence);await signInWithEmailAndPassword(auth,em,pw);A('a-pass').value='';}
  catch(err){A('a-err').textContent=AUTHMSG[err&&err.code]||('Không đăng nhập được ('+(err&&err.code||err)+').');}
  finally{btn.disabled=false;btn.textContent='Đăng nhập';}});
-A('a-forgot').addEventListener('click',async()=>{const em=A('a-email').value.trim();const out=A('a-err');if(!em){out.className='a-err';out.textContent='Nhập email trước, rồi bấm “Quên mật khẩu”.';return;}
+A('a-forgot').addEventListener('click',async()=>{const em=normEmail(A('a-email').value);const out=A('a-err');if(!em){out.className='a-err';out.textContent='Nhập email trước, rồi bấm “Quên mật khẩu”.';return;}
  try{await sendPasswordResetEmail(auth,em);out.className='a-err a-ok';out.textContent='Đã gửi thư đặt lại mật khẩu tới '+em+'. Xem cả mục thư rác.';}
  catch(err){out.className='a-err';out.textContent=AUTHMSG[err&&err.code]||('Không gửi được thư ('+(err&&err.code||err)+').');}});
 const LTD_UID='HVjOYMp7OXbsCRGDxKHnUwsdVBh2';
@@ -1962,6 +1968,9 @@ window.LTDFB={
    track(setDoc(doc(col,c.id),{json:j,updated:c.updated||Date.now(),khoa:c.khoa||'',ex:!!c.ex}),c.id,j);});
   [...synced.keys()].forEach(id=>{if(!seen.has(id)){synced.delete(id);track(deleteDoc(doc(col,id)));}});},
  setCfg(o){if(!col)return;track(setDoc(doc(col,'_cfg'),{json:JSON.stringify(o),updated:Date.now(),khoa:'',ex:false}));},
+ async changeEmail(newEmail,pw){const u=auth.currentUser;if(!u)throw {code:'no-user'};newEmail=normEmail(newEmail);
+  await reauthenticateWithCredential(u,EmailAuthProvider.credential(u.email,pw));
+  await verifyBeforeUpdateEmail(u,newEmail);try{localStorage.setItem('ltd-last-email',newEmail);}catch(e){}return newEmail;},
  mark(cases){cases.forEach(c=>synced.set(c.id,JSON.stringify(c)));},
  pending:()=>pending,
  logout:()=>logout()};
