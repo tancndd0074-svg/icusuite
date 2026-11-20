@@ -2658,6 +2658,15 @@ const SCALES=[
  foot:"Khung giờ và ngưỡng can thiệp theo Hyperglycemic Crises in Adults With Diabetes: A Consensus Report (ADA \u00b7 EASD \u00b7 AACE \u00b7 DTS, 2024), ADA Standards of Care in Diabetes, và JBDS-IP: The Management of DKA in Adults / The Management of HHS in Adults. Anion gap = Na\u207a \u2212 (Cl\u207b + HCO\u2083\u207b); Na\u207a hi\u1ec7u ch\u1ec9nh = Na\u207a \u0111o + 1,6 \u00d7 (Glucose mg/dL \u2212 100) \u00f7 100; ALTT hi\u1ec7u d\u1ee5ng = 2 \u00d7 Na\u207a \u0111o + Glucose (mmol/L). C\u00f4ng c\u1ee5 h\u1ed7 tr\u1ee3 theo d\u00f5i, kh\u00f4ng thay th\u1ebf y l\u1ec7nh c\u1ee7a b\u00e1c s\u0129 v\u00e0 ph\u00e1c \u0111\u1ed3 c\u1ee7a c\u01a1 s\u1edf \u0111i\u1ec1u tr\u1ecb."
 },
 
+/* ---------------- Dự đoán xu hướng glucose khi dùng insulin (trang riêng) ---------------- */
+{
+ id:"insulin", name:"Dự đoán xu hướng nồng độ glucose khi sử dụng insulin", short:"Xu hướng glucose", code:"GL", acc:"#1B6FB8", accs:"#E5F0FA",
+ subtitle:"Vẽ biến thiên tương đối của đường huyết theo bữa ăn, nuôi dưỡng và insulin; đánh dấu khung giờ insulin lấn át lượng đường đang vào.",
+ lede:"Nhập lịch tiêm hoặc truyền insulin, bữa ăn, sữa công thức, dịch truyền tĩnh mạch. Công cụ cho thấy lúc nào insulin đang mạnh mà không có đủ đường vào, tức khung giờ dễ hạ đường huyết nếu không bổ sung.",
+ tags:["Mô phỏng","Insulin tiêm và truyền","Nuôi dưỡng"], type:"link", href:"./mo-phong-insulin/", hideMax:true,
+ foot:"Mô phỏng minh họa dựa trên đặc điểm dược lực học của từng chế phẩm insulin (tờ hướng dẫn sử dụng), tốc độ hấp thu ước lượng của bữa ăn và dịch truyền. Không gán mức đường huyết nền, không dự báo con số, không dùng để tính liều. Mọi xử trí theo y lệnh và quy trình của khoa."
+},
+
 /* ---------------- Tra cứu tương kỵ – tương hợp ---------------- */
 {
  id:"compat", name:"Tra cứu tương hợp - tương kỵ - thuốc chống chỉ định", short:"Tương hợp – CCĐ", code:"TK", acc:"#2D5DA8", accs:"#E7EFFA",
@@ -3413,6 +3422,7 @@ const KEYWORDS={
  morse:"té ngã ngã cầu thang dáng đi truyền tĩnh mạch nguy cơ ngã",
  pain:"đau giảm đau vas nrs cpot thang điểm đau tự đánh giá quan sát hành vi thở máy nét mặt morphin",
  dka:"toan ceton tăng áp lực thẩm thấu đái tháo đường đường huyết insulin kali",
+ insulin:"insulin đường huyết glucose hạ đường huyết mô phỏng dự đoán mixtard actrapid lantus novomix humalog ryzodeg tiêm dưới da truyền tĩnh mạch bữa ăn sonde nuôi ăn dịch truyền glucose 10% lipid đạm kcal",
  vip:"viêm tĩnh mạch catheter ngoại vi kim luồn đường truyền sưng đỏ",
  vap:"viêm phổi thở máy nội khí quản dự phòng bundle",
  abcdef:"abcdef icu liberation bundle giải phóng rass cam-icu cpot sat sbt thử ngưng an thần thử tự thở vận động sớm gia đình tham gia padis",
@@ -3425,7 +3435,7 @@ const KEYWORDS={
 };
 
 /* Căn cứ của phần can thiệp, theo từng công cụ (bảng rà soát nguồn 06/10/2026) */
-const SRC={"gcs": "Teasdale & Jennett 1974; Teasdale và cs. 2014; NICE NG232 (2023) Chấn thương đầu; ATLS 10th ed. (2018); BTS 2017 Oxy liệu pháp; EPUAP/NPIAP/PPPIA 2019.","avpu": "Royal College of Physicians – NEWS2 (2017); SCCM PADIS 2018; Resuscitation Council UK – tiếp cận ABCDE; BTS 2017 Oxy liệu pháp.","four": "Wijdicks và cs., Ann Neurol 2005; thực hành hồi sức thần kinh. Các mức điểm do công cụ đặt để xếp ưu tiên — FOUR không có phân độ chính thức.","rass": "Sessler và cs., AJRCCM 2002; SCCM PADIS 2018 (Devlin và cs.); SCCM ICU Liberation Bundle (ABCDEF).","sas": "Riker và cs., Crit Care Med 1999; SCCM PADIS 2018; SCCM ICU Liberation Bundle (ABCDEF).","braden": "Bergstrom, Braden và cs., Nurs Res 1987; EPUAP/NPIAP/PPPIA 2019 – Hướng dẫn quốc tế phòng ngừa và điều trị loét tỳ đè.","morse": "Morse 1989; AHRQ Preventing Falls in Hospitals Toolkit (2013); NICE CG161 (2013) / NG249 (2025) về té ngã.","cpot": "Gélinas và cs., Am J Crit Care 2006; SCCM PADIS 2018.","geneva": "Le Gal và cs., Ann Intern Med 2006; ESC 2019 – Hướng dẫn thuyên tắc phổi cấp (Konstantinides và cs.).","wells": "Wells và cs., Thromb Haemost 2000 / Ann Intern Med 2001; ESC 2019 – Hướng dẫn thuyên tắc phổi cấp.","vip": "Jackson 1998 (VIP score); INS – Infusion Therapy Standards of Practice, 9th ed. (2024); IDSA 2009 (nhiễm khuẩn liên quan catheter).","icdsc": "Bergeron và cs., Intensive Care Med 2001; SCCM PADIS 2018; SCCM ICU Liberation Bundle.","camicu": "Ely và cs., JAMA 2001; SCCM PADIS 2018; SCCM ICU Liberation Bundle.","sofa1": "Vincent và cs., Intensive Care Med 1996; Ferreira và cs., JAMA 2001 (tử vong theo điểm); Sepsis-3 (Singer và cs., JAMA 2016); Surviving Sepsis Campaign 2021.","sofa2": "Ranzani và cs., JAMA 2025 (SOFA-2); Sepsis-3 2016; Surviving Sepsis Campaign 2021.","nrs": "Kondrup và cs., Clin Nutr 2003 (ESPEN); ESPEN – Dinh dưỡng trong hồi sức 2019/2023; NICE CG32 & ASPEN 2020 (hội chứng nuôi ăn lại).","qt": "Tisdale và cs., Circ Cardiovasc Qual Outcomes 2013; AHA/ACCF Scientific Statement 2010 (Drew và cs.) – phòng ngừa xoắn đỉnh; CredibleMeds.","abcdef": "SCCM ICU Liberation Bundle; SCCM PADIS 2018; Pun và cs., Crit Care Med 2019.","clabsi": "SHEA/IDSA/APIC Compendium 2022 – Phòng ngừa CLABSI; CDC/HICPAC 2011; INS 2024.","cauti": "SHEA/IDSA/APIC Compendium 2022 – Phòng ngừa CAUTI; CDC/HICPAC 2009.","vap": "SHEA/IDSA/APIC Compendium 2022 – Phòng ngừa VAP/VAE (Klompas và cs.); IHI Ventilator Bundle.","sepsis": "Surviving Sepsis Campaign 2021 (Evans và cs.); SSC Hour-1 Bundle 2018; Sepsis-3 2016.","news2": "Royal College of Physicians – National Early Warning Score 2 (2017).","dka": "Hyperglycemic Crises in Adults – Consensus Report ADA/EASD/JBDS/AACE/DTS 2024; JBDS-IP.","aki": "KDIGO Clinical Practice Guideline for AKI 2012.","vas": "SCCM PADIS 2018; Hawker và cs., Arthritis Care Res 2011 (thang VAS/NRS).","vent": "ARDS Network 2000; ATS 2024 & ESICM 2023 (ARDS); GOLD 2026; GINA; Brain Trauma Foundation 4th ed. (2017); ESICM 2020 (thở máy tổn thương não).","halert": "ISMP List of High-Alert Medications in Acute Care Settings; khuyến cáo chuẩn hóa nồng độ ISMP/ASHP.","dosecalc": "Surviving Sepsis Campaign 2021; SCCM PADIS 2018; tờ hướng dẫn sử dụng thuốc.","compat": "Hướng dẫn sử dụng kháng sinh – BV Thống Nhất (Phụ lục 14, 15), đã được khoa Dược kiểm chứng; Quyết định 5948/QĐ-BYT (2021)."};
+const SRC={"gcs": "Teasdale & Jennett 1974; Teasdale và cs. 2014; NICE NG232 (2023) Chấn thương đầu; ATLS 10th ed. (2018); BTS 2017 Oxy liệu pháp; EPUAP/NPIAP/PPPIA 2019.","avpu": "Royal College of Physicians – NEWS2 (2017); SCCM PADIS 2018; Resuscitation Council UK – tiếp cận ABCDE; BTS 2017 Oxy liệu pháp.","four": "Wijdicks và cs., Ann Neurol 2005; thực hành hồi sức thần kinh. Các mức điểm do công cụ đặt để xếp ưu tiên — FOUR không có phân độ chính thức.","rass": "Sessler và cs., AJRCCM 2002; SCCM PADIS 2018 (Devlin và cs.); SCCM ICU Liberation Bundle (ABCDEF).","sas": "Riker và cs., Crit Care Med 1999; SCCM PADIS 2018; SCCM ICU Liberation Bundle (ABCDEF).","braden": "Bergstrom, Braden và cs., Nurs Res 1987; EPUAP/NPIAP/PPPIA 2019 – Hướng dẫn quốc tế phòng ngừa và điều trị loét tỳ đè.","morse": "Morse 1989; AHRQ Preventing Falls in Hospitals Toolkit (2013); NICE CG161 (2013) / NG249 (2025) về té ngã.","cpot": "Gélinas và cs., Am J Crit Care 2006; SCCM PADIS 2018.","geneva": "Le Gal và cs., Ann Intern Med 2006; ESC 2019 – Hướng dẫn thuyên tắc phổi cấp (Konstantinides và cs.).","wells": "Wells và cs., Thromb Haemost 2000 / Ann Intern Med 2001; ESC 2019 – Hướng dẫn thuyên tắc phổi cấp.","vip": "Jackson 1998 (VIP score); INS – Infusion Therapy Standards of Practice, 9th ed. (2024); IDSA 2009 (nhiễm khuẩn liên quan catheter).","icdsc": "Bergeron và cs., Intensive Care Med 2001; SCCM PADIS 2018; SCCM ICU Liberation Bundle.","camicu": "Ely và cs., JAMA 2001; SCCM PADIS 2018; SCCM ICU Liberation Bundle.","sofa1": "Vincent và cs., Intensive Care Med 1996; Ferreira và cs., JAMA 2001 (tử vong theo điểm); Sepsis-3 (Singer và cs., JAMA 2016); Surviving Sepsis Campaign 2021.","sofa2": "Ranzani và cs., JAMA 2025 (SOFA-2); Sepsis-3 2016; Surviving Sepsis Campaign 2021.","nrs": "Kondrup và cs., Clin Nutr 2003 (ESPEN); ESPEN – Dinh dưỡng trong hồi sức 2019/2023; NICE CG32 & ASPEN 2020 (hội chứng nuôi ăn lại).","qt": "Tisdale và cs., Circ Cardiovasc Qual Outcomes 2013; AHA/ACCF Scientific Statement 2010 (Drew và cs.) – phòng ngừa xoắn đỉnh; CredibleMeds.","abcdef": "SCCM ICU Liberation Bundle; SCCM PADIS 2018; Pun và cs., Crit Care Med 2019.","clabsi": "SHEA/IDSA/APIC Compendium 2022 – Phòng ngừa CLABSI; CDC/HICPAC 2011; INS 2024.","cauti": "SHEA/IDSA/APIC Compendium 2022 – Phòng ngừa CAUTI; CDC/HICPAC 2009.","vap": "SHEA/IDSA/APIC Compendium 2022 – Phòng ngừa VAP/VAE (Klompas và cs.); IHI Ventilator Bundle.","sepsis": "Surviving Sepsis Campaign 2021 (Evans và cs.); SSC Hour-1 Bundle 2018; Sepsis-3 2016.","news2": "Royal College of Physicians – National Early Warning Score 2 (2017).","dka": "Hyperglycemic Crises in Adults – Consensus Report ADA/EASD/JBDS/AACE/DTS 2024; JBDS-IP.", "insulin": "Tờ hướng dẫn sử dụng các chế phẩm insulin; ESPEN – dinh dưỡng trong hồi sức (giới hạn truyền glucose khoảng 5 mg/kg/phút); Bảng thành phần thực phẩm Việt Nam (Viện Dinh dưỡng).","aki": "KDIGO Clinical Practice Guideline for AKI 2012.","vas": "SCCM PADIS 2018; Hawker và cs., Arthritis Care Res 2011 (thang VAS/NRS).","vent": "ARDS Network 2000; ATS 2024 & ESICM 2023 (ARDS); GOLD 2026; GINA; Brain Trauma Foundation 4th ed. (2017); ESICM 2020 (thở máy tổn thương não).","halert": "ISMP List of High-Alert Medications in Acute Care Settings; khuyến cáo chuẩn hóa nồng độ ISMP/ASHP.","dosecalc": "Surviving Sepsis Campaign 2021; SCCM PADIS 2018; tờ hướng dẫn sử dụng thuốc.","compat": "Hướng dẫn sử dụng kháng sinh – BV Thống Nhất (Phụ lục 14, 15), đã được khoa Dược kiểm chứng; Quyết định 5948/QĐ-BYT (2021)."};
 const srcOf=id=>SRC[id]||"";
 const APP_VERSION="2026.10.17";
 const APP_UPDATED="12/10/2026";   /* ngày cập nhật — hiện ở cuối màn hình đăng nhập */
@@ -3439,7 +3449,7 @@ let viewDay=null;
 const RECHECK={news2:4, gcs:2, avpu:4, four:2, rass:4, sas:4, morse:24, braden:24, cpot:8, vas:8, nrs:168, icdsc:8, camicu:8, geneva:null, wells:null,
                sofa1:24, sofa2:24, aki:24, vip:8,
                vap:24, clabsi:24, cauti:24, abcdef:24, sepsis:null, dka:1, compat:null,
-               halert:null, dosecalc:null, qt:24, vent:4};
+               halert:null, dosecalc:null, qt:24, vent:4, insulin:null};
 
 /* Thang điểm có giá trị số dùng được để vẽ xu hướng */
 const NUMERIC_TYPES=["radio","check"];
@@ -3656,7 +3666,7 @@ function refreshPt(){
 /* Thứ tự hiển thị công cụ ở trang chủ và trong phiếu tổng hợp */
 /* Thứ tự trên trang chủ xếp theo TẦN SUẤT SỬ DỤNG THỰC TẾ tại đơn vị hồi sức
    tích cực — do người dùng chỉ định, không theo phân loại hệ cơ quan. */
-const ORDER=["ythuc","braden","pain","morse","delirium","news2","sofa","vent","aki","vip","compat","halert","dosecalc","qt","nrs","dka","pe",
+const ORDER=["ythuc","braden","pain","morse","delirium","news2","sofa","vent","aki","vip","compat","halert","dosecalc","qt","nrs","dka","insulin","pe",
              "abcdef","sepsis","vap","clabsi","cauti"];
 function orderedScales(){
   const byId=id=>SCALES.find(s=>s.id===id);
@@ -3696,8 +3706,8 @@ const GROUPS=[
   sub:"Cảnh báo sớm, suy đa cơ quan, thận cấp, thuyên tắc phổi",
   items:["news2","sofa1","sofa2","aki","wells","geneva"]},
  {id:"resp", name:"Hô hấp và chuyển hóa", code:"HH", acc:"#1B6FB8", accs:"#E5F0FA",
-  sub:"Cài đặt máy thở ban đầu, theo dõi DKA/HHS",
-  items:["vent","dka"]},
+  sub:"Cài đặt máy thở ban đầu, theo dõi DKA/HHS, xu hướng glucose khi dùng insulin",
+  items:["vent","dka","insulin"]},
  {id:"drug", name:"An toàn dùng thuốc", code:"TH", acc:"#B0651C", accs:"#FAEEE1",
   sub:"Tương hợp – tương kỵ, thuốc cao nguy cơ, tính liều, QT kéo dài",
   items:["compat","halert","dosecalc","qt"]},
@@ -3709,7 +3719,7 @@ GROUPS.forEach(g=>{ if(!g.tools) g.tools=g.items.slice(); });
 /* Tên ngắn hiện trong dòng chữ nhỏ của thẻ nhóm và trên lối tắt "Hay dùng" */
 const TOOL_LABEL={gcs:"GCS",avpu:"ACVPU",four:"FOUR",rass:"RASS",sas:"SAS",camicu:"CAM-ICU",icdsc:"ICDSC",vas:"VAS/NRS",cpot:"CPOT",
  braden:"Braden",morse:"Morse",vip:"VIP",nrs:"NRS-2002",news2:"NEWS2",sofa1:"SOFA",sofa2:"SOFA-2",aki:"AKI",wells:"Wells",geneva:"Geneva",
- vent:"Máy thở",dka:"DKA/HHS",compat:"Tương hợp – tương kỵ",halert:"Thuốc cao nguy cơ",dosecalc:"Tính liều truyền",qt:"Thuốc gây QT dài",
+ vent:"Máy thở",dka:"DKA/HHS",insulin:"Xu hướng glucose",compat:"Tương hợp – tương kỵ",halert:"Thuốc cao nguy cơ",dosecalc:"Tính liều truyền",qt:"Thuốc gây QT dài",
  abcdef:"ABCDEF",sepsis:"Sepsis",vap:"VAP",clabsi:"Central Line",cauti:"CAUTI"};
 const toolLabel=id=>TOOL_LABEL[id]||((SCALES.find(x=>x.id===id)||{}).short)||id;
 /* Công cụ con thuộc tiểu mục nào (để lấy màu và từ khóa tìm kiếm của tiểu mục cha) */
@@ -4124,6 +4134,8 @@ function renderPrev(){
 
 /* ---- open a scale ---- */
 function openScale(id){
+  const lk=SCALES.find(s=>s.id===id);
+  if(lk && lk.type==="link"){ bumpUse(lk.id); location.href=lk.href; return; }
   cur=SCALES.find(s=>s.id===id);sel={};chk={};tog={};cam={squeezed:{}};
   if(cur && cur.type!=="duo") bumpUse(cur.id);
   if(sepsisTimerInt){clearInterval(sepsisTimerInt);sepsisTimerInt=null;}

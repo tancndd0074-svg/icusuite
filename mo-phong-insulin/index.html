@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dự đoán xu hướng glucose khi dùng insulin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Bố cục: thanh nhập liệu bên trái, hai biểu đồ chung trục giờ bên phải; màu lâm sàng xanh mực, đỏ/hổ phách chỉ dành cho cảnh báo */
+  --bg:#f4f6f8;
+  --panel:#ffffff;
+  --ink:#16263a;
+  --muted:#5b6878;
+  --line:#dde3ea;
+  --accent:#1f5f8b;
+  --accent-soft:#e3eef6;
+  --supply:#138a7e;
+  --danger:#c93a3a;
+  --danger-soft:rgba(201,58,58,.15);
+  --warn:#c98a0b;
+  --warn-soft:rgba(222,160,30,.18);
+  --ok:#2c8a4b;
+  --grid:#e8ecf1;
+  --font-body:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --font-display:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f151c;--panel:#17202a;--ink:#e6edf4;--muted:#9aa8b6;--line:#2a3643;--accent:#6fb0dc;--accent-soft:#1b3346;
+    --supply:#3cc1b2;--danger:#ef6b6b;--danger-soft:rgba(239,107,107,.2);--warn:#e6b23d;--warn-soft:rgba(230,178,61,.2);--ok:#5cc07c;--grid:#222d38;color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f151c;--panel:#17202a;--ink:#e6edf4;--muted:#9aa8b6;--line:#2a3643;--accent:#6fb0dc;--accent-soft:#1b3346;
+  --supply:#3cc1b2;--danger:#ef6b6b;--danger-soft:rgba(239,107,107,.2);--warn:#e6b23d;--warn-soft:rgba(230,178,61,.2);--ok:#5cc07c;--grid:#222d38;color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.55}
+header{padding:20px 24px 8px;max-width:1360px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px}
+.back-suite{display:inline-block;font-size:13px;font-weight:600;color:var(--accent);text-decoration:none;margin:0 0 6px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;background:var(--panel)}
+.back-suite:hover{border-color:var(--accent)}
+h1{font-family:var(--font-display);font-size:24px;font-weight:700;margin:0;text-wrap:balance;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:4px 0 0;font-size:14px;max-width:62ch}
+.disc{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--danger);background:var(--danger-soft);border-radius:999px;padding:6px 12px;font-weight:500}
+main{max-width:1360px;margin:0 auto;padding:12px 24px 32px;display:grid;grid-template-columns:minmax(320px,400px) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:900px){main{grid-template-columns:minmax(0,1fr);padding:12px 16px 28px}header{padding:16px 16px 6px}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+.inputs{display:flex;flex-direction:column;gap:14px}
+.card h2{font-size:15px;font-weight:600;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+.card h2 .n{width:22px;height:22px;border-radius:6px;background:var(--accent-soft);color:var(--accent);font-size:12px;display:grid;place-items:center;font-weight:700}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--muted);font-weight:500;min-width:0}
+input,select{font:inherit;font-size:14px;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 9px;width:100%;min-width:0}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+input[type=number]{font-variant-numeric:tabular-nums}
+.err{color:var(--danger);font-size:12.5px;margin-top:4px;min-height:0}
+.seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label{border:1px solid var(--line);border-radius:8px;padding:8px;cursor:pointer;display:flex;flex-direction:column;gap:2px;font-size:13px;font-weight:600;color:var(--ink)}
+.seg label small{font-weight:400;color:var(--muted);font-size:11.5px;line-height:1.35}
+.seg input:checked+label{border-color:var(--accent);background:var(--accent-soft)}
+.seg input:focus-visible+label{outline:2px solid var(--accent);outline-offset:1px}
+.row{border:1px solid var(--line);border-radius:10px;padding:10px;display:grid;gap:8px;position:relative;border-left:4px solid var(--rowc,var(--line))}
+.row+.row{margin-top:8px}
+.row .tag{font-size:12px;font-weight:600;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.g3{display:grid;grid-template-columns:1.1fr .8fr .7fr;gap:8px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+button{font:inherit;cursor:pointer}
+.chip{font-size:12px;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:3px 10px}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.del{border:none;background:transparent;color:var(--muted);font-size:13px;padding:2px 6px;border-radius:6px}
+.del:hover{color:var(--danger);background:var(--danger-soft)}
+.add{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.btn{border:1px solid var(--accent);color:var(--accent);background:transparent;border-radius:8px;padding:6px 11px;font-size:13px;font-weight:500}
+.btn:hover{background:var(--accent-soft)}
+.btn.ghost{border-color:var(--line);color:var(--muted)}
+.foot{font-size:13px;color:var(--muted);margin-top:10px;font-variant-numeric:tabular-nums}
+.foot b{color:var(--ink);font-weight:600}
+.hint{font-size:12px;color:var(--muted)}
+.right{display:flex;flex-direction:column;gap:14px;position:sticky;top:12px}
+@media (max-width:900px){.right{position:static}}
+.summary{display:flex;flex-wrap:wrap;gap:8px}
+.pill{display:inline-flex;align-items:center;gap:8px;border-radius:10px;padding:8px 12px;font-size:13.5px;font-weight:500;font-variant-numeric:tabular-nums;border:1px solid transparent}
+.pill .dot{width:10px;height:10px;border-radius:3px;flex:none}
+.pill.hi{background:var(--danger-soft);color:var(--danger)}
+.pill.hi .dot{background:var(--danger)}
+.pill.md{background:var(--warn-soft);color:var(--warn)}
+.pill.md .dot{background:var(--warn)}
+.pill.ok{background:rgba(44,138,75,.12);color:var(--ok)}
+.pill.ok .dot{background:var(--ok)}
+.pill.info{border-color:var(--line);color:var(--muted)}
+.chart-title{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;margin:0 0 6px}
+.chart-title h3{font-size:14.5px;font-weight:600;margin:0}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.cv{position:relative;width:100%;height:270px}
+.cv.small{height:230px}
+.note{font-size:12.5px;color:var(--muted);line-height:1.6}
+.note ul{margin:6px 0 0;padding-left:18px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.tile{background:var(--bg);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;border-left:4px solid transparent}
+.tile .k{font-size:12px;color:var(--muted);font-weight:500}
+.tile .v{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.25}
+.tile .v small{font-size:12.5px;font-weight:500;color:var(--muted);margin-left:3px}
+.tile .s{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.tile.warn{border-left-color:var(--warn)}
+.tile.hi{border-left-color:var(--danger)}
+.tile.good{border-left-color:var(--ok)}
+.zone{border:1px solid var(--line);border-left:4px solid var(--warn);border-radius:0 10px 10px 0;padding:10px 14px;display:grid;gap:6px}
+.zone.hi{border-left-color:var(--danger)}
+.zone+.zone{margin-top:10px}
+.zone h4{margin:0;font-size:14px;font-weight:600;display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;font-variant-numeric:tabular-nums}
+.zone h4 .tagz{font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--warn-soft);color:var(--warn)}
+.zone.hi h4 .tagz{background:var(--danger-soft);color:var(--danger)}
+.zone dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:4px 12px;margin:0;font-size:13.5px}
+.zone dt{color:var(--muted);font-weight:500}
+.zone dd{margin:0}
+@media (max-width:520px){.zone dl{grid-template-columns:minmax(0,1fr)}.zone dt{margin-top:4px}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <a class="back-suite" href="../">← Bộ công cụ HSTC</a>
+    <h1>Dự đoán xu hướng nồng độ glucose khi sử dụng insulin</h1>
+    <p class="sub">Nhập lịch tiêm insulin và lịch ăn để thấy lúc nào tác dụng insulin lấn át lượng đường từ thức ăn, tức là khung giờ dễ hạ đường huyết.</p>
+  </div>
+  <span class="disc" role="note">Mô phỏng minh họa, không dùng để tính liều</span>
+</header>
+<main>
+  <section class="inputs" aria-label="Thông tin nhập">
+    <div class="card">
+      <h2><span class="n">1</span>Người bệnh</h2>
+      <label class="f" for="weight">Cân nặng (kg)
+        <input id="weight" type="number" min="20" max="250" step="0.5" inputmode="decimal">
+      </label>
+      <div class="err" id="weight-err" aria-live="polite"></div>
+      <div style="margin-top:10px" class="f"><span style="font-size:12.5px;color:var(--muted);font-weight:500">Thời gian tác dụng của insulin</span></div>
+      <div class="seg" role="radiogroup" aria-label="Thời gian tác dụng của insulin" style="margin-top:4px;grid-template-columns:repeat(2,minmax(0,1fr))">
+        <input type="radio" name="sens" id="s-tb" value="tb"><label for="s-tb">Bình thường<small>Không có yếu tố đặc biệt</small></label>
+        <input type="radio" name="sens" id="s-keo" value="keo"><label for="s-keo">Kéo dài<small>Suy thận, cao tuổi, gầy yếu</small></label>
+      </div>
+    </div>
+    <div class="card">
+      <h2><span class="n">2</span>Insulin</h2>
+      <div id="ins-list"></div>
+      <div class="add"><button class="btn" id="add-ins" type="button">+ Mũi tiêm dưới da</button><button class="btn" id="add-iv" type="button">+ Actrapid truyền tĩnh mạch</button></div>
+      <div class="foot" id="ins-foot"></div>
+    </div>
+    <div class="card">
+      <h2><span class="n">3</span>Ăn uống và nuôi dưỡng</h2>
+      <div id="feed-list"></div>
+      <div class="add">
+        <button class="btn" type="button" data-add="oral">+ Bữa ăn qua miệng</button>
+        <button class="btn" type="button" data-add="formula">+ Sữa công thức (uống, bơm cữ)</button>
+        <button class="btn" type="button" data-add="cont">+ Nuôi ăn sonde liên tục</button>
+        <button class="btn" type="button" data-add="pn">+ Dịch truyền tĩnh mạch</button>
+      </div>
+      <p class="hint" style="margin:10px 0 0">Lượng ăn tính theo ml cả tô, gồm cả nước dùng; mỗi món dùng một hệ số glucid và kcal ước lượng chung cho cả tô. Sữa công thức nhập thể tích hoặc tốc độ (ml/giờ); dịch truyền nhập tổng ml trong khoảng giờ truyền. Công cụ tự quy ra kcal.</p>
+    </div>
+    <div class="card">
+      <h2><span class="n">4</span>Đường huyết mao mạch đã đo</h2>
+      <p class="hint" style="margin:0 0 10px">Chỉ để đối chiếu: các chấm đo hiện trên biểu đồ xu hướng để xem mô phỏng có đi cùng xu hướng của người bệnh hay không. Mô phỏng không tự chỉnh theo các chấm này.</p>
+      <label class="f" for="bg-unit" style="max-width:180px">Đơn vị
+        <select id="bg-unit"><option value="mmol">mmol/L</option><option value="mgdl">mg/dL</option></select>
+      </label>
+      <div id="bg-list" style="margin-top:10px"></div>
+      <div class="add"><button class="btn" id="add-bg" type="button">+ Thêm lần đo</button></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn ghost" type="button" id="reset">Đặt lại ví dụ</button>
+      <button class="btn ghost" type="button" id="clear">Xóa hết dữ liệu nhập</button>
+    </div>
+  </section>
+
+  <section class="right" aria-label="Kết quả mô phỏng">
+    <div class="summary" id="summary" aria-live="polite"></div>
+    <div class="card" id="energy" hidden>
+      <div class="chart-title"><h3>Năng lượng nuôi dưỡng trong ngày</h3><span class="hint">Ăn qua miệng, sữa công thức và dịch truyền</span></div>
+      <div class="tiles" id="energy-tiles"></div>
+    </div>
+    <div class="card">
+      <div class="chart-title">
+        <h3>Đường vào máu và tác dụng insulin</h3>
+        <div class="legend">
+          <span><svg width="24" height="10" aria-hidden="true"><rect x="0" y="2" width="24" height="6" rx="2" fill="var(--supply)" opacity=".35"/><line x1="0" y1="2" x2="24" y2="2" stroke="var(--supply)" stroke-width="2"/></svg>Đường vào máu (ăn uống, dịch truyền, gan)</span>
+          <span><svg width="24" height="10" aria-hidden="true"><line x1="0" y1="5" x2="24" y2="5" stroke="var(--ink)" stroke-width="3.5"/></svg>Tổng tác dụng insulin</span>
+          <span><svg width="24" height="10" aria-hidden="true"><line x1="0" y1="5" x2="24" y2="5" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4,3"/></svg>Từng mũi tiêm</span>
+        </div>
+      </div>
+      <div class="cv"><canvas id="c1" role="img" aria-label="Biểu đồ đường vào máu và tác dụng insulin theo giờ">Biểu đồ đường vào máu và tác dụng insulin theo giờ.</canvas></div>
+    </div>
+    <div class="card">
+      <div class="chart-title">
+        <h3>Xu hướng đường huyết (tương đối, không có đơn vị)</h3>
+        <div class="legend">
+          <span><span class="pill-dot" style="width:12px;height:12px;border-radius:3px;background:var(--danger-soft);border:1px solid var(--danger)"></span>Nguy cơ hạ cao</span>
+          <span><span style="width:12px;height:12px;border-radius:3px;background:var(--warn-soft);border:1px solid var(--warn)"></span>Cần chú ý</span>
+          <span><span style="width:11px;height:11px;border-radius:50%;background:var(--accent)"></span>Đường huyết đo thực tế</span>
+        </div>
+      </div>
+      <div class="cv small"><canvas id="c2" role="img" aria-label="Biểu đồ xu hướng đường huyết tương đối theo giờ">Biểu đồ xu hướng đường huyết tương đối theo giờ.</canvas></div>
+    </div>
+    <div class="card" id="explain">
+      <div class="chart-title"><h3>Diễn giải vùng nguy cơ</h3><span class="hint">Tự cập nhật theo dữ liệu đã nhập</span></div>
+      <div id="explain-list"></div>
+    </div>
+    <div class="note card">
+      <b style="color:var(--ink)">Cách đọc và giới hạn của mô phỏng</b>
+      <ul>
+        <li>Công cụ không gán mức đường huyết nền, vì ở người bệnh nặng đường huyết lúc bắt đầu đã không ổn định. Đường xu hướng chỉ cho thấy biến thiên tương đối quanh mức trung bình trong ngày của chính người bệnh: lên sau ăn, xuống khi insulin lấn át.</li>
+        <li>Giả định tổng liều insulin đang phù hợp với người bệnh (đã được chỉnh theo đường huyết đo), nên công cụ không đánh giá liều đủ hay thiếu. Nó chỉ cho thấy lệch pha theo giờ: vùng vàng là lúc tác dụng insulin vượt lượng đường đang vào, vùng đỏ là lúc insulin lấn át rõ và đường huyết đang ở phần thấp của dao động. Đây là khung giờ dễ hạ nếu không bổ sung đường, nên chú ý theo dõi đường huyết mao mạch theo quy trình của khoa.</li>
+        <li>Giả định lịch tiêm và lịch ăn lặp lại như những ngày trước, nên phần insulin còn lại từ hôm trước (Lantus, Ryzodeg, NPH) đã được tính.</li>
+        <li>Đường cong là tác dụng hạ đường huyết của insulin, không phải nồng độ insulin đo được trong máu. Hấp thu thực tế thay đổi theo vị trí tiêm, tình trạng da, vận động, chức năng thận và nhiều yếu tố khác.</li>
+        <li>Chấm đường huyết đo thực tế (từ 2 lần đo trở lên) được dịch lên hoặc xuống cùng một khoảng để so hình dạng lên xuống với đường mô phỏng, không so mức tuyệt đối. Nếu các chấm đi ngược chiều mô phỏng, hãy xem lại lịch ăn, dịch truyền, giờ tiêm đã nhập. Khi kết quả đo và mô phỏng mâu thuẫn, luôn tin kết quả đo.</li>
+        <li>Actrapid truyền tĩnh mạch có tác dụng xuất hiện và mất nhanh, chỉ còn khoảng 30–60 phút sau khi ngưng. Tốc độ truyền thực tế chỉnh theo phác đồ của khoa; đổi tốc độ thì nhập thêm đoạn truyền mới.</li>
+        <li>Glucose truyền tĩnh mạch vào thẳng máu nên tác dụng lên đường huyết xuất hiện và mất gần như ngay khi bắt đầu hoặc ngưng truyền. Năng lượng tính theo 3,4 kcal/g glucose, 4 kcal/g acid amin, nhũ dịch lipid 10% và propofol 1% khoảng 1,1 kcal/ml, lipid 20% khoảng 2 kcal/ml; túi 3 trong 1 tính theo số liệu nhãn đã nhập.</li>
+        <li>Mọi xử trí theo y lệnh và quy trình của khoa.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+const Model = (() => {
+  const gam = (t, tp, k) => t <= 0 ? 0 : Math.pow(t / tp, k) * Math.exp(k * (1 - t / tp));
+  const sig = x => 1 / (1 + Math.exp(-x));
+  const areaCache = {};
+  const normArea = (key, fn) => {
+    if (areaCache[key] == null) { let s = 0; for (let t = 0; t < 120; t += 0.02) s += fn(t) * 0.02; areaCache[key] = s; }
+    return areaCache[key];
+  };
+  const shapes = {
+    rapid: t => gam(t, 1.0, 2.5),
+    lisproRapid: t => gam(t, 0.9, 2.5),
+    regular: t => gam(t, 2.5, 3),
+    nph: t => gam(t, 6, 2.2),
+    protAsp: t => gam(t, 4.5, 2),
+    protLis: t => gam(t, 4.2, 2),
+    glargine: t => t <= 0 ? 0 : sig((t - 1.5) / 0.6) * sig((24 - t) / 1.5),
+    degludec: t => t <= 0 ? 0 : sig((t - 2) / 0.8) * sig((42 - t) / 3)
+  };
+  const unit = (name, t) => shapes[name](t) / normArea(name, shapes[name]);
+  const stretched = (name, t, s) => unit(name, t / s) / s;
+
+  const INSULINS = {
+    actrapid: { label: 'Actrapid (insulin người nhanh)', parts: [['regular', 1, 'human']] },
+    mixtard: { label: 'Mixtard 30 (30% regular + 70% NPH)', parts: [['regular', 0.3, 'human'], ['nph', 0.7, 'human']] },
+    novomix: { label: 'NovoMix 30 (30% aspart + 70% protamine)', parts: [['rapid', 0.3, 'analog'], ['protAsp', 0.7, 'prot']] },
+    humamix: { label: 'Humalog Mix25 (25% lispro + 75% protamine)', parts: [['lisproRapid', 0.25, 'analog'], ['protLis', 0.75, 'prot']] },
+    lantus: { label: 'Lantus (glargine U100)', parts: [['glargine', 1, 'basal']] },
+    ryzodeg: { label: 'Ryzodeg 70/30 (degludec + aspart)', parts: [['degludec', 0.7, 'basal'], ['rapid', 0.3, 'analog']] }
+  };
+
+  const FOODS = {
+    chaothit: { label: 'Cháo thịt', g100: 10, kcal100: 60, tp: 0.8 },
+    chaoca: { label: 'Cháo cá', g100: 10, kcal100: 55, tp: 0.8 },
+    pho: { label: 'Phở', g100: 12, kcal100: 85, tp: 1.0 },
+    nui: { label: 'Nui', g100: 10, kcal100: 70, tp: 1.2 },
+    hutieu: { label: 'Hủ tiếu', g100: 12, kcal100: 85, tp: 1.0 }
+  };
+  const FORMULAS = {
+    d1: { label: '1 kcal/ml', kcal: 1, carbFrac: 0.5, tp: 0.9 },
+    d15: { label: '1,5 kcal/ml', kcal: 1.5, carbFrac: 0.5, tp: 0.9 },
+    d2: { label: '2 kcal/ml', kcal: 2, carbFrac: 0.5, tp: 0.9 }
+  };
+  const PN = {
+    g5: { label: 'Glucose 5%', glu: 0.05, aa: 0, kcalMl: 0.17, short: 'G5%' },
+    g10: { label: 'Glucose 10%', glu: 0.10, aa: 0, kcalMl: 0.34, short: 'G10%' },
+    g20: { label: 'Glucose 20%', glu: 0.20, aa: 0, kcalMl: 0.68, short: 'G20%' },
+    g30: { label: 'Glucose 30%', glu: 0.30, aa: 0, kcalMl: 1.02, short: 'G30%' },
+    aa: { label: 'Acid amin (đạm)', glu: 0, aa: null, kcalMl: null, short: 'Đạm' },
+    lip10: { label: 'Nhũ dịch lipid 10%', glu: 0, aa: 0, kcalMl: 1.1, short: 'Lipid 10%' },
+    lip20: { label: 'Nhũ dịch lipid 20%', glu: 0, aa: 0, kcalMl: 2.0, short: 'Lipid 20%' },
+    bag: { label: 'Túi 3 trong 1 (nhập theo nhãn)', glu: null, aa: null, kcalMl: null, short: 'Túi 3 trong 1' },
+    propofol: { label: 'Propofol 1%', glu: 0, aa: 0, kcalMl: 1.1, short: 'Propofol' }
+  };
+  function pnPerMl(r) {
+    const P = PN[r.fluid]; if (!P) return { glu: 0, aa: 0, kcal: 0 };
+    if (r.fluid === 'aa') { const c = (+r.pct || 0) / 100; return { glu: 0, aa: c, kcal: c * 4 }; }
+    if (r.fluid === 'bag') { const v = +r.bagMl || 0; if (!(v > 0)) return { glu: 0, aa: 0, kcal: 0 }; return { glu: (+r.bagGlu || 0) / v, aa: (+r.bagAa || 0) / v, kcal: (+r.bagKcal || 0) / v }; }
+    return { glu: P.glu, aa: P.aa, kcal: P.kcalMl };
+  }
+  const SENS = { tb: { stretch: 1 }, keo: { stretch: 1.25 } };
+
+  const toT = hhmm => { const [h, m] = hhmm.split(':').map(Number); let t = h + m / 60; if (t < 6) t += 24; return t; };
+  let R2 = 1.5, R1 = 1.25, GATE2 = -0.3, GATE1 = 99;
+  const tune = (a, b, c, d) => { R2 = a; R1 = b; GATE2 = c; GATE1 = d; };
+
+  function run(input) {
+    const W = Math.max(20, +input.weight || 60);
+    const S = SENS[input.sens] || SENS.tb;
+    const hgp = 0.12 * W;
+    const c = 1000 / (1.9 * W), tau = 4;
+    const DAYS = [0, -24, -48];
+    const ins = (input.insulins || []).filter(r => INSULINS[r.type] && +r.dose > 0).map(r => {
+      const dose = +r.dose, ref = 0.1 * W, dev = Math.log(dose / ref);
+      return { t0: toT(r.time), dose, parts: INSULINS[r.type].parts.map(([sh, fr, kind]) => {
+        let s = S.stretch;
+        if (kind === 'human') s *= Math.min(1.4, Math.max(0.85, 1 + 0.2 * dev));
+        if (kind === 'prot') s *= Math.min(1.2, Math.max(0.92, 1 + 0.1 * dev));
+        if (kind === 'basal') s = 1 + (S.stretch - 1) * 0.6;
+        return { sh, fr, s };
+      }) };
+    });
+    const ivs = (input.ivs || []).filter(r => +r.rate > 0 && r.start && r.end).map(r => { const a = toT(r.start); let b = toT(r.end); if (b <= a) b += 24; return { a, b, rate: +r.rate }; });
+    const ivPart = (v, t) => { if (v.b - v.a >= 23.99) return v.rate * (S.stretch > 1 ? 1 : 1); let s = 0; for (const d of DAYS) { const u = t - d; s += v.rate * sig((u - v.a - 0.3) / 0.12) * sig((v.b + 0.35 * S.stretch - u) / (0.15 * S.stretch)); } return s; };
+    const meals = [];
+    for (const r of input.feeds || []) {
+      if (r.kind !== 'pn' || !(+r.vol > 0) || !r.start || !r.end) continue;
+      const a = toT(r.start); let b = toT(r.end); if (b <= a) b += 24;
+      const g = pnPerMl(r).glu * +r.vol / (b - a); if (!(g > 0)) continue;
+      meals.push({ type: 'ivg', a, b, rate: g });
+    }
+    for (const r of input.feeds || []) {
+      if (r.kind === 'oral' && FOODS[r.food] && +r.ml > 0) {
+        const F = FOODS[r.food]; meals.push({ type: 'bolus', t0: toT(r.time), g: +r.ml * F.g100 / 100 * 0.9, tp: F.tp });
+      } else if (r.kind === 'formula' && FORMULAS[r.formula] && +r.ml > 0) {
+        const F = FORMULAS[r.formula]; meals.push({ type: 'bolus', t0: toT(r.time), g: +r.ml * F.kcal * F.carbFrac / 4 * 0.9, tp: F.tp });
+      } else if (r.kind === 'cont' && FORMULAS[r.formula] && +r.ml > 0) {
+        const F = FORMULAS[r.formula]; const a = toT(r.start); let b = toT(r.end); if (b <= a) b += 24;
+        meals.push({ type: 'cont', a, b, rate: +r.ml * F.kcal * F.carbFrac / 4 * 0.9, lag: F.tp * 0.5 });
+      }
+    }
+    const insPartAt = (i, t) => { let s = 0; for (const d of DAYS) { const u = t - i.t0 - d; if (u <= 0) continue; for (const p of i.parts) s += i.dose * p.fr * stretched(p.sh, u, p.s); } return s; };
+    const insAt = t => { let s = 0; for (const v of ivs) s += ivPart(v, t); for (const i of ins) s += insPartAt(i, t); return s; };
+    const raAt = t => { let s = 0; for (const m of meals) for (const d of DAYS) {
+      if (m.type === 'bolus') { const u = t - m.t0 - d; if (u > 0) s += m.g * gam(u, m.tp, 2) / normArea('meal' + m.tp, x => gam(x, m.tp, 2)); }
+      else if (m.type === 'ivg') { if (m.b - m.a >= 23.99) { if (d === 0) s += m.rate; } else { const u = t - d; s += m.rate * sig((u - m.a - 0.1) / 0.06) * sig((m.b + 0.1 - u) / 0.06); } }
+      else if (m.b - m.a >= 23.99) { if (d === 0) s += m.rate; }
+      else { const u = t - d; s += m.rate * sig((u - m.a - m.lag) / 0.3) * sig((m.b + m.lag - u) / 0.3); }
+    } return s; };
+
+    const dt = 0.05, grid = [];
+    for (let t = -42; t <= 30.0001; t += dt) grid.push(Math.round(t * 100) / 100);
+    const SUP = grid.map(t => raAt(t) + hgp), RAW = grid.map(insAt);
+    let sSup = 0, sRaw = 0;
+    grid.forEach((t, i) => { if (t >= 6 && t < 30) { sSup += SUP[i]; sRaw += RAW[i]; } });
+    const k = sRaw > 1e-9 ? sSup / sRaw : 0;
+    const T = [], supply = [], effect = [], trendRaw = [], perIns = ins.map(() => []), perIv = ivs.map(() => []);
+    let G = 0;
+    grid.forEach((t, i) => {
+      const eff = RAW[i] * k;
+      G += dt * (c * (SUP[i] - eff) - G / tau);
+      if (t >= 6 && Math.abs(t * 4 - Math.round(t * 4)) < 1e-6) {
+        T.push(t); supply.push(SUP[i]); effect.push(eff); trendRaw.push(G);
+        ins.forEach((q, j) => perIns[j].push(insPartAt(q, t) * k));
+        ivs.forEach((v, j) => perIv[j].push(ivPart(v, t) * k));
+      }
+    });
+    const mean = trendRaw.reduce((a, b) => a + b, 0) / trendRaw.length;
+    const trend = trendRaw.map(g => g - mean);
+    const sd = Math.sqrt(trend.reduce((a, g) => a + g * g, 0) / trend.length);
+    const lv = T.map((t, i) => {
+      if (!(k > 0) || sd < 5) return 0;
+      const r = effect[i] / supply[i], z = trend[i] / sd;
+      if (r >= R2 && z <= GATE2) return 2;
+      if (r >= R1 && z <= GATE1) return 1;
+      return 0;
+    });
+    const runs = test => { const out = []; let cur = null; lv.forEach((l, i) => { if (test(l)) { if (!cur) cur = { a: T[i], b: T[i], hasRed: false }; cur.b = T[i]; if (l === 2) cur.hasRed = true; } else if (cur) { out.push(cur); cur = null; } }); if (cur) out.push(cur); return out.filter(z => z.b - z.a >= 0.5); };
+    const zones = [...runs(l => l === 2).map(z => ({ a: z.a, b: z.b, lv: 2 })), ...runs(l => l >= 1).filter(z => !z.hasRed).map(z => ({ a: z.a, b: z.b, lv: 1 }))].sort((x, y) => x.a - y.a);
+    const ivDose = ivs.reduce((s, v) => s + v.rate * (v.b - v.a), 0);
+    const totalDose = Math.round((ins.reduce((s, i) => s + i.dose, 0) + ivDose) * 10) / 10;
+    const reds = runs(l => l === 2);
+    const spans = runs(l => l >= 1).map(z => { const rr = reds.filter(r => r.a >= z.a && r.b <= z.b); return { a: z.a, b: z.b, lv: rr.length ? 2 : 1, redA: rr.length ? rr[0].a : null }; });
+    return { T, supply, effect, trend, perIns, perIv, ivDose, lv, zones, spans, ukg: totalDose / W, totalDose, ins, meals, hasInsulin: k > 0 };
+  }
+  return { run, tune, pnPerMl, PN, INSULINS, FOODS, FORMULAS, SENS };
+})();
+
+
+</script>
+<script>
+(() => {
+const INS_COLORS = { actrapid:'#e0603a', mixtard:'#2f6fd0', novomix:'#c2457a', humamix:'#7a5bd6', lantus:'#1f9e74', ryzodeg:'#a3781a' };
+const IV_COLOR = '#b23a1e';
+const PN_COLOR = '#7a5bd6';
+const oralHint = r => { const F = Model.FOODS[r.food], v = +r.ml || 0; return F ? `Khoảng <b>${Math.round(v * F.kcal100 / 100)} kcal</b>, glucid ${Math.round(v * F.g100 / 100)} g` : ''; };
+const spanH = (s, e) => { const a = s.split(':').map(Number), b = e.split(':').map(Number); let h = (b[0] + b[1] / 60) - (a[0] + a[1] / 60); if (h <= 0) h += 24; return h; };
+const SHORT = { actrapid:'Actrapid', mixtard:'Mixtard', novomix:'NovoMix', humamix:'Humalog Mix', lantus:'Lantus', ryzodeg:'Ryzodeg' };
+const EXAMPLE = () => ({
+  weight: 60, sens: 'tb',
+  insulins: [ { type:'mixtard', time:'06:30', dose:18 }, { type:'mixtard', time:'17:00', dose:12 } ],
+  ivs: [], bg: [], bgUnit: 'mmol',
+  feeds: [
+    { kind:'oral', time:'07:00', food:'chaothit', ml:400 },
+    { kind:'oral', time:'11:30', food:'pho', ml:500 },
+    { kind:'oral', time:'17:30', food:'chaoca', ml:500 }
+  ]
+});
+let state = EXAMPLE();
+const $ = s => document.querySelector(s);
+const fmt = t => { const m = ((Math.round(t * 60) % 1440) + 1440) % 1440; return String(Math.floor(m / 60)).padStart(2,'0') + ':' + String(m % 60).padStart(2,'0'); };
+const vn = (x, d) => x.toFixed(d).replace('.', ',');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const opt = (obj, sel) => Object.entries(obj).map(([k, v]) => `<option value="${k}"${k === sel ? ' selected' : ''}>${esc(v.label)}</option>`).join('');
+let uid = 0;
+
+function renderInputs() {
+  $('#weight').value = state.weight;
+  document.querySelectorAll('input[name=sens]').forEach(r => r.checked = r.value === state.sens);
+  const il = $('#ins-list');
+  il.innerHTML = state.insulins.length ? '' : '<p class="hint" style="margin:0">Chưa có mũi tiêm nào.</p>';
+  state.insulins.forEach((r, i) => {
+    const id = 'i' + (uid++);
+    const d = document.createElement('div');
+    d.className = 'row'; d.style.setProperty('--rowc', INS_COLORS[r.type]);
+    d.innerHTML = `<div class="tag">Mũi tiêm ${i + 1}<button class="del" type="button" aria-label="Xóa mũi tiêm ${i + 1}">Xóa</button></div>
+      <label class="f" for="${id}t">Loại insulin<select id="${id}t">${opt(Model.INSULINS, r.type)}</select></label>
+      <div class="g2">
+        <label class="f" for="${id}h">Giờ tiêm<input id="${id}h" type="time" value="${r.time}"></label>
+        <label class="f" for="${id}d">Liều (UI)<input id="${id}d" type="number" min="0" max="200" step="1" value="${r.dose}" inputmode="numeric"></label>
+      </div>`;
+    d.querySelector('select').onchange = e => { r.type = e.target.value; d.style.setProperty('--rowc', INS_COLORS[r.type]); update(); };
+    d.querySelector('input[type=time]').onchange = e => { if (e.target.value) { r.time = e.target.value; update(); } };
+    d.querySelector('input[type=number]').oninput = e => { r.dose = e.target.value; update(); };
+    d.querySelector('.del').onclick = () => { state.insulins.splice(i, 1); renderInputs(); update(); };
+    il.appendChild(d);
+  });
+  state.ivs.forEach((r, i) => {
+    const id = 'v' + (uid++);
+    const d = document.createElement('div');
+    d.className = 'row'; d.style.setProperty('--rowc', IV_COLOR);
+    const a = r.start.split(':').map(Number), b = r.end.split(':').map(Number);
+    let hrs = (b[0] + b[1] / 60) - (a[0] + a[1] / 60); if (hrs <= 0) hrs += 24;
+    d.innerHTML = `<div class="tag">Actrapid truyền tĩnh mạch${state.ivs.length > 1 ? ' – đoạn ' + (i + 1) : ''}<button class="del" type="button" aria-label="Xóa đoạn truyền">Xóa</button></div>
+      <div class="g3">
+        <label class="f" for="${id}a">Bắt đầu<input id="${id}a" type="time" value="${r.start}"></label>
+        <label class="f" for="${id}b">Ngưng<input id="${id}b" type="time" value="${r.end}"></label>
+        <label class="f" for="${id}r">UI/giờ<input id="${id}r" type="number" min="0" max="50" step="0.5" value="${r.rate}" inputmode="decimal"></label>
+      </div>
+      <div class="hint">${vn(hrs, hrs % 1 ? 1 : 0)} giờ, khoảng <b>${vn(hrs * (+r.rate || 0), (hrs * (+r.rate || 0)) % 1 ? 1 : 0)} UI</b>. Đổi tốc độ thì thêm một đoạn truyền mới. Bắt đầu trùng giờ ngưng nghĩa là truyền đủ 24 giờ.</div>`;
+    d.querySelector('.del').onclick = () => { state.ivs.splice(i, 1); renderInputs(); update(); };
+    d.querySelector(`#${id}a`).onchange = e => { if (e.target.value) { r.start = e.target.value; renderInputs(); update(); } };
+    d.querySelector(`#${id}b`).onchange = e => { if (e.target.value) { r.end = e.target.value; renderInputs(); update(); } };
+    const rr = d.querySelector(`#${id}r`); rr.oninput = e => { r.rate = e.target.value; update(); }; rr.onchange = () => renderInputs();
+    il.appendChild(d);
+  });
+  if (!state.insulins.length && state.ivs.length) { const p = il.querySelector('p.hint'); if (p) p.remove(); }
+  $('#bg-unit').value = state.bgUnit;
+  const bl = $('#bg-list');
+  bl.innerHTML = state.bg.length ? '' : '<p class="hint" style="margin:0">Chưa có lần đo nào.</p>';
+  state.bg.forEach((r, i) => {
+    const id = 'b' + (uid++);
+    const d = document.createElement('div');
+    d.className = 'row'; d.style.setProperty('--rowc', 'var(--accent)');
+    d.innerHTML = `<div class="tag">Lần đo ${i + 1}<button class="del" type="button" aria-label="Xóa lần đo ${i + 1}">Xóa</button></div>
+      <div class="g2">
+        <label class="f" for="${id}h">Giờ đo<input id="${id}h" type="time" value="${r.time}"></label>
+        <label class="f" for="${id}v">Kết quả (${state.bgUnit === 'mmol' ? 'mmol/L' : 'mg/dL'})<input id="${id}v" type="number" min="0" step="${state.bgUnit === 'mmol' ? '0.1' : '1'}" value="${r.value}" inputmode="decimal"></label>
+      </div>
+      <div class="err" id="${id}e" aria-live="polite"></div>`;
+    d.querySelector('.del').onclick = () => { state.bg.splice(i, 1); renderInputs(); update(); };
+    d.querySelector(`#${id}h`).onchange = e => { if (e.target.value) { r.time = e.target.value; update(); } };
+    d.querySelector(`#${id}v`).oninput = e => {
+      r.value = e.target.value;
+      const v = +r.value, ok = state.bgUnit === 'mmol' ? (v >= 1 && v <= 35) : (v >= 18 && v <= 630);
+      d.querySelector(`#${id}e`).textContent = r.value === '' || ok ? '' : (state.bgUnit === 'mmol' ? 'Nhập kết quả từ 1 đến 35 mmol/L.' : 'Nhập kết quả từ 18 đến 630 mg/dL.');
+      update();
+    };
+    bl.appendChild(d);
+  });
+  const fl = $('#feed-list');
+  fl.innerHTML = state.feeds.length ? '' : '<p class="hint" style="margin:0">Chưa có bữa ăn nào: mô phỏng người bệnh nhịn ăn hoàn toàn.</p>';
+  state.feeds.forEach((r, i) => {
+    const id = 'f' + (uid++);
+    const d = document.createElement('div');
+    d.className = 'row';
+    let body = '';
+    if (r.kind === 'oral') {
+      d.style.setProperty('--rowc', 'var(--supply)');
+      body = `<div class="tag">Bữa ăn qua miệng<button class="del" type="button" aria-label="Xóa bữa ăn">Xóa</button></div>
+        <div class="g2">
+          <label class="f" for="${id}h">Giờ ăn<input id="${id}h" type="time" value="${r.time}"></label>
+          <label class="f" for="${id}m">Lượng ăn (ml, ước lượng)<input id="${id}m" type="number" min="0" max="3000" step="10" value="${r.ml}" inputmode="numeric"></label>
+        </div>
+        <label class="f" for="${id}k">Loại thức ăn<select id="${id}k">${opt(Model.FOODS, r.food)}</select></label>
+        <div class="hint" data-oral>${oralHint(r)}</div>`;
+    } else if (r.kind === 'formula') {
+      d.style.setProperty('--rowc', 'var(--supply)');
+      const kc = Math.round((+r.ml || 0) * Model.FORMULAS[r.formula].kcal);
+      body = `<div class="tag">Sữa công thức (uống hoặc bơm cữ)<button class="del" type="button" aria-label="Xóa cữ sữa">Xóa</button></div>
+        <div class="g2">
+          <label class="f" for="${id}h">Giờ<input id="${id}h" type="time" value="${r.time}"></label>
+          <label class="f" for="${id}m">Thể tích (ml)<input id="${id}m" type="number" min="0" max="2000" step="10" value="${r.ml}" inputmode="numeric"></label>
+        </div>
+        <label class="f" for="${id}s">Mật độ năng lượng của sữa<select id="${id}s">${opt(Model.FORMULAS, r.formula)}</select></label>
+        <div class="hint" data-kc>Khoảng <b>${kc} kcal</b></div>`;
+    } else if (r.kind === 'pn') {
+      d.style.setProperty('--rowc', PN_COLOR);
+      const hrs = spanH(r.start, r.end), pm = Model.pnPerMl(r), vol = +r.vol || 0;
+      let extra = '';
+      if (r.fluid === 'aa') extra = `<label class="f" for="${id}p">Nồng độ acid amin (%)<input id="${id}p" type="number" min="1" max="25" step="0.1" value="${r.pct}" inputmode="decimal"></label>`;
+      if (r.fluid === 'bag') extra = `<div class="hint">Nhập đúng các con số in trên nhãn túi:</div>
+        <div class="g2">
+          <label class="f" for="${id}v">Thể tích túi (ml)<input id="${id}v" type="number" min="0" step="1" value="${r.bagMl}" inputmode="numeric"></label>
+          <label class="f" for="${id}gl">Glucose trong túi (g)<input id="${id}gl" type="number" min="0" step="1" value="${r.bagGlu}" inputmode="decimal"></label>
+          <label class="f" for="${id}am">Acid amin trong túi (g)<input id="${id}am" type="number" min="0" step="1" value="${r.bagAa}" inputmode="decimal"></label>
+          <label class="f" for="${id}kc">Tổng năng lượng (kcal)<input id="${id}kc" type="number" min="0" step="1" value="${r.bagKcal}" inputmode="numeric"></label>
+        </div>`;
+      const parts = [];
+      if (pm.glu > 0) parts.push(`glucose <b>${Math.round(vol * pm.glu)} g</b>`);
+      if (pm.aa > 0) parts.push(`đạm <b>${Math.round(vol * pm.aa)} g</b>`);
+      parts.push(`<b>${Math.round(vol * pm.kcal)} kcal</b>`);
+      body = `<div class="tag">Dịch truyền tĩnh mạch<button class="del" type="button" aria-label="Xóa dịch truyền">Xóa</button></div>
+        <label class="f" for="${id}fl">Loại dịch<select id="${id}fl">${opt(Model.PN, r.fluid)}</select></label>
+        ${extra}
+        <div class="g3">
+          <label class="f" for="${id}a">Bắt đầu<input id="${id}a" type="time" value="${r.start}"></label>
+          <label class="f" for="${id}b">Ngưng<input id="${id}b" type="time" value="${r.end}"></label>
+          <label class="f" for="${id}vo">Tổng ml truyền<input id="${id}vo" type="number" min="0" max="5000" step="10" value="${r.vol}" inputmode="numeric"></label>
+        </div>
+        <div class="hint">${Math.round(vol)} ml trong ${vn(hrs, hrs % 1 ? 1 : 0)} giờ (khoảng ${vn(vol / hrs, vol / hrs < 10 ? 1 : 0)} ml/giờ): ${parts.join(', ')}.${r.fluid === 'propofol' ? ' Năng lượng từ lipid của propofol, không làm tăng đường huyết trực tiếp.' : ''}${(r.fluid === 'lip10' || r.fluid === 'lip20' || r.fluid === 'aa') ? ' Chỉ góp năng lượng, không tính là đường vào máu.' : ''}</div>`;
+    } else {
+      d.style.setProperty('--rowc', 'var(--supply)');
+      const a = r.start.split(':').map(Number), b = r.end.split(':').map(Number);
+      let hrs = (b[0] + b[1] / 60) - (a[0] + a[1] / 60); if (hrs <= 0) hrs += 24;
+      body = `<div class="tag">Nuôi ăn sonde liên tục<button class="del" type="button" aria-label="Xóa nuôi ăn liên tục">Xóa</button></div>
+        <div class="g2">
+          <label class="f" for="${id}a">Bắt đầu<input id="${id}a" type="time" value="${r.start}"></label>
+          <label class="f" for="${id}b">Ngưng<input id="${id}b" type="time" value="${r.end}"></label>
+        </div>
+        <div class="g2">
+          <label class="f" for="${id}m">Tốc độ (ml/giờ)<input id="${id}m" type="number" min="0" max="300" step="5" value="${r.ml}" inputmode="numeric"></label>
+          <label class="f" for="${id}s">Mật độ năng lượng<select id="${id}s">${opt(Model.FORMULAS, r.formula)}</select></label>
+        </div>
+        <div class="hint" data-kc>${vn(hrs, hrs % 1 ? 1 : 0)} giờ, tổng khoảng <b>${Math.round(hrs * (+r.ml || 0))} ml, ${Math.round(hrs * (+r.ml || 0) * Model.FORMULAS[r.formula].kcal)} kcal</b>. Bắt đầu trùng giờ ngưng nghĩa là truyền đủ 24 giờ.</div>`;
+    }
+    d.innerHTML = body;
+    d.querySelector('.del').onclick = () => { state.feeds.splice(i, 1); renderInputs(); update(); };
+    d.querySelectorAll('input[type=time]').forEach(inp => inp.onchange = e => {
+      if (!e.target.value) return;
+      if (e.target.id.endsWith('h')) r.time = e.target.value; else if (e.target.id.endsWith('a')) r.start = e.target.value; else r.end = e.target.value;
+      if (r.kind === 'cont') renderInputs();
+      update();
+    });
+    const oh = d.querySelector('[data-oral]');
+    const m = d.querySelector(`#${id}m`); if (m) { m.oninput = e => { r.ml = e.target.value; if (oh) oh.innerHTML = oralHint(r); update(); }; if (r.kind !== 'oral') m.onchange = () => renderInputs(); }
+    const k = d.querySelector(`#${id}k`); if (k) k.onchange = e => { r.food = e.target.value; if (oh) oh.innerHTML = oralHint(r); update(); };
+    const s = d.querySelector(`#${id}s`); if (s) s.onchange = e => { r.formula = e.target.value; renderInputs(); update(); };
+    const fsel = d.querySelector(`#${id}fl`); if (fsel) fsel.onchange = e => { r.fluid = e.target.value; renderInputs(); update(); };
+    [['p','pct'],['v','bagMl'],['gl','bagGlu'],['am','bagAa'],['kc','bagKcal'],['vo','vol']].forEach(([suf, key]) => { const el = d.querySelector(`#${id}${suf}`); if (el) { el.oninput = e => { r[key] = e.target.value; update(); }; el.onchange = () => { if (key === 'bagMl' && !(+r.vol > 0)) r.vol = r.bagMl; renderInputs(); update(); }; } });
+    fl.appendChild(d);
+  });
+}
+
+$('#weight').addEventListener('input', e => { state.weight = e.target.value; update(); });
+document.querySelectorAll('input[name=sens]').forEach(r => r.addEventListener('change', e => { state.sens = e.target.value; update(); }));
+$('#add-ins').onclick = () => { state.insulins.push({ type:'actrapid', time:'11:00', dose:4 }); renderInputs(); update(); };
+$('#add-iv').onclick = () => { const last = state.ivs[state.ivs.length - 1]; state.ivs.push(last ? { start:last.end, end:last.end, rate:last.rate } : { start:'06:00', end:'06:00', rate:2 }); renderInputs(); update(); };
+$('#add-bg').onclick = () => { state.bg.push({ time:'06:00', value:'' }); renderInputs(); };
+$('#bg-unit').onchange = e => {
+  const to = e.target.value; if (to === state.bgUnit) return;
+  state.bg.forEach(r => { if (r.value === '' || isNaN(+r.value)) return; r.value = to === 'mgdl' ? String(Math.round(+r.value * 18)) : String(Math.round(+r.value / 18 * 10) / 10); });
+  state.bgUnit = to; renderInputs(); update();
+};
+document.querySelectorAll('[data-add]').forEach(b => b.onclick = () => {
+  const k = b.dataset.add;
+  if (k === 'oral') state.feeds.push({ kind:'oral', time:'12:00', food:'chaothit', ml:400 });
+  if (k === 'formula') state.feeds.push({ kind:'formula', time:'14:00', ml:250, formula:'d1' });
+  if (k === 'cont') state.feeds.push({ kind:'cont', start:'06:00', end:'06:00', ml:60, formula:'d1' });
+  if (k === 'pn') state.feeds.push({ kind:'pn', fluid:'g10', start:'08:00', end:'16:00', vol:500, pct:10, bagMl:'', bagGlu:'', bagAa:'', bagKcal:'' });
+  renderInputs(); update();
+});
+$('#reset').onclick = () => { state = EXAMPLE(); renderInputs(); update(); };
+$('#clear').onclick = () => { state.insulins = []; state.ivs = []; state.feeds = []; state.bg = []; renderInputs(); update(); };
+
+function tok(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+let result = null, ch1 = null, ch2 = null;
+
+
+const deco = {
+  id: 'deco',
+  beforeDatasetsDraw(ch) {
+    if (!result) return;
+    const { ctx, chartArea: a, scales: { x, y } } = ch;
+    ctx.save();
+    if (ch === ch2) {
+      const y0 = y.getPixelForValue(0);
+      ctx.fillStyle = tok('--muted'); ctx.font = '11px ' + tok('--font-body'); ctx.textAlign = 'left';
+      ctx.setLineDash([4, 4]); ctx.strokeStyle = tok('--muted'); ctx.globalAlpha = .6; ctx.beginPath(); ctx.moveTo(a.left, y0); ctx.lineTo(a.right, y0); ctx.stroke();
+      ctx.globalAlpha = 1; ctx.setLineDash([]);
+      ctx.fillText('Trung bình trong ngày', a.left + 6, y0 - 5);
+      ctx.fillText('Tăng', a.left + 6, a.top + 12); ctx.fillText('Giảm', a.left + 6, a.bottom - 6);
+    }
+    let i = 0;
+    while (i < result.T.length) {
+      const l = result.lv[i];
+      if (!l) { i++; continue; }
+      let j = i; while (j + 1 < result.T.length && result.lv[j + 1] === l) j++;
+      const x1 = x.getPixelForValue(result.T[i] - 0.125), x2 = x.getPixelForValue(result.T[j] + 0.125);
+      ctx.fillStyle = l === 2 ? tok('--danger-soft') : tok('--warn-soft');
+      ctx.fillRect(x1, a.top, x2 - x1, a.bottom - a.top);
+      i = j + 1;
+    }
+    ctx.restore();
+  },
+  afterDatasetsDraw(ch) {
+    if (!result || ch !== ch1) return;
+    const { ctx, chartArea: a, scales: { x } } = ch;
+    ctx.save(); ctx.font = '11px ' + tok('--font-body'); ctx.textAlign = 'center';
+    const toT = h => { const [hh, mm] = h.split(':').map(Number); let t = hh + mm / 60; if (t < 6) t += 24; return t; };
+    state.insulins.forEach(r => {
+      if (!(+r.dose > 0)) return;
+      const px = x.getPixelForValue(toT(r.time));
+      ctx.fillStyle = INS_COLORS[r.type];
+      ctx.beginPath(); ctx.moveTo(px - 6, a.bottom); ctx.lineTo(px + 6, a.bottom); ctx.lineTo(px, a.bottom - 9); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = tok('--ink'); ctx.fillText(SHORT[r.type] + ' ' + r.dose, px, a.bottom - 13);
+    });
+    state.ivs.forEach(r => {
+      if (!(+r.rate > 0)) return;
+      let s = toT(r.start), e = toT(r.end); if (e <= s) e += 24;
+      const segs = e > 30 ? [[s, 30], [6, e - 24]] : [[s, e]];
+      ctx.fillStyle = IV_COLOR;
+      segs.forEach(([p, q]) => { const x1 = x.getPixelForValue(p), x2 = x.getPixelForValue(q); ctx.globalAlpha = .7; ctx.fillRect(x1, a.bottom - 4, x2 - x1, 4); ctx.globalAlpha = 1; });
+      ctx.textAlign = 'left'; ctx.fillStyle = tok('--ink');
+      ctx.fillText('Actrapid TM ' + vn(+r.rate, (+r.rate) % 1 ? 1 : 0) + ' UI/giờ', Math.min(x.getPixelForValue(s) + 4, a.right - 120), a.bottom - 10);
+      ctx.textAlign = 'center';
+    });
+    state.feeds.forEach(r => {
+      ctx.fillStyle = tok('--supply');
+      if (r.kind === 'pn') {
+        if (!(+r.vol > 0)) return;
+        if (!(Model.pnPerMl(r).glu > 0)) return;
+        let s = toT(r.start), e = toT(r.end); if (e <= s) e += 24;
+        const segs = e > 30 ? [[s, 30], [6, e - 24]] : [[s, e]];
+        const k = state.feeds.filter(q => q.kind === 'pn' && Model.pnPerMl(q).glu > 0 && +q.vol > 0).indexOf(r);
+        const yy = a.top + 8 + 6 * k;
+        ctx.fillStyle = PN_COLOR;
+        segs.forEach(([p, q]) => { const x1 = x.getPixelForValue(p), x2 = x.getPixelForValue(q); ctx.globalAlpha = .6; ctx.fillRect(x1, yy, x2 - x1, 4); ctx.globalAlpha = 1; });
+        ctx.textAlign = 'left'; ctx.fillText(Model.PN[r.fluid].short + ' ' + r.vol + ' ml', Math.min(x.getPixelForValue(s) + 4, a.right - 110), yy + 14);
+        if (e < 30) { ctx.textAlign = 'center'; ctx.fillText('Ngưng', x.getPixelForValue(e), yy + 14); }
+        ctx.textAlign = 'center';
+      } else if (r.kind === 'cont') {
+        let s = toT(r.start), e = toT(r.end); if (e <= s) e += 24;
+        const segs = e > 30 ? [[s, 30], [6, e - 24]] : [[s, e]];
+        segs.forEach(([p, q]) => { const x1 = x.getPixelForValue(p), x2 = x.getPixelForValue(q); ctx.globalAlpha = .55; ctx.fillRect(x1, a.top, x2 - x1, 4); ctx.globalAlpha = 1; });
+        ctx.textAlign = 'left'; ctx.fillText('Sonde liên tục', x.getPixelForValue(s) + 4, a.top + 16);
+        if (e < 30) { ctx.textAlign = 'center'; ctx.fillText('Ngưng', x.getPixelForValue(e), a.top + 16); }
+        ctx.textAlign = 'center';
+      } else {
+        const px = x.getPixelForValue(toT(r.time));
+        ctx.beginPath(); ctx.arc(px, a.top + 5, 4, 0, Math.PI * 2); ctx.fill();
+        ctx.fillText(r.kind === 'oral' ? 'Ăn' : 'Sữa', px, a.top + 20);
+      }
+    });
+    ctx.restore();
+  }
+};
+
+function baseOpts(isTrend) {
+  const muted = tok('--muted'), grid = tok('--grid');
+  return {
+    responsive: true, maintainAspectRatio: false, animation: { duration: 250 },
+    interaction: isTrend ? { mode: 'nearest', axis: 'xy', intersect: false } : { mode: 'index', axis: 'x', intersect: false },
+    layout: { padding: { top: isTrend ? 4 : 26, right: 8 } },
+    plugins: { legend: { display: false }, tooltip: isTrend ? {
+      callbacks: {
+        title: i => fmt(i[0].parsed.x),
+        label: i => { if (i.dataset.type === 'scatter') return 'Đo thực tế: ' + i.raw.raw; const k = i.dataIndex, tr = result.trend; const sl = (tr[Math.min(k + 1, tr.length - 1)] - tr[Math.max(k - 1, 0)]); const lvl = result.lv[k]; return 'Xu hướng: ' + (Math.abs(sl) < 1.5 ? 'đi ngang' : sl > 0 ? 'đang tăng' : 'đang giảm') + (lvl === 2 ? ' · insulin lấn át rõ' : lvl === 1 ? ' · insulin lấn át' : ''); }
+      } } : { enabled: false } },
+    scales: {
+      x: { type: 'linear', min: 6, max: 30, ticks: { stepSize: 2, color: muted, callback: v => fmt(v), maxRotation: 0 }, grid: { display: false }, border: { color: grid } },
+      y: { beginAtZero: !isTrend, ticks: { display: false }, grid: { color: grid }, border: { display: false } }
+    }
+  };
+}
+
+function trendAt(t) {
+  const T = result.T; if (t <= T[0]) return result.trend[0]; if (t >= T[T.length - 1]) return result.trend[T.length - 1];
+  const i = Math.floor((t - T[0]) / 0.25), f = (t - T[i]) / 0.25; return result.trend[i] * (1 - f) + result.trend[i + 1] * f;
+}
+function bgPoints() {
+  const raw = bgRaw(); if (raw.length < 2) return [];
+  const off = raw.reduce((a, p) => a + p.y, 0) / raw.length - raw.reduce((a, p) => a + trendAt(p.x), 0) / raw.length;
+  return raw.map(p => ({ x: p.x, y: p.y - off, raw: p.raw }));
+}
+function bgRaw() {
+  return state.bg.filter(r => r.value !== '' && !isNaN(+r.value) && r.time).map(r => {
+    const v = +r.value, mg = state.bgUnit === 'mmol' ? v * 18 : v;
+    if (!(mg >= 18 && mg <= 630)) return null;
+    const [h, m] = r.time.split(':').map(Number); let t = h + m / 60; if (t < 6) t += 24;
+    return { x: t, y: mg, raw: state.bgUnit === 'mmol' ? vn(v, 1) + ' mmol/L' : Math.round(v) + ' mg/dL' };
+  }).filter(Boolean);
+}
+function draw() {
+  const ink = tok('--ink'), sup = tok('--supply');
+  const d1 = [{ label: 'Đường vào máu', data: result.T.map((t, i) => ({ x: t, y: result.supply[i] })), borderColor: sup, backgroundColor: sup + '33', fill: 'origin', borderWidth: 2, pointRadius: 0, tension: .3 }];
+  result.perIns.forEach((arr, k) => {
+    const r = state.insulins.filter(q => Model.INSULINS[q.type] && +q.dose > 0)[k];
+    d1.push({ label: 'mũi', data: result.T.map((t, i) => ({ x: t, y: arr[i] })), borderColor: INS_COLORS[r.type] + 'b3', borderDash: [4, 3], borderWidth: 1.5, pointRadius: 0, tension: .3, fill: false });
+  });
+  result.perIv.forEach(arr => d1.push({ label: 'iv', data: result.T.map((t, i) => ({ x: t, y: arr[i] })), borderColor: IV_COLOR + 'b3', borderDash: [4, 3], borderWidth: 1.5, pointRadius: 0, tension: .3, fill: false }));
+  d1.push({ label: 'Tổng tác dụng insulin', data: result.T.map((t, i) => ({ x: t, y: result.effect[i] })), borderColor: ink, borderWidth: 3.5, pointRadius: 0, tension: .3, fill: false });
+  const mx = Math.max(...result.supply, ...result.effect, 1) * 1.12;
+  const pts = bgPoints();
+  const amp = Math.max(40, ...result.trend.map(Math.abs), ...pts.map(p => Math.abs(p.y))) * 1.15;
+  const d2 = [{ label: 'Xu hướng', data: result.T.map((t, i) => ({ x: t, y: result.trend[i] })), borderColor: ink, borderWidth: 2.5, pointRadius: 0, tension: .3, fill: false }];
+  if (pts.length) d2.push({ type: 'scatter', label: 'Đo thực tế', data: pts.map(p => ({ x: p.x, y: p.y, raw: p.raw })), backgroundColor: tok('--accent'), borderColor: tok('--panel'), borderWidth: 2, pointRadius: 6, pointHoverRadius: 8, pointStyle: 'circle' });
+  if (!ch1) {
+    ch1 = new Chart($('#c1'), { type: 'line', data: { datasets: d1 }, options: baseOpts(false), plugins: [deco] });
+    ch2 = new Chart($('#c2'), { type: 'line', data: { datasets: d2 }, options: baseOpts(true), plugins: [deco] });
+  } else { ch1.data.datasets = d1; ch2.data.datasets = d2; }
+  ch1.options.scales.y.max = mx;
+  ch2.options.scales.y.min = -amp; ch2.options.scales.y.max = amp;
+  ch1.update(); ch2.update();
+}
+
+function explain() {
+  const box = $('#explain-list');
+  if (!result || !result.hasInsulin) { box.innerHTML = '<p class="hint" style="margin:0">Chưa có insulin nên không có vùng nguy cơ để diễn giải.</p>'; return; }
+  if (!result.spans.length) { box.innerHTML = '<p class="hint" style="margin:0">Không có vùng nguy cơ nổi bật: trong cả ngày, tác dụng insulin không vượt rõ lượng đường đang vào máu ở thời điểm nào.</p>'; return; }
+  const toT = h => { const [hh, mm] = h.split(':').map(Number); let x = hh + mm / 60; if (x < 6) x += 24; return x; };
+  const near = (x, ref) => [x - 24, x, x + 24].reduce((b, c) => Math.abs(c - ref) < Math.abs(b - ref) ? c : b);
+  const sinceInj = (t0, t) => { let h = t - t0; while (h < 0) h += 24; while (h >= 24) h -= 24; return h; };
+  const phase = (type, h) => {
+    if (type === 'lantus') return 'insulin nền, tác dụng gần như đều suốt ngày';
+    if (type === 'ryzodeg') return h < 3 ? 'phần aspart đang ở gần đỉnh, cộng với phần degludec nền' : 'phần degludec nền đang tác dụng đều';
+    if (type === 'actrapid') return h < 1.5 ? 'đang bắt đầu tác dụng' : h <= 3.5 ? 'đang ở gần đỉnh (đỉnh khoảng 1,5–3,5 giờ sau tiêm)' : h <= 8 ? 'đang ở phần đuôi tác dụng (kéo dài 7–8 giờ)' : 'còn rất ít tác dụng';
+    if (type === 'mixtard') return h < 1.5 ? 'phần regular đang bắt đầu tác dụng' : h <= 3.5 ? 'phần regular đang ở gần đỉnh, phần NPH đang tăng dần' : h <= 12 ? 'phần NPH đang ở giai đoạn đỉnh kéo dài (khoảng 4–12 giờ sau tiêm)' : 'đang ở phần đuôi của NPH';
+    if (type === 'novomix' || type === 'humamix') { const fast = type === 'novomix' ? 'aspart' : 'lispro'; return h <= 2.5 ? 'phần ' + fast + ' đang ở gần đỉnh, phần protamine đang tăng' : h <= 10 ? 'phần protamine đang tác dụng kéo dài' : 'đang ở phần đuôi tác dụng'; }
+    return '';
+  };
+  const insList = state.insulins.filter(q => Model.INSULINS[q.type] && +q.dose > 0);
+  const ivList = state.ivs.filter(r => +r.rate > 0 && r.start && r.end);
+  const items = result.spans.map(z => {
+    const i0 = result.T.indexOf(z.a), i1 = result.T.indexOf(z.b);
+    let iMin = i0; for (let i = i0; i <= i1; i++) if (result.trend[i] < result.trend[iMin]) iMin = i;
+    let iMid = i0; for (let i = i0; i <= i1; i++) if (result.effect[i] / result.supply[i] > result.effect[iMid] / result.supply[iMid]) iMid = i;
+    const tm = result.T[iMid], tot = result.effect[iMid] || 1;
+    const why = [];
+    state.feeds.forEach(r => {
+      if (r.kind === 'cont' && +r.ml > 0 || r.kind === 'pn' && +r.vol > 0 && Model.pnPerMl(r).glu > 0) {
+        let s = toT(r.start), e = toT(r.end); if (e <= s) e += 24;
+        if (e - s >= 23.99) return;
+        const ee = near(e > 30 ? e - 24 : e, z.a);
+        if (ee >= z.a - 3 && ee <= z.b) why.push(`${r.kind === 'cont' ? 'Nuôi ăn sonde liên tục' : Model.PN[r.fluid].short + ' truyền tĩnh mạch'} ngưng lúc ${r.end}, nhưng insulin vẫn đang tác dụng.`);
+      }
+    });
+    const boluses = state.feeds.filter(r => (r.kind === 'oral' && +r.ml > 0 && Model.FOODS[r.food]) || (r.kind === 'formula' && +r.ml > 0)).map(r => {
+      const tp = r.kind === 'oral' ? Model.FOODS[r.food].tp : Model.FORMULAS[r.formula].tp;
+      const t0 = near(toT(r.time), z.a - 1);
+      return { r, t0, done: t0 + 2.6 * tp };
+    }).filter(m => m.t0 < z.a).sort((x, y) => y.t0 - x.t0);
+    const running = state.feeds.some(r => { if (!(r.kind === 'cont' && +r.ml > 0 || r.kind === 'pn' && +r.vol > 0 && Model.pnPerMl(r).glu > 0)) return false; let s = toT(r.start), e = toT(r.end); if (e <= s) e += 24; if (e - s >= 23.99) return true; return [tm, tm + 24, tm - 24].some(x => x >= s && x < e); });
+    if (!why.length) {
+      const last = boluses[0];
+      if (last && z.a - last.t0 <= 6) {
+        const nm = last.r.kind === 'oral' ? `${Model.FOODS[last.r.food].label.toLowerCase()} ${last.r.ml} ml` : `sữa công thức ${last.r.ml} ml`;
+        why.push(`Bữa ${nm} lúc ${last.r.time} đã hấp thu gần hết từ khoảng ${fmt(Math.min(last.done, z.b))}, trong khi insulin vẫn còn mạnh.`);
+      } else if (running) why.push('Dù đang có nuôi ăn hoặc dịch có đường chạy liên tục, tác dụng insulin lúc này vẫn vượt lượng đường đang vào.');
+      else why.push('Không có bữa ăn hay dịch có đường nào trong khoảng này; chỉ còn đường do gan tạo ra.');
+    }
+    const ins = [];
+    insList.forEach((q, k) => {
+      const v = result.perIns[k] ? result.perIns[k][iMid] : 0;
+      if (v / tot >= 0.2) { const h = sinceInj(toT(q.time), tm); ins.push({ v, s: `${SHORT[q.type]} ${q.dose} UI tiêm lúc ${q.time} (${vn(h, h % 1 ? 1 : 0)} giờ sau tiêm): ${phase(q.type, h)}.` }); }
+    });
+    ivList.forEach((r, k) => { const v = result.perIv[k] ? result.perIv[k][iMid] : 0; if (v / tot >= 0.2) ins.push({ v, s: `Actrapid truyền tĩnh mạch ${vn(+r.rate, (+r.rate) % 1 ? 1 : 0)} UI/giờ đang chạy (${r.start}–${r.end}).` }); });
+    ins.sort((x, y) => y.v - x.v);
+    const tips = [`Thử đường huyết mao mạch quanh ${fmt(result.T[iMin])}, thời điểm xu hướng dự kiến thấp nhất.`];
+    if (why[0].startsWith('Bữa') && z.b - z.a >= 1) tips.push(`Có thể cân nhắc bữa phụ trước khoảng ${fmt(z.redA || z.a)} nếu y lệnh cho phép.`);
+    if (why.some(w => w.includes('ngưng lúc'))) tips.push('Khi ngưng nuôi ăn hoặc dịch có đường, cần báo bác sĩ xem lại insulin đang chạy hoặc đã tiêm.');
+    if (ivList.length && ins.some(x => x.s.startsWith('Actrapid truyền'))) tips.push('Đang truyền insulin tĩnh mạch: xem lại tốc độ truyền theo phác đồ khi nguồn đường thay đổi.');
+    return `<div class="zone ${z.lv === 2 ? 'hi' : ''}">
+      <h4>${fmt(z.a)}–${fmt(z.b)}<span class="tagz">${z.lv === 2 ? 'Nguy cơ hạ cao' + (z.redA > z.a ? ' từ ' + fmt(z.redA) : '') : 'Cần chú ý'}</span></h4>
+      <dl>
+        <dt>Vì sao</dt><dd>${why.join(' ')}</dd>
+        <dt>Insulin đang tác dụng</dt><dd>${ins.length ? ins.map(x => x.s).join('<br>') : 'Tổng hợp nhiều mũi tiêm, không mũi nào nổi trội.'}</dd>
+        <dt>Gợi ý theo dõi</dt><dd>${tips.join('<br>')}</dd>
+      </dl>
+    </div>`;
+  });
+  box.innerHTML = items.join('') + '<p class="hint" style="margin:10px 0 0">Diễn giải dựa trên mô phỏng; mọi xử trí theo y lệnh và quy trình của khoa.</p>';
+}
+function summary() {
+  const s = $('#summary');
+  const W = +state.weight;
+  if (!(W >= 20)) { s.innerHTML = '<span class="pill info">Nhập cân nặng để xem mô phỏng</span>'; return; }
+  const hi = result.zones.filter(z => z.lv === 2), md = result.zones.filter(z => z.lv === 1);
+  let h = '';
+  if (hi.length) h += `<span class="pill hi"><span class="dot"></span>Nguy cơ hạ cao: ${hi.map(z => fmt(z.a) + '–' + fmt(z.b)).join(', ')}</span>`;
+  if (md.length) h += `<span class="pill md"><span class="dot"></span>Cần chú ý: ${md.map(z => fmt(z.a) + '–' + fmt(z.b)).join(', ')}</span>`;
+  if (!hi.length && !md.length && result.hasInsulin) h += `<span class="pill ok"><span class="dot"></span>Không thấy khung nguy cơ hạ nổi bật</span>`;
+  if (!result.hasInsulin) h = `<span class="pill info">Chưa có insulin: chỉ vẽ biến thiên theo ăn uống và dịch truyền</span>`;
+  const nb = bgRaw().length;
+  if (nb === 1) h += `<span class="pill info">Cần ít nhất 2 lần đo để đối chiếu xu hướng</span>`;
+  h += `<span class="pill info">Tổng ${vn(result.totalDose, result.totalDose % 1 ? 1 : 0)} UI/ngày, ${vn(result.ukg, 2)} UI/kg</span>`;
+  s.innerHTML = h;
+  $('#c2').setAttribute('aria-label', 'Xu hướng đường huyết tương đối. ' + (hi.length ? 'Nguy cơ hạ cao: ' + hi.map(z => fmt(z.a) + ' đến ' + fmt(z.b)).join(', ') + '. ' : '') + (md.length ? 'Cần chú ý: ' + md.map(z => fmt(z.a) + ' đến ' + fmt(z.b)).join(', ') + '.' : ''));
+}
+
+function energy() {
+  const card = $('#energy'), W = +state.weight;
+  const nut = state.feeds.filter(r => (r.kind === 'pn' ? +r.vol > 0 : +r.ml > 0));
+  if (!nut.length || !(W >= 20)) { card.hidden = true; return; }
+  card.hidden = false;
+  let kEn = 0, kOral = 0, kPn = 0, aaPn = 0, gluPn = 0;
+  nut.forEach(r => {
+    if (r.kind === 'oral') { const F = Model.FOODS[r.food]; if (F) kOral += +r.ml * F.kcal100 / 100; }
+    else if (r.kind === 'formula') kEn += +r.ml * Model.FORMULAS[r.formula].kcal;
+    else if (r.kind === 'cont') kEn += +r.ml * spanH(r.start, r.end) * Model.FORMULAS[r.formula].kcal;
+    else { const pm = Model.pnPerMl(r), v = +r.vol; kPn += v * pm.kcal; aaPn += v * pm.aa; gluPn += v * pm.glu; }
+  });
+  const toT = h => { const [hh, mm] = h.split(':').map(Number); let t = hh + mm / 60; if (t < 6) t += 24; return t; };
+  let gir = 0;
+  for (let t = 6; t < 30; t += 0.25) {
+    let g = 0;
+    state.feeds.forEach(r => { if (r.kind !== 'pn' || !(+r.vol > 0)) return; let a = toT(r.start), b = toT(r.end); if (b <= a) b += 24; const on = (t >= a && t < b) || (t + 24 >= a && t + 24 < b); if (on) g += +r.vol / (b - a) * Model.pnPerMl(r).glu; });
+    gir = Math.max(gir, g * 1000 / 60 / W);
+  }
+  const tot = kOral + kEn + kPn;
+  const girCls = gir > 5 ? 'hi' : gir > 4 ? 'warn' : gir > 0 ? 'good' : '';
+  const girNote = gir > 5 ? 'Vượt 5 mg/kg/phút' : gir > 4 ? 'Gần ngưỡng 5 mg/kg/phút' : gir > 0 ? 'Dưới ngưỡng 5 mg/kg/phút' : 'Không truyền glucose';
+  $('#energy-tiles').innerHTML = `
+    <div class="tile"><span class="k">Tổng năng lượng</span><span class="v">${Math.round(tot)}<small>kcal</small></span><span class="s">${vn(tot / W, 1)} kcal/kg/ngày</span></div>
+    <div class="tile"><span class="k">Qua đường tiêu hóa</span><span class="v">${Math.round(kOral + kEn)}<small>kcal</small></span><span class="s">Ăn qua miệng ${Math.round(kOral)} · sữa công thức ${Math.round(kEn)}</span></div>
+    <div class="tile"><span class="k">Qua tĩnh mạch</span><span class="v">${Math.round(kPn)}<small>kcal</small></span><span class="s">Glucose ${Math.round(gluPn)} g · đạm ${Math.round(aaPn)} g</span></div>
+    <div class="tile"><span class="k">Đạm tĩnh mạch</span><span class="v">${vn(aaPn / W, 2)}<small>g/kg/ngày</small></span><span class="s">Chưa tính đạm qua đường tiêu hóa</span></div>
+    <div class="tile ${girCls}"><span class="k">Tốc độ truyền glucose cao nhất</span><span class="v">${vn(gir, 1)}<small>mg/kg/phút</small></span><span class="s">${girNote}</span></div>`;
+}
+function footer() {
+  const W = +state.weight;
+  const ivU = state.ivs.reduce((a, r) => { const p = r.start.split(':').map(Number), q = r.end.split(':').map(Number); let h = (q[0] + q[1] / 60) - (p[0] + p[1] / 60); if (h <= 0) h += 24; return a + (+r.rate > 0 ? +r.rate * h : 0); }, 0);
+  const tot = Math.round((state.insulins.reduce((a, r) => a + (+r.dose > 0 ? +r.dose : 0), 0) + ivU) * 10) / 10;
+  $('#ins-foot').innerHTML = W >= 20 ? `Tổng liều: <b>${vn(tot, tot % 1 ? 1 : 0)} UI/ngày</b> · <b>${vn(tot / W, 2)} UI/kg/ngày</b>${ivU ? ' (gồm truyền tĩnh mạch)' : ''}` : `Tổng liều: <b>${vn(tot, tot % 1 ? 1 : 0)} UI/ngày</b>`;
+}
+
+let timer = null;
+function update() {
+  clearTimeout(timer);
+  timer = setTimeout(() => {
+    const W = +state.weight;
+    const err = $('#weight-err');
+    footer(); energy();
+    if (!(W >= 20 && W <= 250)) { err.textContent = 'Nhập cân nặng từ 20 đến 250 kg.'; summary(); return; }
+    err.textContent = '';
+    result = Model.run({ weight: W, sens: state.sens, insulins: state.insulins, ivs: state.ivs, feeds: state.feeds });
+    draw(); summary(); explain();
+  }, 120);
+}
+const rethemer = () => { if (ch1) { ch1.destroy(); ch2.destroy(); ch1 = ch2 = null; } if (result) draw(); };
+try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', rethemer); } catch (e) {}
+new MutationObserver(rethemer).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+Chart.defaults.font.family = tok('--font-body');
+renderInputs(); update();
+})();
+</script>
+</body>
+</html>
