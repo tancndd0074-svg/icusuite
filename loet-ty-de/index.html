@@ -498,6 +498,67 @@ pre.rules{background:var(--field);border:1px solid var(--line);border-radius:8px
 .acct code{font:600 .82rem var(--f-num);background:var(--field);border:1px solid var(--line);border-radius:6px;padding:1px 6px;word-break:break-all}
 .acct details summary{cursor:pointer;font-weight:600;font-size:.88rem}
 .acct details[open]{display:grid;gap:8px}
+
+/* ===== Bảng tiến độ (#tien-do) ===== */
+.prcard{display:grid;gap:10px;padding:14px 16px}
+.prcard>.k{font-size:.76rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.prbig{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.prbig .v{font-size:2.2rem;font-weight:600;line-height:1}
+.prbig .acc{margin-left:auto;color:var(--accent);font-size:1rem}
+.prcard .bar{height:10px}
+.prgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.prgrid>div{background:var(--field);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.prgrid>div>span{font-size:.78rem}
+.prgrid>div>b{font-size:1.15rem;font-weight:600}
+.prgrid>div>b small{font:500 .78rem var(--f-body);color:var(--muted)}
+.prgrid>div>small{font-size:.76rem;line-height:1.4}
+.prgrid.c3{grid-template-columns:repeat(3,minmax(0,1fr));text-align:center}
+.prgrid.c4{grid-template-columns:repeat(4,minmax(0,1fr));text-align:center}
+.prgrid.c3>div,.prgrid.c4>div{align-items:center}
+.prgrid .acc{color:var(--accent)}
+.q-ok{background:var(--ok-soft)!important;color:var(--ok)}.q-warn{background:var(--warn-soft)!important;color:var(--warn)}.q-crit{background:var(--crit-soft)!important;color:var(--crit)}.q-none{background:var(--sunk)!important}
+.prgrid>div[class^="q-"]>span{font-weight:600}
+.prhan{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.prhan .inwrap{min-width:0}
+.prgrid .hancell{grid-column:1/-1}
+.prrow.txt{flex-direction:column;align-items:flex-start;gap:2px}
+.prrow.txt b.mono{font-family:var(--f-body);text-align:left}
+@media (max-width:480px){.nsm{display:none}}
+.prnote{margin:0;font-size:.8rem;color:var(--muted)}
+.prpad{padding:12px 16px 16px;display:grid;gap:12px}
+.wkwrap{padding:14px 16px 16px;display:grid;gap:6px}
+.wk{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;align-items:end}
+.wk:not(.wkl){height:140px;border-bottom:1px solid var(--line)}
+.wkc{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0}
+.wkc b{font-size:.78rem}
+.wkc i{display:block;width:100%;max-width:42px;min-height:2px;background:var(--accent);border-radius:6px 6px 0 0}
+.wkc.now i{background:var(--accent-soft);outline:1.5px dashed var(--accent);outline-offset:-1.5px}
+.wkl span{font-size:.66rem;color:var(--muted);text-align:center;line-height:1.3;min-width:0;overflow:hidden}
+.wkl .mono{font-size:.66rem}
+.prleg{display:flex;gap:6px 14px;flex-wrap:wrap;font-size:.78rem;color:var(--muted)}
+.prleg span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:12px;height:12px;border-radius:3px;display:inline-block}
+.sbar{display:flex;height:12px;border-radius:6px;overflow:hidden;background:var(--sunk)}
+.sbar i{display:block;height:100%}
+.s1{background:var(--accent)}.s2{background:var(--accent-soft)}
+.sbar .s2{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 40%,transparent)}
+.prk{display:grid;gap:5px}
+.prk1{display:flex;justify-content:space-between;gap:10px;font-size:.92rem}
+.prk small{font-size:.78rem}
+.prdet{border-top:1px dashed var(--line);padding-top:10px;font-size:.88rem}
+.prdet summary{cursor:pointer;font-weight:600;min-height:32px;display:flex;align-items:center}
+.prdet ul{margin:6px 0 0;padding-left:1.1rem;display:grid;gap:4px}
+.prrows{display:grid;border-radius:12px;overflow:hidden;background:var(--field)}
+.prrow{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:9px 12px;font-size:.9rem}
+.prrow+.prrow{border-top:1px solid var(--line)}
+.prrow b{text-align:right;font-weight:600}
+.prrow.muted{color:var(--muted)}
+.block>.prrows{border-radius:0;background:transparent}
+.brrow{display:grid;grid-template-columns:8.5rem minmax(0,1fr) 2rem;gap:8px;align-items:center;font-size:.86rem}
+.brrow b{text-align:right}
+.sbar.full i{border-radius:6px}
+.b-crit{background:var(--crit)}.b-high{background:var(--high)}.b-warn{background:var(--warn)}.b-ok{background:var(--ok)}
+@media (min-width:760px){.prgrid.g4{grid-template-columns:repeat(4,minmax(0,1fr))}.prgrid .hancell{grid-column:auto}}
 </style>
 
 </head>
@@ -505,12 +566,12 @@ pre.rules{background:var(--field);border:1px solid var(--line);border-radius:8px
 <div class="shell">
 <header class="appbar wrap" id="appbar"><div class="inner">
   <a class="brand" href="#" data-act="home"><b>Thu thập số liệu loét tỳ đè</b><small>Phiếu 1–4 · 3 khoa nội · bản trực tuyến</small></a>
-  <nav class="anav" aria-label="Trang"><button type="button" class="btn sm ghost" data-act="so" data-nav="so-lien-ket">Sổ liên kết</button><button type="button" class="btn sm ghost" data-act="chk" data-nav="kiem-tra">Kiểm tra số liệu</button><button type="button" class="btn sm ghost" data-act="logout">Đăng xuất</button></nav>
+  <nav class="anav" aria-label="Trang"><button type="button" class="btn sm ghost" data-act="prog" data-nav="tien-do">Tiến độ</button><button type="button" class="btn sm ghost" data-act="so" data-nav="so-lien-ket">Sổ liên kết</button><button type="button" class="btn sm ghost" data-act="chk" data-nav="kiem-tra">Kiểm tra<span class="nsm"> số liệu</span></button><button type="button" class="btn sm ghost" data-act="logout">Đăng xuất</button></nav>
   <span class="who" id="who" hidden></span>
   <span class="saved busy" id="saved">Đang kết nối…</span>
 </div></header>
 <main class="wrap"><div class="inner" id="view"></div></main>
-<footer class="wrap"><div class="inner">Phiên bản 2.0.3 trực tuyến (17/11/2026) · Dữ liệu lưu trên máy chủ Firebase, chỉ tài khoản của đề tài đọc được. Vẫn nên tải file sao lưu định kỳ và cất trong Drive riêng.</div></footer>
+<footer class="wrap"><div class="inner">Phiên bản 2.1.0 trực tuyến (24/11/2026) · Dữ liệu lưu trên máy chủ Firebase, chỉ tài khoản của đề tài đọc được. Vẫn nên tải file sao lưu định kỳ và cất trong Drive riêng.</div></footer>
 </div>
 
 <aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="dtitle">
@@ -571,7 +632,7 @@ function hoursBetween(a,b){if(!a||!b||a.length<16||b.length<16)return null;const
 /* ---------- constants ---------- */
 const KHOA={HS:{name:'Đơn vị Hồi sức tích cực',short:'Hồi sức tích cực'},NTH:{name:'Nội tổng hợp',short:'Nội tổng hợp'},TM:{name:'Tim mạch can thiệp – thần kinh',short:'Tim mạch CT – TK'}};
 const KORDER=['HS','NTH','TM'];
-const PFX={HS:'HS-',NTH:'NTH-',TM:'TMTK-'};const APP_VER='2.0.2';
+const PFX={HS:'HS-',NTH:'NTH-',TM:'TMTK-'};const APP_VER='2.1.0';
 const MOC=['N3','N7','N10','N14','N17','N21','N24','N28'];
 const MOCDAY={N3:3,N7:7,N10:10,N14:14,N17:17,N21:21,N24:24,N28:28};
 const DEVICES=[[1,'Ống thông dạ dày'],[2,'Ống nội khí quản/mở khí quản'],[3,'Mặt nạ thở không xâm nhập'],[4,'Gọng/mặt nạ oxy'],[5,'Ống thông tiểu'],[6,'Đầu đo SpO2'],[7,'Băng đo huyết áp'],[8,'Dây cố định chi'],[9,'Khác']];
@@ -1064,6 +1125,9 @@ function doAct(b){const c=cur();const act=b.dataset.act;
  case 'open':{S.qs=0;S.fromCheck=false;S.fromSo=b.dataset.from==='so';S.tab=b.dataset.tab||'p1';S.moc=b.dataset.moc||null;S.wound=0;const id=b.dataset.id.toLowerCase();if(location.hash.slice(1)===id)route();else location.hash=id;break;}
  case 'filter':S.filter=b.dataset.f;$$('.fchip').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.f===S.filter)));renderList();break;
  case 'so':case 'backSo':S.fromCheck=false;S.fromSo=false;if(location.hash.slice(1)==='so-lien-ket')renderSo();else location.hash='so-lien-ket';break;
+ case 'prog':S.fromCheck=false;S.fromSo=false;if(location.hash.slice(1)==='tien-do')renderProg();else location.hash='tien-do';break;
+ case 'prK':S.prK=b.dataset.v;renderProg(true);break;
+ case 'prHanClr':UCFG.han='';saveCfg(true);renderProg(true);toast('Đã xóa hạn lấy mẫu');break;
  case 'soK':S.soK=b.dataset.v;$$('[data-act="soK"]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.v===S.soK)));renderSoList();break;
  case 'soSt':S.soSt=b.dataset.v;$$('[data-act="soSt"]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.v===S.soSt)));renderSoList();break;
  case 'soRv':{const x=S.cases.find(y=>y.id===b.dataset.id);const d=mkVal($('#so-rvd'));if(!x)break;if(!d){toast('Chọn ngày rà soát');break;}if(d<admit(x)){toast('Ngày rà soát trước ngày nhập khoa');break;}if((x.p2.review||[]).some(r=>r.d===d)){toast(x.id+' đã có lần rà soát ngày '+fDM(d));break;}const tg=addReviewTo(x,d,b.dataset.r);derive(x);save();renderSo();toast(b.dataset.r==='C'?x.id+' chuyển sang theo dõi sát từ '+fDM(d)+(tg?' – mở ca để nhập mốc '+tg+' (A7 = 1 đã điền sẵn)':''):'Đã ghi '+x.id+' · '+fDM(d)+' G (giữ nhóm)');break;}
@@ -1188,6 +1252,109 @@ function renderSoList(){const el=$('#solist');if(!el)return;const L=soFiltered()
   <td class="mono">${cl?`${fD(c.p2.end.a5)} <b title="${esc(ENDR[c.p2.end.a6]||'')}">${esc(c.p2.end.a6)}</b>`:''}</td>
   <td>${n.k==='closed'?'':`<span class="pill t-${n.tone}">${esc(n.txt)}</span>`}</td></tr>`);});
  el.innerHTML=`<div class="tscroll"><table class="grid so-t"><thead><tr><th>Mã NC</th><th>Họ tên người bệnh</th><th>Số vào viện</th><th>Khoa – giường</th><th>Ngày nhập khoa</th><th>Nhóm (S/T)</th><th>Ngày N3 / N7</th><th>Rà soát nhóm tối thiểu</th><th>Ngày, lý do kết thúc</th><th class="scr">Lịch kế tiếp</th></tr></thead><tbody>${rows.join('')}</tbody></table></div>`;}
+/* ---------- Bảng tiến độ đề tài (#tien-do) ---------- */
+const PR_N=204;
+function wilson(k,n){if(!n)return null;const z=1.96,p=k/n,d=1+z*z/n,c=(p+z*z/(2*n))/d,m=z*Math.sqrt(p*(1-p)/n+z*z/(4*n*n))/d;return [Math.max(0,c-m),Math.min(1,c+m)];}
+function median(a){const s=a.slice().sort((x,y)=>x-y);if(!s.length)return null;const h=s.length>>1;return s.length%2?s[h]:(s[h-1]+s[h])/2;}
+const pct=(k,n,d)=>n?fmt(k/n*100,d==null?1:d)+'%':'—';
+function weekOf(s){const dow=(new Date(toUTC(s)).getUTCDay()+6)%7;return addD(s,-dow);}
+const enrolD=c=>admit(c)||dOnly(c.p1.tDG);
+function prRow(label,val,cls){return `<div class="prrow${cls?' '+cls:''}"><span>${label}</span><b class="mono">${val}</b></div>`;}
+function renderProg(keep){S.cur=null;closeDrawer();const y=window.scrollY;const {L:all,ex}=soBase();all.forEach(derive);
+ const K=KHOA[S.prK]?S.prK:'all';const L=K==='all'?all:all.filter(c=>c.khoa===K);
+ const t=todayISO();const inc=L.filter(c=>c.p1.incl==='1');const incAll=all.filter(c=>c.p1.incl==='1');
+ const out=L.filter(c=>c.p1.incl==='0');const pend=L.filter(c=>c.p1.incl!=='1'&&c.p1.incl!=='0');
+ const cl=inc.filter(isClosed);
+ let h=`<div class="stack"><div class="ftitle"><div><p class="eyebrow">Tiến độ đề tài · cập nhật ${fD(t)}</p><h1 style="font-size:clamp(1.3rem,3.6vw,1.7rem)">Bảng tiến độ lấy mẫu</h1><p>Tự tính từ các phiếu đã nhập và cập nhật ngay khi lưu. Số liệu sơ bộ chỉ để theo dõi tiến độ, không dùng để kết luận trước khi đủ cỡ mẫu.</p></div>
+ <div class="toolrow"><button type="button" class="btn sm ghost" data-act="home">‹ Danh sách</button><button type="button" class="btn sm" data-act="so">Sổ liên kết</button></div></div>`;
+ if(ex)h+='<div class="banner t-warn">Chưa có ca thật nào – bảng đang tính trên các ca ví dụ.</div>';
+ h+=`<div class="filters" role="group" aria-label="Lọc theo khoa">${[['all','Toàn bộ']].concat(KORDER.map(k=>[k,PFX[k].slice(0,-1)])).map(([v,l])=>`<button type="button" class="fchip" data-act="prK" data-v="${v}" aria-pressed="${K===v}">${l}</button>`).join('')}</div>`;
+ if(!L.length){$('#view').innerHTML=h+`<section class="block"><p class="empty-note">${all.length?'Khoa này chưa có người bệnh nào.':'Chưa có người bệnh nào. Thêm người bệnh mới ở trang đầu.'}</p></section></div>`;if(!keep)window.scrollTo(0,0);return;}
+
+ /* --- tốc độ theo tuần --- */
+ const dates=inc.map(enrolD).filter(Boolean).sort();const first=dates[0]||'';
+ let rate=null,rateLab='';
+ if(first){const span=diffD(first,t)+1;
+  if(span>=28){rate=dates.filter(d=>diffD(d,t)<28).length/4;rateLab='4 tuần gần nhất';}
+  else{rate=dates.length/Math.max(span,7)*7;rateLab='từ '+fDM(first);}}
+ const weeks=[];if(first){for(let w=weekOf(first);w<=t;w=addD(w,7))weeks.push({w,n:0});dates.forEach(d=>{const x=weeks.find(o=>d>=o.w&&d<addD(o.w,7));if(x)x.n++;});let cum=0;weeks.forEach(o=>{cum+=o.n;o.cum=cum;});}
+ const W=weeks.slice(-12),mx=Math.max(1,...W.map(o=>o.n)),wNow=weekOf(t);
+
+ /* --- thẻ cỡ mẫu --- */
+ if(K==='all'){const n=inc.length,left=Math.max(0,PR_N-n);const han=dOnly(UCFG.han);
+  let proj='—';if(!left)proj='<span class="pill t-ok">Đã đủ cỡ mẫu</span>';else if(rate>0)proj=(()=>{const d=addD(t,Math.ceil(left/rate*7));return 'tháng '+(+d.slice(5,7))+'/'+d.slice(0,4);})();
+  let hanTxt='',hanTone='';
+  if(han&&left){const dl=diffD(t,han);
+   if(dl<=0){hanTxt=`Đã qua hạn ${fD(han)} – còn thiếu ${left} ca.`;hanTone='t-crit';}
+   else{const need=left/(dl/7);const ok=rate!=null&&rate>=need;hanTxt=`Còn ${dl} ngày đến hạn ${fD(han)}: cần khoảng <b class="mono">${fmt(need,1)}</b> ca/tuần`+(ok?' – tốc độ hiện tại đủ để kịp.':` – tốc độ hiện tại ${rate!=null?fmt(rate,1):'0'} ca/tuần, cần tăng thêm.`);hanTone=ok?'t-ok':'t-warn';}}
+  h+=`<section class="block prcard"><span class="k">Cỡ mẫu đưa vào nghiên cứu</span>
+   <div class="prbig"><span class="mono v">${n}</span><span class="muted">/ ${PR_N} người bệnh</span><b class="mono acc">${pct(n,PR_N,0)}</b></div>
+   <span class="bar"><i style="width:${Math.min(100,n/PR_N*100)}%"></i></span>
+   <div class="prgrid g4">
+    <div><span class="muted">Tốc độ trung bình</span><b class="mono">${rate!=null?fmt(rate,1):'—'}<small> ca/tuần</small></b><small class="muted">${rateLab}</small></div>
+    <div><span class="muted">Còn thiếu</span><b class="mono">${left}<small> ca</small></b></div>
+    <div><span class="muted">Dự kiến đủ mẫu</span><b>${proj}</b><small class="muted">nếu giữ tốc độ này</small></div>
+    <div class="hancell"><span class="muted">Hạn hoàn tất lấy mẫu</span><span class="prhan"><span class="inwrap">${mkInput('d','id="pr-han" value="'+mkShow('d',han)+'" aria-label="Hạn hoàn tất lấy mẫu"')}</span>${han?'<button type="button" class="btn sm ghost" data-act="prHanClr" aria-label="Xóa hạn lấy mẫu">Xóa</button>':''}</span></div>
+   </div>
+   ${hanTxt?`<p class="banner ${hanTone}" style="margin:0"><span>${hanTxt}</span></p>`:(left?'<p class="prnote">Nhập hạn hoàn tất lấy mẫu để biết mỗi tuần cần bao nhiêu ca cho kịp.</p>':'')}</section>`;}
+ else{h+=`<section class="block prcard"><span class="k">${PFX[K].slice(0,-1)} · ${KHOA[K].short}</span>
+   <div class="prbig"><span class="mono v">${inc.length}</span><span class="muted">ca đưa vào · ${pct(inc.length,incAll.length,0)} tổng số ca của đề tài</span></div>
+   <div class="prgrid"><div><span class="muted">Tốc độ trung bình</span><b class="mono">${rate!=null?fmt(rate,1):'—'}<small> ca/tuần</small></b><small class="muted">${rateLab}</small></div><div><span class="muted">Toàn đề tài</span><b class="mono">${incAll.length}<small> / ${PR_N} ca</small></b></div></div></section>`;}
+
+ /* --- biểu đồ tuần --- */
+ h+=`<section class="block"><div class="bhead"><h2>Số ca đưa vào theo tuần</h2><span class="muted" style="font-size:.8rem">${weeks.length>12?'12 tuần gần nhất':(first?'từ '+fD(first):'')}</span></div>`;
+ if(!W.length)h+='<p class="empty-note">Chưa có ca nào đưa vào nghiên cứu.</p></section>';
+ else h+=`<div class="wkwrap"><div class="wk" role="img" aria-label="${esc(W.map(o=>'Tuần '+fDM(o.w)+': '+o.n+' ca').join('; '))}">${W.map(o=>`<div class="wkc${o.w===wNow?' now':''}"><b class="mono">${o.n}</b><i style="height:${Math.round(o.n/mx*110)}px"></i></div>`).join('')}</div>
+  <div class="wk wkl" aria-hidden="true">${W.map(o=>`<span>${o.w===wNow?'Tuần này':fDM(o.w)}<br><span class="mono">Σ ${o.cum}</span></span>`).join('')}</div>
+  <p class="prnote">Mỗi cột là một tuần (thứ Hai – Chủ nhật), tính theo ngày nhập khoa. Σ: số ca cộng dồn. Cột viền nét đứt là tuần đang diễn ra.</p></div></section>`;
+
+ /* --- theo khoa + sàng lọc --- */
+ const ks=K==='all'?KORDER:[K];const kn=k=>inc.filter(c=>c.khoa===k);const kmax=Math.max(1,...ks.map(k=>kn(k).length));
+ h+=`<section class="block"><div class="bhead"><h2>Theo khoa</h2></div><div class="prpad">
+  <div class="prleg"><span><i class="sw s1"></i>Đã kết thúc theo dõi</span><span><i class="sw s2"></i>Đang theo dõi</span></div>
+  ${ks.map(k=>{const A=kn(k),c1=A.filter(isClosed).length,c2=A.length-c1;const gS=A.filter(c=>grpInfo(c).eff==='S').length,gT=A.filter(c=>grpInfo(c).eff==='T').length,g0=A.length-gS-gT;
+   return `<div class="prk"><div class="prk1"><span><b class="mono">${PFX[k].slice(0,-1)}</b> · ${KHOA[k].short}</span><b class="mono">${A.length}</b></div>
+   <span class="sbar" style="width:${Math.max(A.length?6:0,A.length/kmax*100)}%">${c1?`<i class="s1" style="flex:${c1}"></i>`:''}${c2?`<i class="s2" style="flex:${c2}"></i>`:''}</span>
+   <small class="muted">Kết thúc ${c1} · đang theo dõi ${c2} · nhóm sát ${gS} / tối thiểu ${gT}${g0?` · chưa xếp nhóm ${g0}`:''}</small></div>`;}).join('')}
+  <div class="prgrid c4"><div><b class="mono">${L.length}</b><span class="muted">Đã ghi sổ</span></div><div><b class="mono acc">${inc.length}</b><span class="muted">Đưa vào</span></div><div><b class="mono">${out.length}</b><span class="muted">Không đưa vào</span></div><div><b class="mono">${pend.length}</b><span class="muted">Chưa kết luận</span></div></div>
+  ${out.length?`<details class="prdet"><summary>Lý do không đưa vào (${out.length})</summary><ul>${out.map(c=>`<li><span class="mono">${c.id}</span> · ${c.p1.lyDoKhong?esc(c.p1.lyDoKhong):'<span class="muted">chưa ghi lý do</span>'}</li>`).join('')}</ul></details>`:''}
+  ${pend.length?`<details class="prdet"><summary>Chưa kết luận sàng lọc (${pend.length})</summary><ul>${pend.map(c=>`<li><button type="button" class="idlink" data-act="open" data-id="${c.id}" data-tab="p1">${c.id}</button> · ${(c.p1.tcChon||[]).length}/4 tiêu chuẩn chọn</li>`).join('')}</ul></details>`:''}
+ </div></section>`;
+
+ /* --- kết quả sơ bộ --- */
+ h+=`<section class="block"><div class="bhead"><h2>Kết quả sơ bộ</h2><span class="muted" style="font-size:.8rem">tỷ lệ mới mắc tính trên ${cl.length} ca đã kết thúc theo dõi</span></div><div class="prpad">`;
+ const a1n=inc.filter(c=>c.p1.a1==='0'||c.p1.a1==='1'),a1k=a1n.filter(c=>c.p1.a1==='1').length,ciA=wilson(a1k,a1n.length);
+ const nw=cl.filter(c=>(c.p3||[]).some(w=>w.loai==='moi')),ci=wilson(nw.length,cl.length);
+ h+=`<div class="prgrid"><div><span class="muted">Loét mới mắc</span><b class="mono" style="color:var(--high)">${cl.length?pct(nw.length,cl.length):'—'}</b><small class="muted">${nw.length} / ${cl.length} ca${ci?`<br>KTC 95%: ${fmt(ci[0]*100,1)}–${fmt(ci[1]*100,1)}%`:''}</small></div>
+  <div><span class="muted">Có sẵn khi nhập khoa</span><b class="mono">${a1n.length?pct(a1k,a1n.length):'—'}</b><small class="muted">${a1k} / ${a1n.length} ca đã khám da${ciA?`<br>KTC 95%: ${fmt(ciA[0]*100,1)}–${fmt(ciA[1]*100,1)}%`:''}</small></div></div>`;
+ if(nw.length){const W2=[].concat(...cl.map(c=>(c.p3||[]).filter(w=>w.loai==='moi')));
+  const tbP=nw.filter(c=>c.p3.some(w=>w.loai==='moi'&&w.tb==='1')).length;
+  const days=nw.map(firstNewDay).filter(x=>x!==''&&x!=null);const md=median(days);
+  const stg={};W2.forEach(w=>{const l=(STAGES.find(s=>s[0]===w.b2)||[])[1]||'Chưa phân độ';stg[l]=(stg[l]||0)+1;});
+  const site={};W2.forEach(w=>{const l=w.b3==='99'?(w.b3ghi||'Vị trí khác'):((SITES.find(s=>s[0]===w.b3)||[])[1]||'Chưa ghi vị trí');site[l]=(site[l]||0)+1;});
+  const top=o=>Object.entries(o).sort((a,b)=>b[1]-a[1]).map(([l,n])=>esc(l)+': '+n).join(' · ');
+  h+=`<div class="prrows">${prRow('Người bệnh có loét do thiết bị y tế',tbP+' / '+nw.length)}${prRow('Ngày xuất hiện loét đầu tiên (trung vị)',md!=null?'N'+fmt(md,1)+(days.length>1?` <small class="muted">(N${Math.min(...days)}–N${Math.max(...days)})</small>`:''):'—')}${prRow(`Phân độ lúc phát hiện <small class="muted">(${W2.length} vết)</small>`,top(stg),'txt')}${prRow('Vị trí',top(site),'txt')}</div>`;}
+ else if(cl.length)h+='<p class="prnote">Chưa có loét mới mắc ở các ca đã kết thúc theo dõi.</p>';
+ h+=`<p class="banner t-warn" style="margin:0">${cl.length<30?'Mẫu còn nhỏ nên khoảng tin cậy rất rộng. ':''}Chỉ dùng để theo dõi, không dùng để kết luận trước khi đủ ${PR_N} ca.</p></div></section>`;
+
+ /* --- Braden khi nhập khoa --- */
+ const bc=[0,0,0,0,0];let b0=0;inc.forEach(c=>{const v=toN(c.p1.brTong);if(v==null){b0++;return;}bc[brLevel(v).band]++;});const bmx=Math.max(1,...bc);
+ const BL=['rất cao','cao','trung bình','thấp','không nguy cơ'],BT=['crit','crit','high','warn','ok'];
+ h+=`<section class="block"><div class="bhead"><h2>Nguy cơ Braden khi nhập khoa</h2><span class="muted" style="font-size:.8rem">${inc.length} ca đưa vào</span></div><div class="prpad">
+  ${BANDS.map((b,i)=>`<div class="brrow"><span>${b} · ${BL[i]}</span><span class="sbar full"><i class="b-${BT[i]}" style="width:${bc[i]/bmx*100}%"></i></span><b class="mono">${bc[i]}</b></div>`).join('')}
+  ${b0?`<p class="prnote">${b0} ca chưa chấm đủ Braden.</p>`:''}</div></section>`;
+
+ /* --- kết thúc theo dõi --- */
+ const tally={};cl.forEach(c=>{const r=c.p2.end.a6;tally[r]=(tally[r]||0)+1;});const td=cl.map(c=>toN(c.p2.end.tongNgay)).filter(x=>x!=null);const tm=median(td);
+ h+=`<section class="block"><div class="bhead"><h2>Kết thúc theo dõi</h2><span class="muted" style="font-size:.8rem">${cl.length} ca${tm!=null?` · trung vị ${fmt(tm,1)} ngày (${Math.min(...td)}–${Math.max(...td)})`:''}</span></div>
+  ${cl.length?`<div class="prrows">${Object.keys(ENDR).map(r=>prRow(ENDR[r],tally[r]||0,tally[r]?'':'muted')).join('')}</div>`:'<p class="empty-note">Chưa có ca nào kết thúc theo dõi.</p>'}</section>`;
+
+ /* --- chất lượng số liệu --- */
+ const ck=checkAll().list.filter(x=>K==='all'||x.c.khoa===K);const cn=k=>ck.filter(x=>x.lv===k).length;
+ h+=`<section class="block"><div class="bhead"><h2>Chất lượng số liệu</h2><span class="muted" style="font-size:.8rem">${new Set(ck.map(x=>x.c.id)).size} người bệnh có mục cần xem</span></div><div class="prpad">
+  <div class="prgrid c3"><div class="${cn('loi')?'q-crit':'q-ok'}"><b class="mono">${cn('loi')}</b><span>Lỗi</span></div><div class="${cn('thieu')?'q-warn':'q-ok'}"><b class="mono">${cn('thieu')}</b><span>Thiếu</span></div><div class="q-none"><b class="mono">${cn('canh')}</b><span>Cảnh báo</span></div></div>
+  <button type="button" class="btn primary" data-act="chk" style="justify-content:center">Mở Kiểm tra số liệu ›</button></div></section></div>`;
+ $('#view').innerHTML=h;if(keep)window.scrollTo(0,y);else window.scrollTo(0,0);}
 function addReviewTo(c,d,r){c.p2.review=(c.p2.review||[]).concat([{d,r}]).sort((x,y)=>x.d<y.d?-1:1);let tg='';
  if(r==='C'){const same=MOC.find(m=>c.p2.m[m]&&c.p2.m[m].ngay===d);if(same){tg=same;c.p2.m[same].a7='1';}else{tg=nearestMoc(c,d)||'';if(tg)c.p2.m[tg]={ngay:d,a7:'1'};}}
  c.updated=Date.now();return tg;}
@@ -1241,6 +1408,7 @@ function focusNext(el){const L=$$('#view input,#view select,#view textarea').fil
  const i=L.indexOf(el);const nx=L[i+1];if(nx){nx.focus();if(nx.select&&nx.tagName==='INPUT')try{nx.select();}catch(e){}}else el.blur();}
 function mkCommit(el,iso){const path=el.dataset.path;
  if(el.id==='so-rvd'){S.soRvd=iso;return;}
+ if(el.id==='pr-han'){if(iso&&iso<=todayISO()){toast('Hạn lấy mẫu phải sau hôm nay');el.value=mkShow('d',UCFG.han);return;}UCFG.han=iso||'';saveCfg(true);setTimeout(()=>{if(location.hash.slice(1)==='tien-do')renderProg(true);},0);if(iso)toast('Đã lưu hạn lấy mẫu '+fD(iso));return;}
  if(!path||!cur())return;setP(cur(),path,iso);
  if(/^p4\./.test(path)||/\.prog\./.test(path)){const c=cur();derive(c);c.updated=Date.now();save();refresh();return;}
  autoFill(path);onChange(path);}
@@ -1265,7 +1433,7 @@ function mkOnInput(el,e){if(e.isComposing||el._comp)return;const k=el.dataset.mk
 function mkOnChange(el){const k=el.dataset.mk;const txt=el.value;const full=txt.trim()?(txt.replace(/\D/g,'')?mkParse(k,txt):null):'';const iso=full?mkISO(k,full):full===''?'':null;
  if(iso===''){mkCommit(el,'');return;}
  if(iso){const f=mkFmt(k,full);if(el.value!==f)el.value=f;el.classList.remove('bad');mkCommit(el,iso);return;}
- const path=el.dataset.path;const old=path&&cur()?getP(cur(),path):(el.id==='so-rvd'?S.soRvd:'');el.value=mkShow(k,old);el._dg=el.value.replace(/\D/g,'');el.classList.remove('bad');toast('Chưa nhập đủ hoặc sai ngày giờ – đã giữ giá trị cũ');}
+ const path=el.dataset.path;const old=path&&cur()?getP(cur(),path):(el.id==='so-rvd'?S.soRvd:el.id==='pr-han'?UCFG.han:'');el.value=mkShow(k,old);el._dg=el.value.replace(/\D/g,'');el.classList.remove('bad');toast('Chưa nhập đủ hoặc sai ngày giờ – đã giữ giá trị cũ');}
 
 /* ---------- người đánh giá mặc định, nhắc sao lưu (cài đặt dùng chung) ---------- */
 const UCFGK=LS+'-cfg';const UCFG={dg:'Tăng Ngọc Tân',bk:'',snooze:''};
@@ -1333,7 +1501,7 @@ function qDone(b){const c=cur();const st=quickStat(c);const left=st.reduce((a,x)
 /* ---------- routing ---------- */
 function navMark(h){$$('#appbar [data-nav]').forEach(x=>{if(x.dataset.nav===h)x.setAttribute('aria-current','page');else x.removeAttribute('aria-current');});}
 function wrongHTML(){const a=S.acct||{};return `<div class='wrongacc' role='alert'><h2>Đây không phải tài khoản của đề tài</h2><p>Đang đăng nhập: <b>${esc(a.email||'')}</b>. Tài khoản này không được xem dữ liệu nghiên cứu loét tỳ đè, nên danh sách ca sẽ trống. Dữ liệu của đề tài vẫn an toàn trên máy chủ.</p><p>Bấm <b>Đăng xuất</b> rồi đăng nhập lại bằng tài khoản riêng của đề tài.</p><span class='homebar'><button type='button' class='btn primary' data-act='logout'>Đăng xuất</button></span></div>`;}
-function route(){if(S.acct&&S.acct.error==='wrong-account'){$('#view').innerHTML=wrongHTML();return;}const h=location.hash.slice(1).toLowerCase();navMark(h);if(!h){renderHome();return;}if(h==='kiem-tra'){renderCheck();return;}if(h==='so-lien-ket'){renderSo();return;}const c=S.cases.find(x=>x.id.toLowerCase()===h);if(!c){location.hash='';renderHome();return;}if(S.cur!==c.id){if(!S.tab)S.tab='p1';}S.cur=c.id;renderCase();}
+function route(){if(S.acct&&S.acct.error==='wrong-account'){$('#view').innerHTML=wrongHTML();return;}const h=location.hash.slice(1).toLowerCase();navMark(h);if(!h){renderHome();return;}if(h==='kiem-tra'){renderCheck();return;}if(h==='so-lien-ket'){renderSo();return;}if(h==='tien-do'){renderProg();return;}const c=S.cases.find(x=>x.id.toLowerCase()===h);if(!c){location.hash='';renderHome();return;}if(S.cur!==c.id){if(!S.tab)S.tab='p1';}S.cur=c.id;renderCase();}
 window.addEventListener('hashchange',route);
 
 /* ---------- toast ---------- */
@@ -1877,7 +2045,7 @@ window.LTD={
   const ae=document.activeElement;const typing=ae&&$('#view').contains(ae)&&/INPUT|SELECT|TEXTAREA/.test(ae.tagName);
   if(S.cur){if(!hit)return;if(!cur()){toast('Ca này vừa bị xóa trên thiết bị khác');location.hash='';return;}if(typing||$('#drawer').getAttribute('aria-hidden')==='false'){S.remotePending=true;toast('Ca này vừa được cập nhật từ thiết bị khác');}else renderCase(true);}
   else if(typing)S.remotePending=true;else{const y=window.scrollY;route();window.scrollTo(0,y);}},
- cfg(j){try{const o=JSON.parse(j)||{};const before=JSON.stringify(UCFG);Object.assign(UCFG,o);try{localStorage.setItem(UCFGK,JSON.stringify(UCFG));}catch(e){}if(before!==JSON.stringify(UCFG)&&!S.cur&&!location.hash.slice(1)){const ae=document.activeElement;if(!(ae&&ae.id==='dg-ten'))renderHome();}}catch(e){}},
+ cfg(j){try{const o=JSON.parse(j)||{};const before=JSON.stringify(UCFG);Object.assign(UCFG,o);try{localStorage.setItem(UCFGK,JSON.stringify(UCFG));}catch(e){}if(before!==JSON.stringify(UCFG)&&!S.cur&&!location.hash.slice(1)){const ae=document.activeElement;if(!(ae&&ae.id==='dg-ten'))renderHome();}else if(before!==JSON.stringify(UCFG)&&location.hash.slice(1)==='tien-do'){const ae=document.activeElement;if(!(ae&&ae.id==='pr-han'))renderProg(true);}}catch(e){}},
  flush(){syncNow();},
  rescue(arr,at){let n=0;arr.forEach(nc=>{if(!nc||!nc.id||!KHOA[nc.khoa])return;normalize(nc);const i=S.cases.findIndex(x=>x.id===nc.id);if(i<0){S.cases.push(nc);n++;}else if((nc.updated||0)>(S.cases[i].updated||0)){S.cases[i]=nc;n++;}});
   if(n){save();if(!S.cur)route();toast('Đã gửi lại '+n+' ca có thay đổi chưa kịp lên máy chủ ở lần dùng trước'+(at?(()=>{const d=new Date(at);return ' (lúc '+pad(d.getHours())+':'+pad(d.getMinutes())+' ngày '+pad(d.getDate())+'/'+pad(d.getMonth()+1)+')';})():''));}},
