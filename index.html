@@ -9280,7 +9280,7 @@ function mrnFromPt(){
 }
 
 /* ===== Liên kết với công cụ "Bàn giao kíp trực" (cùng địa chỉ gốc tancndd0074-svg.github.io) =====
-   - Phiếu bàn giao điều dưỡng để thông tin người bệnh vào localStorage (BG_IN) rồi mở trang này;
+   - Phiếu bàn giao (bác sĩ hoặc điều dưỡng) để thông tin người bệnh vào localStorage (BG_IN) rồi mở trang này;
      trang này đọc một lần rồi xóa ngay (không ghi tên người bệnh lên đường link).
    - Mỗi thang điểm lưu xong cho đúng người bệnh đó được xếp vào hộp thư BG_OUT; công cụ bàn giao
      tự lấy về điền vào phiếu (mục B), kể cả khi tab bàn giao mở lại sau. */
@@ -9291,16 +9291,16 @@ function bgMatches(p){ if(!bgLink||!p) return false; const m=normMrn(p.mrn); if(
 function paintBgLink(){
   const b=el("bgLinkBar"); if(!b) return;
   if(!bgLink){ b.hidden=true; b.innerHTML=""; return; }
-  const on=bgMatches(ptInfo());
+  const on=bgMatches(ptInfo()), pn=bgLink.part==="bs"?"bác sĩ":"điều dưỡng";
   b.hidden=false; b.className="bglink"+(on?"":" off");
-  b.innerHTML=`<span class="t">${on?"🔗 Đang liên kết với <b>phiếu bàn giao điều dưỡng</b>":"⚠ Người bệnh đang nhập khác với người bệnh của phiếu bàn giao"}: <b>${esc(bgLink.label)}</b>.<br>${on?"Mỗi thang điểm lưu xong sẽ tự gửi về phiếu bàn giao.":"Điểm chấm cho người bệnh đang nhập sẽ không gửi về phiếu."}</span><button type="button" id="bgUnlink">Ngắt liên kết</button>`;
+  b.innerHTML=`<span class="t">${on?"🔗 Đang liên kết với <b>phiếu bàn giao "+pn+"</b>":"⚠ Người bệnh đang nhập khác với người bệnh của phiếu bàn giao"}: <b>${esc(bgLink.label)}</b>.<br>${on?"Mỗi thang điểm lưu xong sẽ tự gửi về phiếu bàn giao.":"Điểm chấm cho người bệnh đang nhập sẽ không gửi về phiếu."}</span><button type="button" id="bgUnlink">Ngắt liên kết</button>`;
   el("bgUnlink").onclick=()=>{ bgSetLink(null); toast("Đã ngắt liên kết với phiếu bàn giao"); };
 }
 function bgSend(rec){
   if(!bgLink || !rec || !bgMatches(rec.patient)) return;
   try{
     const q=JSON.parse(localStorage.getItem(BG_OUT)||"[]").filter(x=>x && Date.now()-(x.sent||0)<3*864e5);
-    q.push({v:1, hid:bgLink.hid, lk:bgLink.lk, pid:bgLink.pid, mrn:bgLink.mrn||normMrn(rec.patient.mrn), name:rec.patient.name, bed:rec.patient.bed,
+    q.push({v:1, hid:bgLink.hid, part:bgLink.part||"dd", lk:bgLink.lk, pid:bgLink.pid, mrn:bgLink.mrn||normMrn(rec.patient.mrn), name:rec.patient.name, bed:rec.patient.bed,
       id:rec.id, scale:rec.scale, code:rec.code||"", tag:String(rec.tag==null?"":rec.tag), band:rec.band||"",
       score:typeof rec.score==="number"?rec.score:null, stamp:rec.stamp||"", when:rec.when||"", by:rec.patient.by||"", sent:Date.now()});
     localStorage.setItem(BG_OUT, JSON.stringify(q.slice(-200)));
@@ -9318,7 +9318,7 @@ function bgTake(){
   if(h.email && el("gEmail") && !el("gEmail").value.trim()) el("gEmail").value=h.email;
   mrnHint("");
   const p=ptInfo();
-  bgSetLink({hid:h.hid, lk:h.lk, pid:h.pid, mrn:p.mrn, key:pkeyOf(p), label:ptLabel(p)||p.name||"(chưa ghi tên)", at:Date.now()});
+  bgSetLink({hid:h.hid, part:h.part==="bs"?"bs":"dd", lk:h.lk, pid:h.pid, mrn:p.mrn, key:pkeyOf(p), label:ptLabel(p)||p.name||"(chưa ghi tên)", at:Date.now()});
   refreshPt(); homeBadges();
   if(ptComplete(p)){ ptEditing=false; syncPtCard(); renderHome(); toast("Đã nhận người bệnh từ phiếu bàn giao: "+ptLabel(p)); }
   else { ptEditing=true; syncPtCard(); renderHome(); toast("Phiếu bàn giao chưa ghi đủ họ tên, tuổi, giường — nhập nốt rồi chấm điểm");
